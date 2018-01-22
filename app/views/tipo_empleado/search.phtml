@@ -1,0 +1,77 @@
+<?php
+/**
+ * @var \Phalcon\Mvc\View\Engine\Php $this
+ */
+?>
+
+<?php use Phalcon\Tag; ?>
+
+<div class="row">
+    <nav>
+        <ul class="pager">
+            <li class="previous"><?php echo $this->tag->linkTo(["tipo_empleado/index", "Go Back"]); ?></li>
+            <li class="next"><?php echo $this->tag->linkTo(["tipo_empleado/new", "Create "]); ?></li>
+        </ul>
+    </nav>
+</div>
+
+<div class="page-header">
+    <h1>Search result</h1>
+</div>
+
+<?php echo $this->getContent(); ?>
+
+<div class="row">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>CodTipoEmpleado</th>
+            <th>Descripcion</th>
+            <th>EstadoRegistro</th>
+            <th>UsuarioInsercion</th>
+            <th>FechaInsercion</th>
+            <th>UsuarioModificacion</th>
+            <th>FechaModificacion</th>
+            <th>CodEmpresa</th>
+
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($page->items as $tipo_empleado): ?>
+            <tr>
+                <td><?php echo $tipo_empleado->codTipoEmpleado ?></td>
+            <td><?php echo $tipo_empleado->descripcion ?></td>
+            <td><?php echo $tipo_empleado->estadoRegistro ?></td>
+            <td><?php echo $tipo_empleado->usuarioInsercion ?></td>
+            <td><?php echo $tipo_empleado->fechaInsercion ?></td>
+            <td><?php echo $tipo_empleado->usuarioModificacion ?></td>
+            <td><?php echo $tipo_empleado->fechaModificacion ?></td>
+            <td><?php echo $tipo_empleado->codEmpresa ?></td>
+
+                <td><?php echo $this->tag->linkTo(["tipo_empleado/edit/" . $tipo_empleado->codTipoEmpleado, "Edit"]); ?></td>
+                <td><?php echo $this->tag->linkTo(["tipo_empleado/delete/" . $tipo_empleado->codTipoEmpleado, "Delete"]); ?></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col-sm-1">
+        <p class="pagination" style="line-height: 1.42857;padding: 6px 12px;">
+            <?php echo $page->current, "/", $page->total_pages ?>
+        </p>
+    </div>
+    <div class="col-sm-11">
+        <nav>
+            <ul class="pagination">
+                <li><?php echo $this->tag->linkTo("tipo_empleado/search", "First") ?></li>
+                <li><?php echo $this->tag->linkTo("tipo_empleado/search?page=" . $page->before, "Previous") ?></li>
+                <li><?php echo $this->tag->linkTo("tipo_empleado/search?page=" . $page->next, "Next") ?></li>
+                <li><?php echo $this->tag->linkTo("tipo_empleado/search?page=" . $page->last, "Last") ?></li>
+            </ul>
+        </nav>
+    </div>
+</div>

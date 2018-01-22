@@ -28,7 +28,12 @@ class LoginForm extends Form {
 
         //añadimos el campo password
         $password = new Password('password',
-                                 array('placeholder' => 'Password', 'class' => 'form-control'));
+                                 array('placeholder' => 'Password', 
+                                       'class' => 'form-control', 
+                                       'data-toggle'=>'modal',
+                                       'data-target'=>'#myModalTeclado',
+                                       'id'=>'teclado',
+                                       'readonly'=>'true'));
         //añadimos la validación como campo requerido al password
         $password->addValidator(new PresenceOf(array('message' => 'El password es requerido')));
         //hacemos que se pueda llamar a nuestro campo password
