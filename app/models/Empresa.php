@@ -10,70 +10,70 @@ class Empresa extends \Phalcon\Mvc\Model
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $codEmpresa;
+    public $codEmpresa;
 
     /**
      *
      * @var string
      * @Column(type="string", length=500, nullable=false)
      */
-    protected $nombreEmpresa;
+    public $nombreEmpresa;
 
     /**
      *
      * @var string
      * @Column(type="string", length=1000, nullable=true)
      */
-    protected $razonSocial;
+    public $razonSocial;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $limiteUsuarios;
+    public $limiteUsuarios;
 
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=false)
      */
-    protected $identificadorEmpresa;
+    public $identificadorEmpresa;
 
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=true)
      */
-    protected $estadoRegistro;
+    public $estadoRegistro;
 
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=false)
      */
-    protected $usuarioInsercion;
+    public $usuarioInsercion;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    protected $fechaInsercion;
+    public $fechaInsercion;
 
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=true)
      */
-    protected $usuarioModificacion;
+    public $usuarioModificacion;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    protected $fechaModificacion;
+    public $fechaModificacion;
 
     /**
      * Method to set the value of field codEmpresa
@@ -317,16 +317,6 @@ class Empresa extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'empresa';
-    }
-
-    /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
@@ -346,6 +336,16 @@ class Empresa extends \Phalcon\Mvc\Model
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'empresa';
     }
 
 }

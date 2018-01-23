@@ -1,6 +1,6 @@
 <?php
 
-class TipoDocumento extends \Phalcon\Mvc\Model
+class ParametrosGenerales extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -10,14 +10,21 @@ class TipoDocumento extends \Phalcon\Mvc\Model
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $codTipoDocumento;
+    public $codParametro;
 
     /**
      *
      * @var string
-     * @Column(type="string", length=100, nullable=false)
+     * @Column(type="string", length=30, nullable=false)
      */
-    public $descripcion;
+    public $identificadorParametro;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=200, nullable=false)
+     */
+    public $valorParametro;
 
     /**
      *
@@ -55,27 +62,54 @@ class TipoDocumento extends \Phalcon\Mvc\Model
     public $fechaModificacion;
 
     /**
-     * Method to set the value of field codTipoDocumento
      *
-     * @param integer $codTipoDocumento
+     * @var string
+     * @Column(type="string", length=1, nullable=false)
+     */
+    public $indicadorFijo;
+
+    /**
+     *
+     * @var integer
+     * @Column(type="integer", length=11, nullable=false)
+     */
+    public $codEmpresa;
+
+    /**
+     * Method to set the value of field codParametro
+     *
+     * @param integer $codParametro
      * @return $this
      */
-    public function setCodTipoDocumento($codTipoDocumento)
+    public function setCodParametro($codParametro)
     {
-        $this->codTipoDocumento = $codTipoDocumento;
+        $this->codParametro = $codParametro;
 
         return $this;
     }
 
     /**
-     * Method to set the value of field descripcion
+     * Method to set the value of field identificadorParametro
      *
-     * @param string $descripcion
+     * @param string $identificadorParametro
      * @return $this
      */
-    public function setDescripcion($descripcion)
+    public function setIdentificadorParametro($identificadorParametro)
     {
-        $this->descripcion = $descripcion;
+        $this->identificadorParametro = $identificadorParametro;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field valorParametro
+     *
+     * @param string $valorParametro
+     * @return $this
+     */
+    public function setValorParametro($valorParametro)
+    {
+        $this->valorParametro = $valorParametro;
 
         return $this;
     }
@@ -146,23 +180,59 @@ class TipoDocumento extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Returns the value of field codTipoDocumento
+     * Method to set the value of field indicadorFijo
      *
-     * @return integer
+     * @param string $indicadorFijo
+     * @return $this
      */
-    public function getCodTipoDocumento()
+    public function setIndicadorFijo($indicadorFijo)
     {
-        return $this->codTipoDocumento;
+        $this->indicadorFijo = $indicadorFijo;
+
+        return $this;
     }
 
     /**
-     * Returns the value of field descripcion
+     * Method to set the value of field codEmpresa
+     *
+     * @param integer $codEmpresa
+     * @return $this
+     */
+    public function setCodEmpresa($codEmpresa)
+    {
+        $this->codEmpresa = $codEmpresa;
+
+        return $this;
+    }
+
+    /**
+     * Returns the value of field codParametro
+     *
+     * @return integer
+     */
+    public function getCodParametro()
+    {
+        return $this->codParametro;
+    }
+
+    /**
+     * Returns the value of field identificadorParametro
      *
      * @return string
      */
-    public function getDescripcion()
+    public function getIdentificadorParametro()
     {
-        return $this->descripcion;
+        return $this->identificadorParametro;
+    }
+
+    /**
+     * Returns the value of field valorParametro
+     *
+     * @return string
+     */
+    public function getValorParametro()
+    {
+        return $this->valorParametro;
     }
 
     /**
@@ -216,20 +286,39 @@ class TipoDocumento extends \Phalcon\Mvc\Model
     }
 
     /**
+     * Returns the value of field indicadorFijo
+     *
+     * @return string
+     */
+    public function getIndicadorFijo()
+    {
+        return $this->indicadorFijo;
+    }
+
+    /**
+     * Returns the value of field codEmpresa
+     *
+     * @return integer
+     */
+    public function getCodEmpresa()
+    {
+        return $this->codEmpresa;
+    }
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
     {
         $this->setSchema("fox_zeus");
-        $this->setSource("tipo_documento");
-        $this->hasMany('codTipoDocumento', 'Persona', 'codTipoDocumento', ['alias' => 'Persona']);
+        $this->setSource("parametros_generales");
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return TipoDocumento[]|TipoDocumento|\Phalcon\Mvc\Model\ResultSetInterface
+     * @return ParametrosGenerales[]|ParametrosGenerales|\Phalcon\Mvc\Model\ResultSetInterface
      */
     public static function find($parameters = null)
     {
@@ -240,7 +329,7 @@ class TipoDocumento extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return TipoDocumento|\Phalcon\Mvc\Model\ResultInterface
+     * @return ParametrosGenerales|\Phalcon\Mvc\Model\ResultInterface
      */
     public static function findFirst($parameters = null)
     {
@@ -254,7 +343,7 @@ class TipoDocumento extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'tipo_documento';
+        return 'parametros_generales';
     }
 
 }

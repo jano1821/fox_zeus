@@ -10,91 +10,91 @@ class Usuario extends \Phalcon\Mvc\Model
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $codUsuario;
+    public $codUsuario;
 
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=false)
      */
-    protected $nombreUsuario;
+    public $nombreUsuario;
 
     /**
      *
      * @var string
      * @Column(type="string", length=200, nullable=false)
      */
-    protected $passwordUsuario;
+    public $passwordUsuario;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $cantidadIntentos;
+    public $cantidadIntentos;
 
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=false)
      */
-    protected $indicadorUsuarioAdministrador;
+    public $indicadorUsuarioAdministrador;
 
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=false)
      */
-    protected $estadoRegistro;
+    public $estadoRegistro;
 
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=false)
      */
-    protected $usuarioInsercion;
+    public $usuarioInsercion;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    protected $fechaInsercion;
+    public $fechaInsercion;
 
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=true)
      */
-    protected $usuarioModificacion;
+    public $usuarioModificacion;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    protected $fechaModificacion;
+    public $fechaModificacion;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $codPersona;
+    public $codPersona;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $codEmpresa;
+    public $codEmpresa;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $codAgencia;
+    public $codAgencia;
 
     /**
      * Method to set the value of field codUsuario
@@ -407,16 +407,6 @@ class Usuario extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'usuario';
-    }
-
-    /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
@@ -436,6 +426,16 @@ class Usuario extends \Phalcon\Mvc\Model
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'usuario';
     }
 
 }

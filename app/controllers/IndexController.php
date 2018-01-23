@@ -9,22 +9,22 @@ class IndexController extends ControllerBase {
     }
 
     private function _registerSession($usuario) {
-        /* $parametrosGenerales = parent::obtenerParametros('TIME_OUT_SESSION');
+        $parametrosGenerales = parent::obtenerParametros('TIME_OUT_SESSION');
 
-          $this->session->set('Usuario',
-          array(  'codUsuario'    => $usuario->codUsuario,
-          'nombreUsuario' => $usuario->nombreUsuario,
-          'codEmpresa'    => $usuario->codEmpresa,
-          'nombresPersona'=> $usuario->nombresPersona,
-          'nombreEmpresa' => $usuario->nombreEmpresa,
-          'tiempoSesion' => $parametrosGenerales,
-          'ultimoAcceso' => date("Y-n-j H:i:s"),
-          'indicadorUsuarioAdministrador' => $usuario->indicadorUsuarioAdministrador)); */
+        $this->session->set('Usuario',
+                            array('codUsuario' => $usuario->codUsuario,
+                        'nombreUsuario' => $usuario->nombreUsuario,
+                        'codEmpresa' => $usuario->codEmpresa,
+                        'nombresPersona' => $usuario->nombresPersona,
+                        'nombreEmpresa' => $usuario->nombreEmpresa,
+                        'tiempoSesion' => $parametrosGenerales,
+                        'ultimoAcceso' => date("Y-n-j H:i:s"),
+                        'indicadorUsuarioAdministrador' => $usuario->indicadorUsuarioAdministrador));
     }
 
     public function indexAction() {
         $form = new FormLogin();
-        
+
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost()) == false) {
                 foreach ($form->getMessages() as $message) {
@@ -38,7 +38,7 @@ class IndexController extends ControllerBase {
                 $usuario = $this->modelsManager->createBuilder()
                                         ->columns("us.codUsuario," .
                                                                 "us.codEmpresa," .
-                                                                "pu.nombrePersona," .
+                                                                "pe.nombrePersona," .
                                                                 "em.nombreEmpresa," .
                                                                 "us.nombreUsuario," .
                                                                 "us.passwordUsuario," .
@@ -49,9 +49,12 @@ class IndexController extends ControllerBase {
                                         ->innerJoin('Empresa',
                                                     'em.codEmpresa = us.codEmpresa',
                                                     'em')
-                                        ->innerJoin('PersonaUsuario',
-                                                    'pu.codPersonaUsuario = us.codPersonaUsuario',
+                                        ->innerJoin('Empleado',
+                                                    'pu.codPersona = us.codPersona',
                                                     'pu')
+                                        ->innerJoin('Persona',
+                                                    'pu.codPersona = pe.codPersona',
+                                                    'pe')
                                         ->andWhere('us.nombreUsuario = :nombreUsuario: AND '.
                                                    'em.identificadorEmpresa = :identificadorEmpresa: AND '.
                                                    'us.estadoRegistro = :estadoRegistro: ',
@@ -68,7 +71,7 @@ class IndexController extends ControllerBase {
                     if ($this->security->checkHash($password,
                                                    $usuario[0]->passwordUsuario)) {
                         $this->_registerSession($usuario[0]);
-                        
+
                         return $this->response->redirect('menu');
                     }else {
                         $this->flash->error("Usuario o Password Incorrecto");
@@ -78,10 +81,10 @@ class IndexController extends ControllerBase {
                 }
             }
         }
-        
+
         $this->view->form = new FormLogin();
     }
-    
+
     public function logoutAction() {
         $this->session->destroy();
         $this->response->redirect('index');

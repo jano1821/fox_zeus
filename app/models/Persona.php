@@ -10,112 +10,112 @@ class Persona extends \Phalcon\Mvc\Model
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $codPersona;
+    public $codPersona;
 
     /**
      *
      * @var string
      * @Column(type="string", length=250, nullable=false)
      */
-    protected $nombrePersona;
+    public $nombrePersona;
 
     /**
      *
      * @var string
      * @Column(type="string", length=200, nullable=false)
      */
-    protected $apePat;
+    public $apePat;
 
     /**
      *
      * @var string
      * @Column(type="string", length=200, nullable=false)
      */
-    protected $apeMat;
+    public $apeMat;
 
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=true)
      */
-    protected $sexo;
+    public $sexo;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    protected $edad;
+    public $edad;
 
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=false)
      */
-    protected $numeroDocumento;
+    public $numeroDocumento;
 
     /**
      *
      * @var string
      * @Column(type="string", length=250, nullable=true)
      */
-    protected $razonSocial;
+    public $razonSocial;
 
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=true)
      */
-    protected $estadoRegistro;
+    public $estadoRegistro;
 
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=false)
      */
-    protected $usuarioInsercion;
+    public $usuarioInsercion;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    protected $fechaInsercion;
+    public $fechaInsercion;
 
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=true)
      */
-    protected $usuarioModificacion;
+    public $usuarioModificacion;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    protected $fechaModificacion;
+    public $fechaModificacion;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
-    protected $codTipoDocumento;
+    public $codTipoDocumento;
 
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=false)
      */
-    protected $tipoPersona;
+    public $tipoPersona;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $codEmpresa;
+    public $codEmpresa;
 
     /**
      * Method to set the value of field codPersona
@@ -501,16 +501,6 @@ class Persona extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'persona';
-    }
-
-    /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
@@ -530,6 +520,16 @@ class Persona extends \Phalcon\Mvc\Model
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'persona';
     }
 
 }

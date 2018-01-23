@@ -10,56 +10,56 @@ class Agencia extends \Phalcon\Mvc\Model
      * @Identity
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $codAgencia;
+    public $codAgencia;
 
     /**
      *
      * @var string
      * @Column(type="string", length=100, nullable=false)
      */
-    protected $descripcion;
+    public $descripcion;
 
     /**
      *
      * @var string
      * @Column(type="string", length=1, nullable=false)
      */
-    protected $estadoRegistro;
+    public $estadoRegistro;
 
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=false)
      */
-    protected $usuarioInsercion;
+    public $usuarioInsercion;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    protected $fechaInsercion;
+    public $fechaInsercion;
 
     /**
      *
      * @var string
      * @Column(type="string", length=30, nullable=true)
      */
-    protected $usuarioModificacion;
+    public $usuarioModificacion;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=true)
      */
-    protected $fechaModificacion;
+    public $fechaModificacion;
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    protected $codEmpresa;
+    public $codEmpresa;
 
     /**
      * Method to set the value of field codAgencia
@@ -256,16 +256,6 @@ class Agencia extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'agencia';
-    }
-
-    /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
@@ -285,6 +275,16 @@ class Agencia extends \Phalcon\Mvc\Model
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'agencia';
     }
 
 }
