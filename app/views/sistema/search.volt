@@ -3,43 +3,40 @@
 <div class="panel panel-info">
 <div class="panel-heading">
 <div class="btn-group pull-right">
-        {{ link_to("usuario", "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
-{{ link_to("usuario/new", "<i class='glyphicon glyphicon-plus'></i> Nuevo Usuario","class":"btn btn-info") }}
-
-</div>
+{{ link_to("sistema", "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
+{{ link_to("sistema/new", "<i class='glyphicon glyphicon-plus'></i> Nuevo Sistema","class":"btn btn-info") }}
+       </div>
 <h4><i class='glyphicon glyphicon-search'></i> Resultado de Busqueda</h4>
 </div>
 
 <div class="page-header">
 </div>
-
 {{ content() }}
-
-{{ form("usuario/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+{{ form("sistema/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
 <div class="table-responsive">
 <table class="table">
 <tr  class="info">
-            <th>CodEmpresa</th>
-            <th>NombreUsuario</th>
-            <th>CantidadIntentos</th>
-            <th>IndicadorUsuarioAdministrador</th>
-            <th>EstadoRegistro</th>
+            <th>Etiqueta</th>
+            <th>Url</th>
+            <th>Icono</th>
+            <th>Indicador Administrador</th>
+            <th>Estado de Registro</th>
+
                 <th class='text-center'></th>
             <th class='text-center'></th>
             </tr>
         <tbody>
         {% if page.items is defined %}
-        {% for usuario in page.items %}
+        {% for sistema in page.items %}
             <tr>
-            <td>{{ usuario.nombreEmpresa }}</td>
-            <td>{{ usuario.nombreUsuario }}</td>
-            <td>{{ usuario.cantidadIntentos }}</td>
-            <td>{{ usuario.indicadorUsuarioAdministrador }}</td>
-            <td>{{ usuario.estado }}</td>
+            <td>{{ sistema.etiquetaSistema }}</td>
+            <td>{{ sistema.urlSistema }}</td>
+            <td>{{ sistema.urlIcono }}</td>
+            <td>{{ sistema.indicadorAdministrador }}</td>
+            <td>{{ sistema.estado }}</td>
 
-<td>{{ link_to("usuario/edit/"~usuario.codUsuario, "Editar") }}</td>
-                <td>{{ link_to("usuario/delete/"~usuario.codUsuario, "Borrar") }}</td>
-
+                <td>{{ link_to("sistema/edit/"~sistema.codSistema, "Editar") }}</td>
+                <td>{{ link_to("sistema/delete/"~sistema.codSistema, "Borrar") }}</td>
             </tr>
         {% endfor %}
         {% endif %}
