@@ -1,82 +1,148 @@
 <div class="row">
-    <nav>
-        <ul class="pager">
-            <li class="previous">{{ link_to("menu_sistema", "Go Back") }}</li>
-        </ul>
-    </nav>
+<div class="container">
+<div class="panel panel-info">
+<div class="panel-heading">
+<div class="btn-group pull-right">
+{{ link_to("menu_sistema", "<i class='glyphicon glyphicon-chevron-left'></i> Volver a Búsqueda","class":"btn btn-info") }}
+        </div>
+<h4><i class='glyphicon glyphicon-record'></i>Nuevo Vinculo Menu Sistema</h4>
 </div>
 
 <div class="page-header">
-    <h1>
-        Create menu_sistema
-    </h1>
 </div>
 
 {{ content() }}
-
+{{ partial("ajax/findMenu") }}
+{{ partial("ajax/findSistema") }}
+{{ partial("ajax/findUsuario") }}
 {{ form("menu_sistema/create", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
 
+<div class="table">
+
 <div class="form-group">
-    <label for="fieldCodmenu" class="col-sm-2 control-label">CodMenu</label>
-    <div class="col-sm-10">
-        {{ text_field("codMenu", "type" : "numeric", "class" : "form-control", "id" : "fieldCodmenu") }}
-    </div>
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldCodmenu" class="col-sm-2 control-label">Menu</label>
+</div>
+    <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-5">
+                            {{ form.render('nombreMenu') }}
+                            {{ form.render('codMenu') }}
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalMenu" id="listaMenu">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldCodsistema" class="col-sm-2 control-label">CodSistema</label>
-    <div class="col-sm-10">
-        {{ text_field("codSistema", "type" : "numeric", "class" : "form-control", "id" : "fieldCodsistema") }}
-    </div>
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldCodsistema" class="col-sm-2 control-label">Sistema</label>
+</div>
+    <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-5">
+                            {{ form.render('nombreSistema') }}
+                            {{ form.render('codSistema') }}
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalSistema" id="listaSistemas">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldCodusuario" class="col-sm-2 control-label">CodUsuario</label>
-    <div class="col-sm-10">
-        {{ text_field("codUsuario", "type" : "numeric", "class" : "form-control", "id" : "fieldCodusuario") }}
-    </div>
+<div class="col-md-3">
+</div>
+<div class="col-md-2">
+    <label for="fieldCodusuario" class="col-sm-2 control-label">Usuario</label>
+</div>
+    <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-5">
+                            {{ form.render('nombreUsuario') }}
+                            {{ form.render('codUsuario') }}
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" id="listaUsuarios">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldEstadoregistro" class="col-sm-2 control-label">EstadoRegistro</label>
-    <div class="col-sm-10">
-        {{ text_field("estadoRegistro", "size" : 30, "class" : "form-control", "id" : "fieldEstadoregistro") }}
-    </div>
+<div class="col-md-3">
 </div>
-
-<div class="form-group">
-    <label for="fieldUsuarioinsercion" class="col-sm-2 control-label">UsuarioInsercion</label>
-    <div class="col-sm-10">
-        {{ text_field("usuarioInsercion", "size" : 30, "class" : "form-control", "id" : "fieldUsuarioinsercion") }}
-    </div>
+<div class="col-md-2">
 </div>
-
-<div class="form-group">
-    <label for="fieldFechainsercion" class="col-sm-2 control-label">FechaInsercion</label>
-    <div class="col-sm-10">
-        {{ text_field("fechaInsercion", "size" : 30, "class" : "form-control", "id" : "fieldFechainsercion") }}
-    </div>
+<div class="col-md-2">
+{{ form.render('save') }}
+{{ form.render('csrf', ['value': security.getToken()]) }}
 </div>
-
-<div class="form-group">
-    <label for="fieldUsuariomodificacion" class="col-sm-2 control-label">UsuarioModificacion</label>
-    <div class="col-sm-10">
-        {{ text_field("usuarioModificacion", "size" : 30, "class" : "form-control", "id" : "fieldUsuariomodificacion") }}
-    </div>
 </div>
-
-<div class="form-group">
-    <label for="fieldFechamodificacion" class="col-sm-2 control-label">FechaModificacion</label>
-    <div class="col-sm-10">
-        {{ text_field("fechaModificacion", "size" : 30, "class" : "form-control", "id" : "fieldFechamodificacion") }}
-    </div>
 </div>
-
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        {{ submit_button('Save', 'class': 'btn btn-default') }}
-    </div>
-</div>
-
 </form>
+</div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#listaMenu').on("click",function(e){
+            e.preventDefault();
+            var params = "busquedaMenu="+document.getElementById("labelBusquedaMenu").value;
+            $("#contentMenu").html("Cargando Contenido.......");
+            $.post("{{ url('menu_sistema/ajaxPostMenu') }}", 
+                    params, 
+                    function(data) {
+                        $("#contentMenu").html(data.res.codigo);
+                    }).fail(function() {
+                        $("#contentMenu").html("No hay Resultados");
+                    })
+        });
+    });
+
+    $(document).ready(function() {
+        $('#listaUsuarios').on("click",function(e){
+            e.preventDefault();
+            var params = "busquedaUsuario="+document.getElementById("labelBusquedaUsuario").value;
+            $("#content").html("Cargando Contenido.......");
+            $.post("{{ url('menu_sistema/ajaxPostUsuario') }}", 
+                    params, 
+                    function(data) {
+                        $("#content").html(data.res.codigo);
+                    }).fail(function() {
+                        $("#content").html("No hay Resultados");
+                    })
+        });
+    });
+
+    $(document).ready(function(){
+        $("#listaSistemas").click(function(e){
+            e.preventDefault();
+            var params = "busquedaSistema="+document.getElementById("labelBusquedaSistema").value;
+            $("#contentSistema").html("Cargando Contenido.......");
+            $.post("{{ url('menu_sistema/ajaxPostSistema') }}", 
+                    params, 
+                    function(data) {
+                        $("#contentSistema").html(data.res.codigo);
+                    }).fail(function() {
+                        $("#contentSistema").html("No hay Resultados");
+                    })
+        });
+    });
+
+    
+</script>

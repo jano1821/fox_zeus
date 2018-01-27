@@ -5,6 +5,7 @@
                 <div class="btn-group pull-right">
                     {{ link_to("menu", "<i class='glyphicon glyphicon-chevron-left'></i> Volver al Menu","class":"btn btn-info") }}
                     {{ link_to("usuario/new", "<i class='glyphicon glyphicon-user'></i> Nuevo Usuario","class":"btn btn-info") }}
+                    {{ link_to("menu_sistema", "<i class='glyphicon glyphicon-ice-lolly'></i> Vincular Sistema","class":"btn btn-info") }}
                 </div>
                 <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Usuarios</h4>
             </div>

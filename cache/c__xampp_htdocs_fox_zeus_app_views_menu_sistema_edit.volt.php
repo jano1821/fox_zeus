@@ -3,16 +3,16 @@
 <div class="panel panel-info">
 <div class="panel-heading">
 <div class="btn-group pull-right">
-        {{ link_to("menu_sistema", "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
+        <?= $this->tag->linkTo(['menu_sistema', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
             </div>
 <h4><i class='glyphicon glyphicon-edit'></i> Editar Vinculo Menu Sistema</h4>
 </div>
 <div class="page-header">
 </div>
 
-{{ content() }}
+<?= $this->getContent() ?>
 
-{{ form("menu_sistema/save", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+<?= $this->tag->form(['menu_sistema/save', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
 <div class="table">
 
@@ -25,8 +25,8 @@
                     <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-5">
-                            {{ form.render('nombreMenu') }}
-                            {{ form.render('codMenu') }}
+                            <?= $form->render('nombreMenu') ?>
+                            <?= $form->render('codMenu') ?>
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalMenu" id="listaMenu">
@@ -46,8 +46,8 @@
 <div class="col-md-6">
         <div class="row">
             <div class="col-md-5">
-                {{ form.render('nombreSistema') }}
-                {{ form.render('codSistema') }}
+                <?= $form->render('nombreSistema') ?>
+                <?= $form->render('codSistema') ?>
             </div>
             <div class="col-md-2">
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalSistema" id="listaSistemas">
@@ -67,8 +67,8 @@
     <div class="col-md-6">
         <div class="row">
             <div class="col-md-5">
-                {{ form.render('nombreUsuario') }}
-                {{ form.render('codUsuario') }}
+                <?= $form->render('nombreUsuario') ?>
+                <?= $form->render('codUsuario') ?>
             </div>
             <div class="col-md-2">
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" id="listaUsuarios">
@@ -86,7 +86,7 @@
         <label for="fieldEstadoregistro">Estado Registro</label>
     </div>
     <div class="col-md-3">
-        {{ form.render('estadoRegistro',['class' : 'form-control']) }}
+        <?= $form->render('estadoRegistro', ['class' => 'form-control']) ?>
     </div>
 </div>
 
@@ -99,9 +99,9 @@
                     <div class="col-md-2">
                     </div>
                     <div class="col-md-2">
-                        {{ link_to("menu_sistema/reset", "Limpiar","class":"btn btn-default") }}   
-                        {{ form.render('save') }}
-                        {{ form.render('csrf', ['value': security.getToken()]) }}
+                        <?= $this->tag->linkTo(['menu_sistema/reset', 'Limpiar', 'class' => 'btn btn-default']) ?>   
+                        <?= $form->render('save') ?>
+                        <?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
                     </div>
                 </div>
             </div>
@@ -121,7 +121,7 @@
             e.preventDefault();
             var params = "busquedaMenu="+document.getElementById("labelBusquedaMenu").value;
             $("#contentMenu").html("Cargando Contenido.......");
-            $.post("{{ url('menu_sistema/ajaxPostMenu') }}", 
+            $.post("<?= $this->url->get('menu_sistema/ajaxPostMenu') ?>", 
                     params, 
                     function(data) {
                         $("#contentMenu").html(data.res.codigo);
@@ -136,7 +136,7 @@
             e.preventDefault();
             var params = "busquedaUsuario="+document.getElementById("labelBusquedaUsuario").value;
             $("#content").html("Cargando Contenido.......");
-            $.post("{{ url('menu_sistema/ajaxPostUsuario') }}", 
+            $.post("<?= $this->url->get('menu_sistema/ajaxPostUsuario') ?>", 
                     params, 
                     function(data) {
                         $("#content").html(data.res.codigo);
@@ -151,7 +151,7 @@
             e.preventDefault();
             var params = "busquedaSistema="+document.getElementById("labelBusquedaSistema").value;
             $("#contentSistema").html("Cargando Contenido.......");
-            $.post("{{ url('menu_sistema/ajaxPostSistema') }}", 
+            $.post("<?= $this->url->get('menu_sistema/ajaxPostSistema') ?>", 
                     params, 
                     function(data) {
                         $("#contentSistema").html(data.res.codigo);

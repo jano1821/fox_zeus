@@ -22,7 +22,7 @@
             <div class="main clearfix">
                 <?php if (isset($menu)) { ?>
                     <?php foreach ($menu as $items) { ?>
-                        <nav id=<?php $items->id ?> class="nav">
+                        <nav id=<?= $items->id ?> class="nav">
                             <ul>
                                 <?php if (isset($menuSistema)) { ?>
                                     <?php foreach ($menuSistema as $sistema) { ?>

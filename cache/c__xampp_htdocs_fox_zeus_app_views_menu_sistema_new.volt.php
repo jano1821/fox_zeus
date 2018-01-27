@@ -1,36 +1,35 @@
 <div class="row">
-    <div class="container">
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <div class="btn-group pull-right">
-{{ link_to("menu", "<i class='glyphicon glyphicon-chevron-left'></i> Volver al Menu","class":"btn btn-info") }}
-{{ link_to("usuario", "<i class='glyphicon glyphicon-chevron-left'></i> Volver Busqueda de Usuario","class":"btn btn-info") }}
-    {{ link_to("menu_sistema/new", "<i class='glyphicon glyphicon-plus'></i> Nuevo Vinculo","class":"btn btn-info") }}
-                </div>
-                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Vinculos Menu Sistemas</h4>
-            </div>
-            <div class="page-header">
+<div class="container">
+<div class="panel panel-info">
+<div class="panel-heading">
+<div class="btn-group pull-right">
+<?= $this->tag->linkTo(['menu_sistema', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver a Búsqueda', 'class' => 'btn btn-info']) ?>
         </div>
+<h4><i class='glyphicon glyphicon-record'></i>Nuevo Vinculo Menu Sistema</h4>
+</div>
 
-{{ content() }}
-{{ partial("ajax/findMenu") }}
-{{ partial("ajax/findSistema") }}
-{{ partial("ajax/findUsuario") }}
-{{ form("menu_sistema/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+<div class="page-header">
+</div>
+
+<?= $this->getContent() ?>
+<?= $this->partial('ajax/findMenu') ?>
+<?= $this->partial('ajax/findSistema') ?>
+<?= $this->partial('ajax/findUsuario') ?>
+<?= $this->tag->form(['menu_sistema/create', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
 <div class="table">
 
 <div class="form-group">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-2">
-    <label for="fieldCodmenu">Menu</label>
+<div class="col-md-3">
 </div>
-                    <div class="col-md-6">
+<div class="col-md-2">
+    <label for="fieldCodmenu" class="col-sm-2 control-label">Menu</label>
+</div>
+    <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-5">
-                            {{ form.render('nombreMenu') }}
-                            {{ form.render('codMenu') }}
+                            <?= $form->render('nombreMenu') ?>
+                            <?= $form->render('codMenu') ?>
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalMenu" id="listaMenu">
@@ -42,16 +41,16 @@
 </div>
 
 <div class="form-group">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-2">
-    <label for="fieldCodsistema">Sistema</label>
+<div class="col-md-3">
 </div>
-                    <div class="col-md-6">
+<div class="col-md-2">
+    <label for="fieldCodsistema" class="col-sm-2 control-label">Sistema</label>
+</div>
+    <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-5">
-                            {{ form.render('nombreSistema') }}
-                            {{ form.render('codSistema') }}
+                            <?= $form->render('nombreSistema') ?>
+                            <?= $form->render('codSistema') ?>
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalSistema" id="listaSistemas">
@@ -63,16 +62,16 @@
 </div>
 
 <div class="form-group">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-2">
-    <label for="fieldCodusuario">Usuario</label>
+<div class="col-md-3">
 </div>
-                    <div class="col-md-6">
+<div class="col-md-2">
+    <label for="fieldCodusuario" class="col-sm-2 control-label">Usuario</label>
+</div>
+    <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-5">
-                            {{ form.render('nombreUsuario') }}
-                            {{ form.render('codUsuario') }}
+                            <?= $form->render('nombreUsuario') ?>
+                            <?= $form->render('codUsuario') ?>
                         </div>
                         <div class="col-md-2">
                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" id="listaUsuarios">
@@ -84,31 +83,20 @@
 </div>
 
 <div class="form-group">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-2">
-    <label for="fieldEstadoregistro">EstadoRegistro</label>
+<div class="col-md-3">
 </div>
-                    <div class="col-md-3">
-{{ form.render('estadoRegistro',['class' : 'form-control']) }}
-    </div>
+<div class="col-md-2">
+</div>
+<div class="col-md-2">
+<?= $form->render('save') ?>
+<?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
+</div>
+</div>
+</div>
+</form>
+</div>
 </div>
 
-<div class="form-group">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-2">
-                    </div>
-                    <div class="col-md-2">
-                        {{ link_to("menu_sistema/reset", "Limpiar","class":"btn btn-default") }}   
-                        {{ form.render('buscar') }}
-                        {{ form.render('csrf', ['value': security.getToken()]) }}
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -116,7 +104,7 @@
             e.preventDefault();
             var params = "busquedaMenu="+document.getElementById("labelBusquedaMenu").value;
             $("#contentMenu").html("Cargando Contenido.......");
-            $.post("{{ url('menu_sistema/ajaxPostMenu') }}", 
+            $.post("<?= $this->url->get('menu_sistema/ajaxPostMenu') ?>", 
                     params, 
                     function(data) {
                         $("#contentMenu").html(data.res.codigo);
@@ -131,7 +119,7 @@
             e.preventDefault();
             var params = "busquedaUsuario="+document.getElementById("labelBusquedaUsuario").value;
             $("#content").html("Cargando Contenido.......");
-            $.post("{{ url('menu_sistema/ajaxPostUsuario') }}", 
+            $.post("<?= $this->url->get('menu_sistema/ajaxPostUsuario') ?>", 
                     params, 
                     function(data) {
                         $("#content").html(data.res.codigo);
@@ -146,7 +134,7 @@
             e.preventDefault();
             var params = "busquedaSistema="+document.getElementById("labelBusquedaSistema").value;
             $("#contentSistema").html("Cargando Contenido.......");
-            $.post("{{ url('menu_sistema/ajaxPostSistema') }}", 
+            $.post("<?= $this->url->get('menu_sistema/ajaxPostSistema') ?>", 
                     params, 
                     function(data) {
                         $("#contentSistema").html(data.res.codigo);
