@@ -3,7 +3,7 @@
 <div class="panel panel-info">
 <div class="panel-heading">
 <div class="btn-group pull-right">
-{{ link_to("empresa", "<i class='glyphicon glyphicon-chevron-left'></i> Volver a Búsqueda","class":"btn btn-info") }}
+<?= $this->tag->linkTo(['empresa', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver a Búsqueda', 'class' => 'btn btn-info']) ?>
         </div>
 <h4><i class='glyphicon glyphicon-record'></i>Nueva Empresa</h4>
 </div>
@@ -11,9 +11,9 @@
 <div class="page-header">
 </div>
 
-{{ content() }}
+<?= $this->getContent() ?>
 
-{{ form("empresa/create", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+<?= $this->tag->form(['empresa/create', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
 <div class="table">
 
@@ -24,7 +24,7 @@
     <label for="fieldNombreempresa">NombreEmpresa</label>
 </div>
     <div class="col-md-3">
-{{ form.render('nombreEmpresa') }}
+<?= $form->render('nombreEmpresa') ?>
     </div>
 </div>
 
@@ -35,7 +35,7 @@
     <label for="fieldRazonsocial">RazonSocial</label>
 </div>
     <div class="col-md-3">
-{{ form.render('razonSocial') }}
+<?= $form->render('razonSocial') ?>
     </div>
 </div>
 
@@ -46,7 +46,7 @@
     <label for="fieldLimiteusuarios">LimiteUsuarios</label>
 </div>
     <div class="col-md-3">
-{{ form.render('limiteUsuarios') }}
+<?= $form->render('limiteUsuarios') ?>
     </div>
 </div>
 
@@ -57,7 +57,7 @@
     <label for="fieldIdentificadorempresa">IdentificadorEmpresa</label>
 </div>
     <div class="col-md-3">
-{{ form.render('identificadorEmpresa') }}
+<?= $form->render('identificadorEmpresa') ?>
     </div>
 </div>
 
@@ -67,8 +67,8 @@
 <div class="col-md-2">
 </div>
 <div class="col-md-2">
-{{ form.render('save') }}
-{{ form.render('csrf', ['value': security.getToken()]) }}
+<?= $form->render('save') ?>
+<?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
 </div>
 </div>
 </div>

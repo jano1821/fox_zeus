@@ -3,16 +3,16 @@
 <div class="panel panel-info">
 <div class="panel-heading">
 <div class="btn-group pull-right">
-        {{ link_to("empresa", "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
+        <?= $this->tag->linkTo(['empresa', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
             </div>
 <h4><i class='glyphicon glyphicon-edit'></i> Editar Empresa</h4>
 </div>
 <div class="page-header">
 </div>
 
-{{ content() }}
+<?= $this->getContent() ?>
 
-{{ form("empresa/save", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+<?= $this->tag->form(['empresa/save', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
 <div class="table">
 
@@ -23,7 +23,7 @@
     <label for="fieldNombreempresa" class="col-sm-2 control-label">NombreEmpresa</label>
 </div>
     <div class="col-md-3">
-{{ form.render('nombreEmpresa') }}
+<?= $form->render('nombreEmpresa') ?>
     </div>
 </div>
 
@@ -34,7 +34,7 @@
     <label for="fieldRazonsocial" class="col-sm-2 control-label">RazonSocial</label>
 </div>
     <div class="col-md-3">
-{{ form.render('razonSocial') }}
+<?= $form->render('razonSocial') ?>
     </div>
 </div>
 
@@ -45,7 +45,7 @@
     <label for="fieldLimiteusuarios" class="col-sm-2 control-label">LimiteUsuarios</label>
 </div>
     <div class="col-md-3">
-{{ form.render('limiteUsuarios') }}
+<?= $form->render('limiteUsuarios') ?>
     </div>
 </div>
 
@@ -56,7 +56,7 @@
     <label for="fieldIdentificadorempresa" class="col-sm-2 control-label">IdentificadorEmpresa</label>
 </div>
     <div class="col-md-3">
-{{ form.render('identificadorEmpresa') }}
+<?= $form->render('identificadorEmpresa') ?>
     </div>
 </div>
 
@@ -67,11 +67,11 @@
     <label for="fieldEstadoregistro" class="col-sm-2 control-label">EstadoRegistro</label>
 </div>
     <div class="col-md-3">
-{{ form.render('estadoRegistro',['class' : 'form-control']) }}
+<?= $form->render('estadoRegistro', ['class' => 'form-control']) ?>
     </div>
 </div>
 
-{{ hidden_field("codEmpresa") }}
+<?= $this->tag->hiddenField(['codEmpresa']) ?>
 
 <div class="form-group">
 <div class="col-md-3">
@@ -79,8 +79,8 @@
 <div class="col-md-2">
 </div>
 <div class="col-md-2">
-        {{ form.render('save') }}
-{{ form.render('csrf', ['value': security.getToken()]) }}
+        <?= $form->render('save') ?>
+<?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
     </div>
 </div>
 </div>

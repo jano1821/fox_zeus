@@ -3,16 +3,16 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="btn-group pull-right">
-{{ link_to("menu", "<i class='glyphicon glyphicon-chevron-left'></i> Volver al Menu","class":"btn btn-info") }}
-{{ link_to("empresa/new", "<i class='glyphicon glyphicon-plus'></i> Nueva Empresa","class":"btn btn-info") }}
+<?= $this->tag->linkTo(['menu', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver al Menu', 'class' => 'btn btn-info']) ?>
+<?= $this->tag->linkTo(['empresa/new', '<i class=\'glyphicon glyphicon-plus\'></i> Nueva Empresa', 'class' => 'btn btn-info']) ?>
                 </div>
                 <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Empresas</h4>
             </div>
             <div class="page-header">
         </div>
-{{ content() }}
+<?= $this->getContent() ?>
 
-{{ form("empresa/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+<?= $this->tag->form(['empresa/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
 
 <div class="table">
@@ -24,7 +24,7 @@
     <label for="fieldNombreempresa" >NombreEmpresa</label>
 </div>
                     <div class="col-md-3">
-{{ form.render('nombreEmpresa') }}
+<?= $form->render('nombreEmpresa') ?>
     </div>
 </div>
 
@@ -35,7 +35,7 @@
     <label for="fieldRazonsocial">RazonSocial</label>
 </div>
                     <div class="col-md-3">
-{{ form.render('razonSocial') }}
+<?= $form->render('razonSocial') ?>
     </div>
 </div>
 
@@ -46,7 +46,7 @@
     <label for="fieldLimiteusuarios">LimiteUsuarios</label>
 </div>
                     <div class="col-md-3">
-{{ form.render('limiteUsuarios') }}
+<?= $form->render('limiteUsuarios') ?>
     </div>
 </div>
 
@@ -57,7 +57,7 @@
     <label for="fieldIdentificadorempresa">IdentificadorEmpresa</label>
 </div>
                     <div class="col-md-3">
-        {{ form.render('identificadorEmpresa') }}
+        <?= $form->render('identificadorEmpresa') ?>
     </div>
 </div>
 
@@ -68,7 +68,7 @@
     <label for="fieldEstadoregistro">EstadoRegistro</label>
 </div>
                     <div class="col-md-3">
-        {{ form.render('estadoRegistro',['class' : 'form-control']) }}
+        <?= $form->render('estadoRegistro', ['class' => 'form-control']) ?>
     </div>
 </div>
 
@@ -78,9 +78,9 @@
                     <div class="col-md-2">
                     </div>
                     <div class="col-md-2">
-                        {{ link_to("empresa/reset", "Limpiar","class":"btn btn-default") }}   
-                        {{ form.render('buscar') }}
-                        {{ form.render('csrf', ['value': security.getToken()]) }}
+                        <?= $this->tag->linkTo(['empresa/reset', 'Limpiar', 'class' => 'btn btn-default']) ?>   
+                        <?= $form->render('buscar') ?>
+                        <?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
                     </div>
                 </div>
             </div>

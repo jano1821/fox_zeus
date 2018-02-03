@@ -99,7 +99,6 @@
                     <div class="col-md-2">
                     </div>
                     <div class="col-md-2">
-                        {{ link_to("menu_sistema/reset", "Limpiar","class":"btn btn-default") }}   
                         {{ form.render('save') }}
                         {{ form.render('csrf', ['value': security.getToken()]) }}
                     </div>
