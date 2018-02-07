@@ -3,17 +3,17 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="btn-group pull-right">
-                    {{ link_to("persona", "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
-                    {{ link_to("persona", "<i class='glyphicon glyphicon-sunglasses'></i> Definir Tipo de Persona","class":"btn btn-info") }}
+<?= $this->tag->linkTo(['menu', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver al Menu', 'class' => 'btn btn-info']) ?>
+    <?= $this->tag->linkTo(['persona/new', '<i class=\'glyphicon glyphicon-plus\'></i> Nueva Persona', 'class' => 'btn btn-info']) ?>
                 </div>
-                <h4><i class='glyphicon glyphicon-search'></i> Editar Persona</h4>
+                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Personas</h4>
             </div>
             <div class="page-header">
         </div>
 
-{{ content() }}
+<?= $this->getContent() ?>
 
-{{ form("persona/save", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+<?= $this->tag->form(['persona/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
 <div class="table">
 
@@ -24,7 +24,7 @@
     <label for="fieldNombrepersona">Nombre de Persona</label>
 </div>
                     <div class="col-md-3">
-{{ form.render('nombrePersona') }}
+<?= $form->render('nombrePersona') ?>
     </div>
 </div>
 
@@ -35,7 +35,7 @@
     <label for="fieldApepat" >Apellido Paterno</label>
 </div>
                     <div class="col-md-3">
-        {{ form.render('apePat') }}
+        <?= $form->render('apePat') ?>
     </div>
 </div>
 
@@ -46,7 +46,7 @@
     <label for="fieldApemat">Apellido Materno</label>
 </div>
                     <div class="col-md-3">
-{{ form.render('apeMat') }}
+<?= $form->render('apeMat') ?>
     </div>
 </div>
 
@@ -57,7 +57,7 @@
     <label for="fieldSexo" >Sexo</label>
 </div>
                     <div class="col-md-3">
-{{ form.render('sexo',['class' : 'form-control']) }}
+<?= $form->render('sexo', ['class' => 'form-control']) ?>
     </div>
 </div>
 
@@ -68,7 +68,7 @@
     <label for="fieldEdad">Edad</label>
 </div>
                     <div class="col-md-3">
-{{ form.render('edad') }}
+<?= $form->render('edad') ?>
     </div>
 </div>
 
@@ -79,9 +79,9 @@
     <label for="fieldCodtipodocumento">Tipo de Documento</label>
 </div>
                     <div class="col-md-3">
-{% if tipoDocumento is defined %}
-{{ select("codTipoDocumento", tipoDocumento,'useEmpty': true, 'emptyText': 'Seleccione Tipo Documento...', 'emptyValue': '', 'using': ['codTipoDocumento', 'descripcion'], "class" : "form-control") }}
-{% endif %}
+<?php if (isset($tipoDocumento)) { ?>
+<?= $this->tag->select(['codTipoDocumento', $tipoDocumento, 'useEmpty' => true, 'emptyText' => 'Seleccione Tipo Documento...', 'emptyValue' => '', 'using' => ['codTipoDocumento', 'descripcion'], 'class' => 'form-control']) ?>
+<?php } ?>
     </div>
 </div>
 
@@ -92,7 +92,7 @@
     <label for="fieldNumerodocumento" >Numero de Documento</label>
 </div>
                     <div class="col-md-3">
-{{ form.render('numeroDocumento') }}
+<?= $form->render('numeroDocumento') ?>
     </div>
 </div>
 
@@ -103,7 +103,7 @@
     <label for="fieldRazonsocial">Razon Social</label>
 </div>
                     <div class="col-md-3">
-    {{ form.render('razonSocial') }}
+    <?= $form->render('razonSocial') ?>
     </div>
 </div>
 
@@ -114,7 +114,7 @@
     <label for="fieldTipopersona">Tipo de Persona</label>
 </div>
                     <div class="col-md-3">
-{{ form.render('tipoPersona',['class' : 'form-control']) }}
+<?= $form->render('tipoPersona', ['class' => 'form-control']) ?>
     </div>
 </div>
 
@@ -125,11 +125,9 @@
     <label for="fieldEstadoregistro" >Estado de Registro</label>
 </div>
                     <div class="col-md-3">
-        {{ form.render('estadoRegistro',['class' : 'form-control']) }}
+        <?= $form->render('estadoRegistro', ['class' => 'form-control']) ?>
     </div>
 </div>
-
-{{ hidden_field("codPersona") }}
 
 <div class="form-group">
                     <div class="col-md-3">
@@ -137,8 +135,9 @@
                     <div class="col-md-2">
                     </div>
                     <div class="col-md-2">
-                        {{ form.render('save') }}
-                        {{ form.render('csrf', ['value': security.getToken()]) }}
+                        <?= $this->tag->linkTo(['persona/reset', 'Limpiar', 'class' => 'btn btn-default']) ?>   
+                        <?= $form->render('buscar') ?>
+                        <?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
                     </div>
                 </div>
             </div>

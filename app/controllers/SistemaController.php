@@ -228,7 +228,7 @@ class SistemaController extends ControllerBase {
             }
             $this->dispatcher->forward([
                             'controller' => "sistema",
-                            'action' => 'Edit'
+                            'action' => 'edit'
             ]);
 
             return;

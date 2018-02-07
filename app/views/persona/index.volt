@@ -1,133 +1,146 @@
-<div class="page-header">
-    <h1>
-        Search persona
-    </h1>
-    <p>
-        {{ link_to("persona/new", "Create persona") }}
-    </p>
-</div>
+<div class="row">
+    <div class="container">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="btn-group pull-right">
+{{ link_to("menu", "<i class='glyphicon glyphicon-chevron-left'></i> Volver al Menu","class":"btn btn-info") }}
+    {{ link_to("persona/new", "<i class='glyphicon glyphicon-plus'></i> Nueva Persona","class":"btn btn-info") }}
+                </div>
+                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Personas</h4>
+            </div>
+            <div class="page-header">
+        </div>
 
 {{ content() }}
 
 {{ form("persona/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
 
+<div class="table">
+
 <div class="form-group">
-    <label for="fieldCodpersona" class="col-sm-2 control-label">CodPersona</label>
-    <div class="col-sm-10">
-        {{ text_field("codPersona", "type" : "numeric", "class" : "form-control", "id" : "fieldCodpersona") }}
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldNombrepersona">Nombre de Persona</label>
+</div>
+                    <div class="col-md-3">
+{{ form.render('nombrePersona') }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldNombrepersona" class="col-sm-2 control-label">NombrePersona</label>
-    <div class="col-sm-10">
-        {{ text_field("nombrePersona", "size" : 30, "class" : "form-control", "id" : "fieldNombrepersona") }}
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldApepat" >Apellido Paterno</label>
+</div>
+                    <div class="col-md-3">
+        {{ form.render('apePat') }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldApepat" class="col-sm-2 control-label">ApePat</label>
-    <div class="col-sm-10">
-        {{ text_field("apePat", "size" : 30, "class" : "form-control", "id" : "fieldApepat") }}
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldApemat">Apellido Materno</label>
+</div>
+                    <div class="col-md-3">
+{{ form.render('apeMat') }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldApemat" class="col-sm-2 control-label">ApeMat</label>
-    <div class="col-sm-10">
-        {{ text_field("apeMat", "size" : 30, "class" : "form-control", "id" : "fieldApemat") }}
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldSexo" >Sexo</label>
+</div>
+                    <div class="col-md-3">
+{{ form.render('sexo',['class' : 'form-control']) }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldSexo" class="col-sm-2 control-label">Sexo</label>
-    <div class="col-sm-10">
-        {{ text_field("sexo", "size" : 30, "class" : "form-control", "id" : "fieldSexo") }}
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldEdad">Edad</label>
+</div>
+                    <div class="col-md-3">
+{{ form.render('edad') }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldEdad" class="col-sm-2 control-label">Edad</label>
-    <div class="col-sm-10">
-        {{ text_field("edad", "type" : "numeric", "class" : "form-control", "id" : "fieldEdad") }}
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldCodtipodocumento">Tipo de Documento</label>
+</div>
+                    <div class="col-md-3">
+{% if tipoDocumento is defined %}
+{{ select("codTipoDocumento", tipoDocumento,'useEmpty': true, 'emptyText': 'Seleccione Tipo Documento...', 'emptyValue': '', 'using': ['codTipoDocumento', 'descripcion'], "class" : "form-control") }}
+{% endif %}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldNumerodocumento" class="col-sm-2 control-label">NumeroDocumento</label>
-    <div class="col-sm-10">
-        {{ text_field("numeroDocumento", "size" : 30, "class" : "form-control", "id" : "fieldNumerodocumento") }}
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldNumerodocumento" >Numero de Documento</label>
+</div>
+                    <div class="col-md-3">
+{{ form.render('numeroDocumento') }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldRazonsocial" class="col-sm-2 control-label">RazonSocial</label>
-    <div class="col-sm-10">
-        {{ text_field("razonSocial", "size" : 30, "class" : "form-control", "id" : "fieldRazonsocial") }}
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldRazonsocial">Razon Social</label>
+</div>
+                    <div class="col-md-3">
+    {{ form.render('razonSocial') }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldEstadoregistro" class="col-sm-2 control-label">EstadoRegistro</label>
-    <div class="col-sm-10">
-        {{ text_field("estadoRegistro", "size" : 30, "class" : "form-control", "id" : "fieldEstadoregistro") }}
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldTipopersona">Tipo de Persona</label>
+</div>
+                    <div class="col-md-3">
+{{ form.render('tipoPersona',['class' : 'form-control']) }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldUsuarioinsercion" class="col-sm-2 control-label">UsuarioInsercion</label>
-    <div class="col-sm-10">
-        {{ text_field("usuarioInsercion", "size" : 30, "class" : "form-control", "id" : "fieldUsuarioinsercion") }}
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+    <label for="fieldEstadoregistro" >Estado de Registro</label>
+</div>
+                    <div class="col-md-3">
+        {{ form.render('estadoRegistro',['class' : 'form-control']) }}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="fieldFechainsercion" class="col-sm-2 control-label">FechaInsercion</label>
-    <div class="col-sm-10">
-        {{ text_field("fechaInsercion", "size" : 30, "class" : "form-control", "id" : "fieldFechainsercion") }}
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-2">
+                        {{ link_to("persona/reset", "Limpiar","class":"btn btn-default") }}   
+                        {{ form.render('buscar') }}
+                        {{ form.render('csrf', ['value': security.getToken()]) }}
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-
-<div class="form-group">
-    <label for="fieldUsuariomodificacion" class="col-sm-2 control-label">UsuarioModificacion</label>
-    <div class="col-sm-10">
-        {{ text_field("usuarioModificacion", "size" : 30, "class" : "form-control", "id" : "fieldUsuariomodificacion") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldFechamodificacion" class="col-sm-2 control-label">FechaModificacion</label>
-    <div class="col-sm-10">
-        {{ text_field("fechaModificacion", "size" : 30, "class" : "form-control", "id" : "fieldFechamodificacion") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldCodtipodocumento" class="col-sm-2 control-label">CodTipoDocumento</label>
-    <div class="col-sm-10">
-        {{ text_field("codTipoDocumento", "type" : "numeric", "class" : "form-control", "id" : "fieldCodtipodocumento") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldTipopersona" class="col-sm-2 control-label">TipoPersona</label>
-    <div class="col-sm-10">
-        {{ text_field("tipoPersona", "size" : 30, "class" : "form-control", "id" : "fieldTipopersona") }}
-    </div>
-</div>
-
-<div class="form-group">
-    <label for="fieldCodempresa" class="col-sm-2 control-label">CodEmpresa</label>
-    <div class="col-sm-10">
-        {{ text_field("codEmpresa", "type" : "numeric", "class" : "form-control", "id" : "fieldCodempresa") }}
-    </div>
-</div>
-
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        {{ submit_button('Search', 'class': 'btn btn-default') }}
-    </div>
-</div>
-
-</form>

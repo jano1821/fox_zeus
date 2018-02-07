@@ -17,7 +17,7 @@
                 <span class="right">{{ link_to("index/logout", "Cerrar Sesión", "class":"codrops-icon codrops-icon-drop") }}</span>
             </div>
             <header>
-                <h1>Panel de Control Central <span>Selecciona la Opción a la que Necesitas</span></h1>	
+                <h1>Panel de Control Central <span>Selecciona la Opción que Necesites</span></h1>	
             </header>
             <div class="main clearfix">
                 {% if menu is defined %}
