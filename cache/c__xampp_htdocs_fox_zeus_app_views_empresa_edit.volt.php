@@ -4,7 +4,7 @@
 <div class="panel-heading">
 <div class="btn-group pull-right">
         <?= $this->tag->linkTo(['empresa', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
-        <?= $this->tag->linkTo(['agencia', '<i class=\'glyphicon glyphicon-tags\'></i>  Nueva Agencia', 'class' => 'btn btn-info']) ?>
+        <?= $this->tag->linkTo(['agencia', '<i class=\'glyphicon glyphicon-tags\'></i>  Agencias', 'class' => 'btn btn-info']) ?>
             </div>
 <h4><i class='glyphicon glyphicon-edit'></i> Editar Empresa</h4>
 </div>

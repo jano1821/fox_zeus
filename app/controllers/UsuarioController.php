@@ -119,7 +119,7 @@ class UsuarioController extends ControllerBase {
         $parameters['order'] = "nombreEmpresa ASC";
         $empresa = Empresa::find($parameters);
 
-        $personaUsuario = $this->modelsManager->createBuilder()
+        /*$personaUsuario = $this->modelsManager->createBuilder()
                                 ->columns("pu.codPersonaUsuario," .
                                                         "concat(pu.apellidosPersona,' ',pu.nombresPersona) as nombres")
                                 ->addFrom('PersonaUsuario',
@@ -129,7 +129,7 @@ class UsuarioController extends ControllerBase {
                                 ->getQuery()
                                 ->execute();
 
-        $this->view->personaUsuario = $personaUsuario;
+        $this->view->personaUsuario = $personaUsuario;*/
         $this->view->empresa = $empresa;
         $this->view->form = new usuarioNewForm();
     }

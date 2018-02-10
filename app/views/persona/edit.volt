@@ -4,7 +4,7 @@
             <div class="panel-heading">
                 <div class="btn-group pull-right">
                     {{ link_to("persona", "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
-                    {{ link_to("persona", "<i class='glyphicon glyphicon-sunglasses'></i> Definir Tipo de Persona","class":"btn btn-info") }}
+                    {{ link_to("tipo_persona", "<i class='glyphicon glyphicon-sunglasses'></i> Definir Tipo de Persona","class":"btn btn-info") }}
                 </div>
                 <h4><i class='glyphicon glyphicon-search'></i> Editar Persona</h4>
             </div>

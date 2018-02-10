@@ -1,11 +1,10 @@
 <?php
-
-use Phalcon\Mvc\Model\Criteria;
-use Phalcon\Paginator\Adapter\Model as Paginator;
-use AgenciaIndexForm as agenciaIndexForm;
-use AgenciaNewForm as agenciaNewForm;
-use AgenciaEditForm as agenciaEditForm;
-class AgenciaController extends ControllerBase {
+//use Phalcon\Mvc\Model\Criteria;
+//use Phalcon\Paginator\Adapter\Model as Paginator;
+use TipoPersonaForm as tipoPersonaForm;
+//use AgenciaNewForm as agenciaNewForm;
+//use AgenciaEditForm as agenciaEditForm;
+class TipoPersonaController extends ControllerBase {
 
     public function onConstruct() {
         parent::validarAdministradores();
@@ -14,10 +13,10 @@ class AgenciaController extends ControllerBase {
     public function indexAction() {
         parent::validarSession();
 
-        $this->view->form = new agenciaIndexForm();
+        $this->view->form = new tipoPersonaForm();
     }
 
-    public function searchAction() {
+    /*public function searchAction() {
         parent::validarSession();
 
         $nombreAgencia = $this->request->getPost("descripcion");
@@ -141,9 +140,6 @@ class AgenciaController extends ControllerBase {
         }
     }
 
-    /**
-     * Creates a new agencia
-     */
     public function createAction() {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
@@ -313,5 +309,5 @@ class AgenciaController extends ControllerBase {
         ]);
 
         return;
-    }
+    }*/
 }

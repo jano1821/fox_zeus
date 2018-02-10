@@ -16,21 +16,7 @@ class Empleado extends \Phalcon\Mvc\Model
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $codTipoEmpleado;
-
-    /**
-     *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=false)
-     */
     public $codEmpresa;
-
-    /**
-     *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=false)
-     */
-    public $codAgencia;
 
     /**
      * Method to set the value of field codPersona
@@ -41,19 +27,6 @@ class Empleado extends \Phalcon\Mvc\Model
     public function setCodPersona($codPersona)
     {
         $this->codPersona = $codPersona;
-
-        return $this;
-    }
-
-    /**
-     * Method to set the value of field codTipoEmpleado
-     *
-     * @param integer $codTipoEmpleado
-     * @return $this
-     */
-    public function setCodTipoEmpleado($codTipoEmpleado)
-    {
-        $this->codTipoEmpleado = $codTipoEmpleado;
 
         return $this;
     }
@@ -72,19 +45,6 @@ class Empleado extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Method to set the value of field codAgencia
-     *
-     * @param integer $codAgencia
-     * @return $this
-     */
-    public function setCodAgencia($codAgencia)
-    {
-        $this->codAgencia = $codAgencia;
-
-        return $this;
-    }
-
-    /**
      * Returns the value of field codPersona
      *
      * @return integer
@@ -95,16 +55,6 @@ class Empleado extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Returns the value of field codTipoEmpleado
-     *
-     * @return integer
-     */
-    public function getCodTipoEmpleado()
-    {
-        return $this->codTipoEmpleado;
-    }
-
-    /**
      * Returns the value of field codEmpresa
      *
      * @return integer
@@ -112,16 +62,6 @@ class Empleado extends \Phalcon\Mvc\Model
     public function getCodEmpresa()
     {
         return $this->codEmpresa;
-    }
-
-    /**
-     * Returns the value of field codAgencia
-     *
-     * @return integer
-     */
-    public function getCodAgencia()
-    {
-        return $this->codAgencia;
     }
 
     /**
@@ -137,7 +77,6 @@ class Empleado extends \Phalcon\Mvc\Model
         $this->hasMany('codPersona', 'Usuario', 'codPersona', ['alias' => 'Usuario']);
         $this->hasMany('codPersona', 'Venta', 'codPersona', ['alias' => 'Venta']);
         $this->belongsTo('codPersona', '\Persona', 'codPersona', ['alias' => 'Persona']);
-        $this->belongsTo('codTipoEmpleado', '\TipoEmpleado', 'codTipoEmpleado', ['alias' => 'TipoEmpleado']);
     }
 
     /**

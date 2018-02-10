@@ -1,50 +1,39 @@
 <div class="row">
-    <nav>
-        <ul class="pager">
-            <li class="previous">{{ link_to("agencia/index", "Go Back") }}</li>
-            <li class="next">{{ link_to("agencia/new", "Create ") }}</li>
-        </ul>
-    </nav>
+<div class="container">
+<div class="panel panel-info">
+<div class="panel-heading">
+<div class="btn-group pull-right">
+{{ link_to("agencia", "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
+{{ link_to("agencia/new", "<i class='glyphicon glyphicon-plus'></i> Nueva Agencia","class":"btn btn-info") }}
+       </div>
+<h4><i class='glyphicon glyphicon-search'></i> Resultado de Busqueda</h4>
 </div>
 
 <div class="page-header">
-    <h1>Search result</h1>
 </div>
 
 {{ content() }}
-
-<div class="row">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>CodAgencia</th>
-            <th>Descripcion</th>
+{{ form("agencia/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+<div class="table-responsive">
+<table class="table">
+<tr  class="info">
+            <th>Nombre Agencia</th>
             <th>EstadoRegistro</th>
-            <th>UsuarioInsercion</th>
-            <th>FechaInsercion</th>
-            <th>UsuarioModificacion</th>
-            <th>FechaModificacion</th>
-            <th>CodEmpresa</th>
+            <th>Empresa</th>
 
                 <th></th>
                 <th></th>
             </tr>
-        </thead>
         <tbody>
         {% if page.items is defined %}
         {% for agencia in page.items %}
             <tr>
-                <td>{{ agencia.codAgencia }}</td>
             <td>{{ agencia.descripcion }}</td>
-            <td>{{ agencia.estadoRegistro }}</td>
-            <td>{{ agencia.usuarioInsercion }}</td>
-            <td>{{ agencia.fechaInsercion }}</td>
-            <td>{{ agencia.usuarioModificacion }}</td>
-            <td>{{ agencia.fechaModificacion }}</td>
-            <td>{{ agencia.codEmpresa }}</td>
+            <td>{{ agencia.estado }}</td>
+            <td>{{ agencia.nombreEmpresa }}</td>
 
-                <td>{{ link_to("agencia/edit/"~agencia.codAgencia, "Edit") }}</td>
-                <td>{{ link_to("agencia/delete/"~agencia.codAgencia, "Delete") }}</td>
+                <td>{{ link_to("agencia/edit/"~agencia.codAgencia, "Editar") }}</td>
+                <td>{{ link_to("agencia/delete/"~agencia.codAgencia, "Borrar") }}</td>
             </tr>
         {% endfor %}
         {% endif %}
@@ -52,20 +41,32 @@
     </table>
 </div>
 
+{{ hidden_field("pagina") }}
+{{ hidden_field("avance") }}
+
 <div class="row">
-    <div class="col-sm-1">
-        <p class="pagination" style="line-height: 1.42857;padding: 6px 12px;">
-            {{ page.current~"/"~page.total_pages }}
-        </p>
-    </div>
-    <div class="col-sm-11">
-        <nav>
-            <ul class="pagination">
-                <li>{{ link_to("agencia/search", "First") }}</li>
-                <li>{{ link_to("agencia/search?page="~page.before, "Previous") }}</li>
-                <li>{{ link_to("agencia/search?page="~page.next, "Next") }}</li>
-                <li>{{ link_to("agencia/search?page="~page.last, "Last") }}</li>
-            </ul>
-        </nav>
-    </div>
+<div class="col-sm-2">
+<p class="pagination" style="line-height: 1.42857;padding: 6px 12px;">
+{{ "Página "~page.current~" de "~page.total_pages }}
+</p>
 </div>
+<div class="col-sm-10">
+<nav>
+<ul class="pagination">
+{{ submit_button('Primero', 'class': 'btn btn-info','onclick':'paginacion(0);') }}
+{{ submit_button('Anterior', 'class': 'btn btn-info','onclick':'paginacion(-1);') }}
+{{ submit_button('Siguiente', 'class': 'btn btn-info','onclick':'paginacion(1);') }}
+{{ submit_button('Ultimo', 'class': 'btn btn-info','onclick':'paginacion(2);') }}
+</ul>
+</nav>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+    function paginacion(valor){
+        document.getElementById('avance').value = valor;
+    }
+</script>
