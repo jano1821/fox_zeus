@@ -6,13 +6,13 @@
 {{ link_to("persona", "<i class='glyphicon glyphicon-chevron-left'></i> Volver a Personas","class":"btn btn-info") }}
 {{ link_to("menu", "<i class='glyphicon glyphicon-chevron-left'></i> Volver al Menu","class":"btn btn-info") }}
                 </div>
-                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Agencias</h4>
+                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Tipo Persona</h4>
             </div>
             <div class="page-header">
         </div>
 {{ content() }}
 
-{{ form("agencia/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+{{ form("tipo_persona/create", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
 
 <div class="table">
 
@@ -48,6 +48,8 @@
         {{ form.render('proveedor',['class' : 'form-control']) }}
     </div>
 </div>
+
+{{ hidden_field("codPersona") }}
 
 <div class="form-group">
                     <div class="col-md-3">

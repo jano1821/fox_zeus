@@ -42,7 +42,7 @@ class UsuarioController extends ControllerBase {
                                                         "us.codUsuario," .
                                                         "us.codEmpresa," .
                                                         "us.cantidadIntentos," .
-                                                        "if(us.indicadorUsuarioAdministrador='S','Administrador','No Administrador') as indicadorUsuarioAdministrador," .
+                                                        "if(us.indicadorUsuarioAdministrador<>'S',if(us.indicadorUsuarioAdministrador='Z','Super Administrador', 'No Administrador'),'Administrador') as indicadorUsuarioAdministrador," .
                                                         "if(us.estadoRegistro='S','Vigente','No Vigente') as estado")
                                 ->addFrom('Usuario',
                                           'us')
@@ -115,22 +115,7 @@ class UsuarioController extends ControllerBase {
      */
     public function newAction() {
         parent::validarSession();
-
-        $parameters['order'] = "nombreEmpresa ASC";
-        $empresa = Empresa::find($parameters);
-
-        /*$personaUsuario = $this->modelsManager->createBuilder()
-                                ->columns("pu.codPersonaUsuario," .
-                                                        "concat(pu.apellidosPersona,' ',pu.nombresPersona) as nombres")
-                                ->addFrom('PersonaUsuario',
-                                          'pu')
-                                ->andWhere("pu.estadoRegistro = 'S' ")
-                                ->orderBy('pu.apellidosPersona')
-                                ->getQuery()
-                                ->execute();
-
-        $this->view->personaUsuario = $personaUsuario;*/
-        $this->view->empresa = $empresa;
+        
         $this->view->form = new usuarioNewForm();
     }
 
@@ -211,17 +196,20 @@ class UsuarioController extends ControllerBase {
 
             return;
         }else {
-            $usuarioSesion = $this->session->get("Usuario");
+            /*$usuarioSesion = $this->session->get("Usuario");
             $username = $usuarioSesion['nombreUsuario'];
             $parametrosGenerales = parent::obtenerParametros('LLAVE_HASH');
             $password = password_hash($this->request->getPost("passwordUsuario"),
                                                               PASSWORD_BCRYPT,
                                                               array("cost" => 12, "salt" => $parametrosGenerales));
-
+*/
+            $username = "acnunez";
+            $password = "123456";
             $usuario = new Usuario();
             $usuario->Codusuario = $this->request->getPost("codUsuario");
             $usuario->Codempresa = $this->request->getPost("codEmpresa");
-            $usuario->CodPersonaUsuario = $this->request->getPost("codPersonaUsuario");
+            $usuario->Codpersona = $this->request->getPost("codPersona");
+            $usuario->Codagencia = $this->request->getPost("codAgencia");
             $usuario->Nombreusuario = $this->request->getPost("nombreUsuario");
             $usuario->Passwordusuario = $password;
             $usuario->Cantidadintentos = '0';
@@ -385,7 +373,7 @@ class UsuarioController extends ControllerBase {
                         'action' => "index"
         ]);
     }
-
+    
     public function resetAction() {
         parent::validarSession();
 

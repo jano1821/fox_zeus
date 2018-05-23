@@ -1,0 +1,14 @@
+
+C:\xampp\htdocs\fox_zeus>phalcon scaffold agencia --force --template-engine=volt
+
+C:\xampp\htdocs\fox_zeus>phalcon scaffold empleado --force --template-engine=volt
+
+C:\xampp\htdocs\fox_zeus>phalcon scaffold empresa --force --template-engine=volt
+
+C:\xampp\htdocs\fox_zeus>phalcon scaffold persona --force --template-engine=volt
+
+C:\xampp\htdocs\fox_zeus>phalcon scaffold tipo_documento --force --template-engine=volt
+
+C:\xampp\htdocs\fox_zeus>phalcon scaffold tipo_empleado --force --template-engine=volt
+
+C:\xampp\htdocs\fox_zeus>phalcon scaffold usuario --force --template-engine=volt

@@ -1,0 +1,1 @@
+cuando regsitre un nuevo usuario, segun si es super admin, admin o no admin registrar automaticamente la relacion entre menu y usuario

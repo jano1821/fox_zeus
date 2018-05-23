@@ -3,7 +3,7 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="btn-group pull-right">
-{{ link_to("empresa", "<i class='glyphicon glyphicon-chevron-left'></i> Volver a Empresas","class":"btn btn-info") }}
+{{ link_to("menu", "<i class='glyphicon glyphicon-chevron-left'></i> Volver al Menu","class":"btn btn-info") }}
 {{ link_to("agencia/new", "<i class='glyphicon glyphicon-plus'></i> Nueva Agencia","class":"btn btn-info") }}
                 </div>
                 <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Agencias</h4>

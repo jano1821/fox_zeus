@@ -6,13 +6,13 @@
 <?= $this->tag->linkTo(['persona', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver a Personas', 'class' => 'btn btn-info']) ?>
 <?= $this->tag->linkTo(['menu', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver al Menu', 'class' => 'btn btn-info']) ?>
                 </div>
-                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Agencias</h4>
+                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Tipo Persona</h4>
             </div>
             <div class="page-header">
         </div>
 <?= $this->getContent() ?>
 
-<?= $this->tag->form(['agencia/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
+<?= $this->tag->form(['tipo_persona/create', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
 <div class="table">
 
@@ -48,6 +48,8 @@
         <?= $form->render('proveedor', ['class' => 'form-control']) ?>
     </div>
 </div>
+
+<?= $this->tag->hiddenField(['codPersona']) ?>
 
 <div class="form-group">
                     <div class="col-md-3">

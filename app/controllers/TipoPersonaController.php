@@ -10,141 +10,154 @@ class TipoPersonaController extends ControllerBase {
         parent::validarAdministradores();
     }
 
-    public function indexAction() {
+    public function indexAction($codPersona) {
         parent::validarSession();
-
-        $this->view->form = new tipoPersonaForm();
-    }
-
-    /*public function searchAction() {
-        parent::validarSession();
-
-        $nombreAgencia = $this->request->getPost("descripcion");
-        $estado = $this->request->getPost("estadoRegistro");
-        $pagina = $this->request->getPost("pagina");
-        $avance = $this->request->getPost("avance");
 
         if ($this->session->has("Usuario")) {
-            $usuario = $this->session->get("Usuario");
-            $codEmpresa = $usuario['codEmpresa'];
+            $usuarioSesion = $this->session->get("Usuario");
+            $indicadorUsuarioAdministrador = $usuarioSesion['indicadorUsuarioAdministrador'];
+            if ($indicadorUsuarioAdministrador != 'Z') {
+                $codEmpresa = $usuarioSesion['codEmpresa'];
+                $codUsuario = $usuarioSesion['codUsuario'];
+            } else {
+                $codEmpresa = "%";
+                $codUsuario = "";
+            }
         }else {
             $this->session->destroy();
             $this->response->redirect('index');
         }
-
-        if ($pagina == "") {
-            $pagina = 1;
-        }
-        if ($avance == "" || $avance == "0") {
-            $pagina = 1;
-        }
-
-        $agencia = $this->modelsManager->createBuilder()
-                                ->columns("ag.codAgencia," .
-                                                        "ag.descripcion," .
-                                                        "em.nombreEmpresa," .
-                                                        "if(ag.estadoRegistro='S','Vigente','No Vigente') as estado")
-                                ->addFrom('Agencia',
-                                          'ag')
-                                ->innerJoin('Empresa',
-                                            'em.codEmpresa = ag.codEmpresa',
-                                            'em')
-                                ->andWhere('ag.descripcion like :descripcion: AND ' .
-                                                        'ag.codEmpresa = :codEmpresa: AND ' .
-                                                        'ag.estadoRegistro like :estado: ',
+        
+        $resEmpleado = "";
+        $resProveedor = "";
+        $resCliente = "";
+        
+        $empleado = $this->modelsManager->createBuilder()
+                                ->columns("em.codPersona ")
+                                ->addFrom('Empleado',
+                                          'em')
+                                ->andWhere('em.codPersona like :codPersona: AND ' .
+                                            'em.codEmpresa like :codEmpresa: ' ,
                                            [
-                                                'descripcion' => "%" . $nombreAgencia . "%",
+                                                'codPersona' => "%" . $codPersona . "%",
                                                 'codEmpresa' => $codEmpresa,
-                                                'estado' => "%" . $estado . "%",
                                                         ]
                                 )
-                                ->orderBy('ag.descripcion')
                                 ->getQuery()
                                 ->execute();
-
-        if ($pagina == "") {
-            $pagina = 1;
-        }
-        if ($avance == "" || $avance == "0") {
-            $pagina = 1;
-        }else if ($avance == 1) {
-            if ($pagina < floor(count($agencia) / 10) + 1) {
-                $pagina = $pagina + 1;
-            }else {
-                $this->flash->notice("No hay Registros Posteriores");
+        if (count($empleado) > 0) {
+            $empleado = $this->modelsManager->createBuilder()
+                                    ->columns("em.codPersona ")
+                                    ->addFrom('Empleado',
+                                              'em')
+                                    ->andWhere( 'em.codPersona like :codPersona: AND ' .
+                                                'em.codEmpresa like :codEmpresa: AND ' .
+                                                            'em.estadoRegistro like :estado: ',
+                                               [
+                                                    'codPersona' => "%" . $codPersona . "%",
+                                                    'codEmpresa' => $codEmpresa,
+                                                    'estado' => "S",
+                                                            ]
+                                    )
+                                    ->getQuery()
+                                    ->execute();
+            if (count($empleado)>0){
+                $resEmpleado = "S";
+            }else{
+                $resEmpleado = "N";
             }
-        }else if ($avance == -1) {
-            if ($pagina > 1) {
-                $pagina = $pagina - 1;
-            }else {
-                $this->flash->notice("No hay Registros Anteriores");
+        }
+
+        $cliente = $this->modelsManager->createBuilder()
+                                ->columns("em.codPersona ")
+                                ->addFrom('Cliente',
+                                          'em')
+                                ->andWhere('em.codPersona like :codPersona: AND ' .
+                                            'em.codEmpresa like :codEmpresa: ' ,
+                                           [
+                                                'codPersona' => "%" . $codPersona . "%",
+                                                'codEmpresa' => $codEmpresa,
+                                                        ]
+                                )
+                                ->getQuery()
+                                ->execute();
+        if (count($cliente) > 0) {
+            $cliente = $this->modelsManager->createBuilder()
+                                    ->columns("em.codPersona ")
+                                    ->addFrom('Cliente',
+                                              'em')
+                                    ->andWhere( 'em.codPersona like :codPersona: AND ' .
+                                                'em.codEmpresa like :codEmpresa: AND ' .
+                                                            'em.estadoRegistro like :estado: ',
+                                               [
+                                                    'codPersona' => "%" . $codPersona . "%",
+                                                    'codEmpresa' => $codEmpresa,
+                                                    'estado' => "S",
+                                                            ]
+                                    )
+                                    ->getQuery()
+                                    ->execute();
+            if (count($cliente)>0){
+                $resCliente = "S";
+            }else{
+                $resCliente = "N";
             }
-        }else if ($avance == 2) {
-            $pagina = floor(count($agencia) / 10) + 1;
         }
-
-        if (count($agencia) == 0) {
-            $this->flash->notice("La Búqueda no ha Obtenido Resultados");
-
-            $this->dispatcher->forward([
-                            "controller" => "agencia",
-                            "action" => "index"
-            ]);
-
-            return;
-        }
-
-        $paginator = new Paginator([
-                        'data' => $agencia,
-                        'limit' => 10,
-                        'page' => $pagina
-        ]);
-
-        $this->tag->setDefault("pagina",
-                               $pagina);
-        $this->view->page = $paginator->getPaginate();
-    }
-
-    public function newAction() {
-        parent::validarSession();
-
-        $this->view->form = new agenciaNewForm();
-    }
-
-    public function editAction($codAgencia) {
-        parent::validarSession();
-
-        if (!$this->request->isPost()) {
-
-            $agencia = Agencia::findFirstBycodAgencia($codAgencia);
-            if (!$agencia) {
-                $this->flash->error("Agencia No Encontrada");
-
-                $this->dispatcher->forward([
-                                'controller' => "agencia",
-                                'action' => 'index'
-                ]);
-
-                return;
+        
+        $proveedor = $this->modelsManager->createBuilder()
+                                ->columns("em.codPersona ")
+                                ->addFrom('Proveedor',
+                                          'em')
+                                ->andWhere('em.codPersona like :codPersona: AND ' .
+                                            'em.codEmpresa like :codEmpresa: ' ,
+                                           [
+                                                'codPersona' => "%" . $codPersona . "%",
+                                                'codEmpresa' => $codEmpresa,
+                                                        ]
+                                )
+                                ->getQuery()
+                                ->execute();
+        if (count($proveedor) > 0) {
+            $proveedor = $this->modelsManager->createBuilder()
+                                    ->columns("em.codPersona ")
+                                    ->addFrom('Proveedor',
+                                              'em')
+                                    ->andWhere( 'em.codPersona like :codPersona: AND ' .
+                                                'em.codEmpresa like :codEmpresa: AND ' .
+                                                            'em.estadoRegistro like :estado: ',
+                                               [
+                                                    'codPersona' => "%" . $codPersona . "%",
+                                                    'codEmpresa' => $codEmpresa,
+                                                    'estado' => "S",
+                                                            ]
+                                    )
+                                    ->getQuery()
+                                    ->execute();
+            if (count($proveedor)>0){
+                $resProveedor = "S";
+            }else{
+                $resProveedor = "N";
             }
-
-            $this->view->codAgencia = $agencia->codAgencia;
-
-            $this->tag->setDefault("codAgencia",
-                                   $agencia->codAgencia);
-            $this->tag->setDefault("descripcion",
-                                   $agencia->descripcion);
-            $this->tag->setDefault("estadoRegistro",
-                                   $agencia->estadoRegistro);
-            $this->view->form = new agenciaEditForm();
         }
+        
+        $this->tag->setDefault("empleado",
+                               $resEmpleado);
+        $this->tag->setDefault("proveedor",
+                               $resProveedor);
+        $this->tag->setDefault("cliente",
+                               $resCliente);
+        $this->tag->setDefault("codPersona",
+                               $codPersona);
+        
+        $this->view->form = new tipoPersonaForm();
     }
 
     public function createAction() {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                            'controller' => "agencia",
-                            'action' => 'index'
+                            'controller' => "tipo_persona",
+                            'action' => 'index',
+                            'params' => [$this->request->getPost("codPersona")]
             ]);
 
             return;
@@ -152,162 +165,199 @@ class TipoPersonaController extends ControllerBase {
 
         if ($this->session->has("Usuario")) {
             $usuario = $this->session->get("Usuario");
-            $username = $usuario['nombreUsuario'];
             $codEmpresa = $usuario['codEmpresa'];
+            $username = $usuario['nombreUsuario'];
         }else {
             $this->session->destroy();
             $this->response->redirect('index');
         }
+        if(!empty($this->request->getPost("empleado")) && !is_null($this->request->getPost("empleado"))){
+            $empleado = $this->modelsManager->createBuilder()
+                                    ->columns("em.codPersona, ".
+                                              "em.fechaInsercion, ".
+                                              "em.usuarioInsercion ")
+                                    ->addFrom('Empleado',
+                                              'em')
+                                    ->andWhere('em.codPersona like :codPersona: AND ' .
+                                                'em.codEmpresa like :codEmpresa: ' ,
+                                               [
+                                                    'codPersona' => "%" . $this->request->getPost("codPersona") . "%",
+                                                    'codEmpresa' => $codEmpresa,
+                                                            ]
+                                    )
+                                    ->getQuery()
+                                    ->execute();
 
-        $agencia = new Agencia();
-        $agencia->Descripcion = $this->request->getPost("descripcion");
-        $agencia->Estadoregistro = $this->request->getPost("estadoRegistro");
-        $agencia->Usuarioinsercion = $username;
-        $agencia->Fechainsercion = strftime("%Y-%m-%d",
-                                            time());
-        $agencia->Codempresa = $codEmpresa;
+            $regEmpleado = new Empleado();
+            $regEmpleado->codPersona = $this->request->getPost("codPersona");
+            $regEmpleado->codEmpresa = $codEmpresa;
+            $regEmpleado->estadoRegistro = $this->request->getPost("empleado");
 
 
-        if (!$agencia->save()) {
-            foreach ($agencia->getMessages() as $message) {
-                $this->flash->error($message);
-            }
+            if (count($empleado) == 0){
+                $regEmpleado->usuarioInsercion = $username;
+                $regEmpleado->fechaInsercion = strftime("%Y-%m-%d",
+                                                       time());
+                if (!$regEmpleado->save()) {
+                    foreach ($regEmpleado->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
 
-            $this->dispatcher->forward([
-                            'controller' => "agencia",
-                            'action' => 'new'
-            ]);
+                    $this->dispatcher->forward([
+                                    'controller' => "tipo_persona",
+                                    'action' => 'index',
+                                    'params' => [$this->request->getPost("codPersona")]
+                    ]);
 
-            return;
-        }
-
-        $this->flash->success("Agencia Registrada Satisfactoriamente");
-
-        $this->dispatcher->forward([
-                        'controller' => "agencia",
-                        'action' => 'index'
-        ]);
-    }
-
-    public function saveAction() {
-
-        if (!$this->request->isPost()) {
-            $this->dispatcher->forward([
-                            'controller' => "agencia",
-                            'action' => 'index'
-            ]);
-
-            return;
-        }
-
-        $codAgencia = $this->request->getPost("codAgencia");
-        $agencia = Agencia::findFirstBycodAgencia($codAgencia);
-
-        if (!$agencia) {
-            $this->flash->error("Agencia No Existe " . $codAgencia);
-
-            $this->dispatcher->forward([
-                            'controller' => "agencia",
-                            'action' => 'index'
-            ]);
-
-            return;
-        }
-
-        $form = new agenciaEditForm();
-        if (!$this->request->isPost() || $form->isValid($this->request->getPost()) == false) {
-            foreach ($form->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-            $this->dispatcher->forward([
-                            'controller' => "empresa",
-                            'action' => 'Edit'
-            ]);
-
-            return;
-        }else {
-            if ($this->session->has("Usuario")) {
-                $usuario = $this->session->get("Usuario");
-                $username = $usuario['nombreUsuario'];
-            }else {
-                $this->session->destroy();
-                $this->response->redirect('index');
-            }
-            $agencia->Descripcion = $this->request->getPost("descripcion");
-            $agencia->Estadoregistro = $this->request->getPost("estadoRegistro");
-            $agencia->Usuariomodificacion = $username;
-            $agencia->Fechamodificacion = strftime("%Y-%m-%d",
-                                                   time());
-
-            if (!$agencia->save()) {
-
-                foreach ($agencia->getMessages() as $message) {
-                    $this->flash->error($message);
+                    return;
                 }
+            }else{
+                $regEmpleado->fechaInsercion = $empleado->Fechainsercion;
+                $regEmpleado->usuarioInsercion = $empleado->Usuarioinsercion;
+                $regEmpleado->fechaModificacion = $username;
+                $regEmpleado->usuarioModificacion = strftime("%Y-%m-%d",
+                                                       time());
+                if (!$regEmpleado->save()) {
+                    foreach ($regEmpleado->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
 
-                $this->dispatcher->forward([
-                                'controller' => "agencia",
-                                'action' => 'edit',
-                                'params' => [$agencia->codAgencia]
-                ]);
+                    $this->dispatcher->forward([
+                                    'controller' => "tipo_persona",
+                                    'action' => 'index',
+                                    'params' => [$this->request->getPost("codPersona")]
+                    ]);
 
-                return;
+                    return;
+                }
             }
-
-            $this->flash->success("Agencia Actualizada Satisfactoriamente");
-
-            $this->dispatcher->forward([
-                            'controller' => "agencia",
-                            'action' => 'index'
-            ]);
         }
-    }
+        if(!empty($this->request->getPost("cliente")) && !is_null($this->request->getPost("cliente"))){
+            $cliente = $this->modelsManager->createBuilder()
+                                    ->columns("em.codPersona, ".
+                                              "em.fechaInsercion, ".
+                                              "em.usuarioInsercion ")
+                                    ->addFrom('Cliente',
+                                              'em')
+                                    ->andWhere('em.codPersona like :codPersona: AND ' .
+                                                'em.codEmpresa like :codEmpresa: ' ,
+                                               [
+                                                    'codPersona' => "%" . $this->request->getPost("codPersona") . "%",
+                                                    'codEmpresa' => $codEmpresa,
+                                                            ]
+                                    )
+                                    ->getQuery()
+                                    ->execute();
 
-    public function deleteAction($codAgencia) {
-        $agencia = Agencia::findFirstBycodAgencia($codAgencia);
-        if (!$agencia) {
-            $this->flash->error("agencia was not found");
+            $regCliente = new Cliente();
+            $regCliente->codPersona = $this->request->getPost("codPersona");
+            $regCliente->codEmpresa = $codEmpresa;
+            $regCliente->estadoRegistro = $this->request->getPost("cliente");
 
-            $this->dispatcher->forward([
-                            'controller' => "agencia",
-                            'action' => 'index'
-            ]);
 
-            return;
-        }
+            if (count($cliente) == 0){
+                $regCliente->usuarioInsercion = $username;
+                $regCliente->fechaInsercion = strftime("%Y-%m-%d",
+                                                       time());
+                if (!$regCliente->save()) {
+                    foreach ($regCliente->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
 
-        if (!$agencia->delete()) {
+                    $this->dispatcher->forward([
+                                    'controller' => "tipo_persona",
+                                    'action' => 'index',
+                                    'params' => [$this->request->getPost("codPersona")]
+                    ]);
 
-            foreach ($agencia->getMessages() as $message) {
-                $this->flash->error($message);
+                    return;
+                }
+            }else{
+                $regCliente->fechaModificacion = $username;
+                $regCliente->usuarioModificacion = strftime("%Y-%m-%d",
+                                                       time());
+                if (!$regCliente->update()) {
+
+                    foreach ($regCliente->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
+
+                    $this->dispatcher->forward([
+                                    'controller' => "tipo_persona",
+                                    'action' => 'index',
+                                    'params' => [$this->request->getPost("codPersona")]
+                    ]);
+
+                    return;
+                }
             }
+        }
+        if(!empty($this->request->getPost("proveedor")) && !is_null($this->request->getPost("proveedor"))){
+            $proveedor = $this->modelsManager->createBuilder()
+                                    ->columns("em.codPersona, ".
+                                              "em.fechaInsercion, ".
+                                              "em.usuarioInsercion ")
+                                    ->addFrom('Proveedor',
+                                              'em')
+                                    ->andWhere('em.codPersona like :codPersona: AND ' .
+                                                'em.codEmpresa like :codEmpresa: ' ,
+                                               [
+                                                    'codPersona' => "%" . $this->request->getPost("codPersona") . "%",
+                                                    'codEmpresa' => $codEmpresa,
+                                                            ]
+                                    )
+                                    ->getQuery()
+                                    ->execute();
+
+            $regProveedor = new Proveedor();
+            $regProveedor->codPersona = $this->request->getPost("codPersona");
+            $regProveedor->codEmpresa = $codEmpresa;
+            $regProveedor->estadoRegistro = $this->request->getPost("proveedor");
+
+
+            if (count($proveedor) == 0){
+                $regProveedor->usuarioInsercion = $username;
+                $regProveedor->fechaInsercion = strftime("%Y-%m-%d",
+                                                       time());
+                if (!$regProveedor->save()) {
+                    foreach ($regProveedor->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
+
+                    $this->dispatcher->forward([
+                                    'controller' => "tipo_persona",
+                                    'action' => 'index',
+                                    'params' => [$this->request->getPost("codPersona")]
+                    ]);
+
+                    return;
+                }
+            }else{
+                $regProveedor->fechaModificacion = $username;
+                $regProveedor->usuarioModificacion = strftime("%Y-%m-%d",
+                                                       time());
+                if (!$regProveedor->update()) {
+
+                    foreach ($regProveedor->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
+
+                    $this->dispatcher->forward([
+                                    'controller' => "tipo_persona",
+                                    'action' => 'index',
+                                    'params' => [$this->request->getPost("codPersona")]
+                    ]);
+
+                    return;
+                }
+            }
+        }
+        $this->flash->success("Tipo de Persona Registrada Satisfactoriamente");
 
             $this->dispatcher->forward([
-                            'controller' => "agencia",
-                            'action' => 'search'
+                            'controller' => "tipo_persona",
+                            'action' => 'index',
+                            'params' => [$this->request->getPost("codPersona")]
             ]);
-
-            return;
-        }
-
-        $this->flash->success("agencia was deleted successfully");
-
-        $this->dispatcher->forward([
-                        'controller' => "agencia",
-                        'action' => "index"
-        ]);
     }
-
-    public function resetAction() {
-        parent::validarSession();
-
-        $this->view->form = new agenciaIndexForm();
-
-        $this->dispatcher->forward([
-                        'controller' => "agencia",
-                        'action' => 'index'
-        ]);
-
-        return;
-    }*/
 }

@@ -27,6 +27,7 @@
             <th>Estado</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         <tbody>
         {% if page.items is defined %}
@@ -40,7 +41,7 @@
             <td>{{ persona.tipoDocumento }}</td>
             <td>{{ persona.nombreEmpresa }}</td>
             <td>{{ persona.estado }}</td>
-
+                <td>{{ link_to("tipo_persona/index/"~persona.codPersona, "Tipo Persona") }}</td>
                 <td>{{ link_to("persona/edit/"~persona.codPersona, "Editar") }}</td>
                 <td>{{ link_to("persona/delete/"~persona.codPersona, "Borrar") }}</td>
             </tr>

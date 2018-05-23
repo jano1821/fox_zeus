@@ -27,6 +27,7 @@
             <th>Estado</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         <tbody>
         <?php if (isset($page->items)) { ?>
@@ -40,7 +41,7 @@
             <td><?= $persona->tipoDocumento ?></td>
             <td><?= $persona->nombreEmpresa ?></td>
             <td><?= $persona->estado ?></td>
-
+                <td><?= $this->tag->linkTo(['tipo_persona/index/' . $persona->codPersona, 'Tipo Persona']) ?></td>
                 <td><?= $this->tag->linkTo(['persona/edit/' . $persona->codPersona, 'Editar']) ?></td>
                 <td><?= $this->tag->linkTo(['persona/delete/' . $persona->codPersona, 'Borrar']) ?></td>
             </tr>

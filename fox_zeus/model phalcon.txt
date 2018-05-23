@@ -1,0 +1,17 @@
+Microsoft Windows [Versión 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation. Reservados todos los derechos.
+
+
+C:\xampp\htdocs\fox_zeus>phalcon model usuario --get-set
+
+C:\xampp\htdocs\fox_zeus>phalcon model empresa --get-set
+
+C:\xampp\htdocs\fox_zeus>phalcon model tipo_empleado --get-set
+
+C:\xampp\htdocs\fox_zeus>phalcon model agencia --get-set
+
+C:\xampp\htdocs\fox_zeus>phalcon model persona --get-set
+
+C:\xampp\htdocs\fox_zeus>phalcon model empleado --get-set
+
+C:\xampp\htdocs\fox_zeus>phalcon model tipo_documento --get-set

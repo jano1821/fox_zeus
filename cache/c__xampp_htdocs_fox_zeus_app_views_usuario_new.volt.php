@@ -12,6 +12,9 @@
 </div>
 
 <?= $this->getContent() ?>
+<?= $this->partial('ajax/findEmpresa') ?>
+<?= $this->partial('ajax/findPersona') ?>
+<?= $this->partial('ajax/findAgencia') ?>
 
 <?php require_once('files/datosSesion.php');?>
 
@@ -25,10 +28,14 @@
 <div class="col-md-2">
     <label for="fieldCodPersonaUsuario" class="col-sm-2 control-label">Persona</label>
 </div>
-    <div class="col-md-3">
-        <?php if (isset($personaUsuario)) { ?>
-            <?= $this->tag->select(['codPersonaUsuario', $personaUsuario, 'useEmpty' => true, 'emptyText' => 'Seleccione Persona...', 'emptyValue' => '', 'using' => ['codPersonaUsuario', 'nombres'], 'class' => 'form-control']) ?>
-        <?php } ?>
+    <div class="col-md-4">
+        <?= $form->render('codPersona') ?>
+        <?= $form->render('nombrePersona') ?>
+    </div>
+    <div class="col-md-2">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalPersona" id="listaPersona">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
     </div>
 </div>
 
@@ -38,10 +45,31 @@
 <div class="col-md-2">
     <label for="fieldCodempresa" class="col-sm-2 control-label">Empresa</label>
 </div>
-<div class="col-md-3">
-    <?php if (isset($empresa)) { ?>
-                            <?= $this->tag->select(['codEmpresa', $empresa, 'useEmpty' => true, 'emptyText' => 'Seleccione Empresa...', 'emptyValue' => '', 'using' => ['codEmpresa', 'nombreEmpresa'], 'class' => 'form-control']) ?>
-                        <?php } ?>
+    <div class="col-md-4">
+        <?= $form->render('codEmpresa') ?>
+        <?= $form->render('nombreEmpresa') ?>
+    </div>
+    <div class="col-md-2">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalEmpresas" id="listaEmpresa">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-2">
+        <label for="fieldCodagencia" class="col-sm-2 control-label">Agencia</label>
+    </div>
+    <div class="col-md-4">
+        <?= $form->render('codAgencia') ?>
+        <?= $form->render('nombreAgencia') ?>
+    </div>
+    <div class="col-md-2">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalAgencia" id="listaAgencia">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
     </div>
 </div>
 
@@ -102,3 +130,50 @@
 </form>
 </div>
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#listaPersona').on("click",function(e){
+            e.preventDefault();
+            var params = "busquedaPersona="+document.getElementById("labelBusquedaPersona").value;
+            $("#contentPersona").html("Cargando Contenido.......");
+            $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostPersona') ?>", 
+                    params, 
+                    function(data) {
+                        $("#contentPersona").html(data.res.codigo);
+                    }).fail(function() {
+                        $("#contentPersona").html("No hay Resultados");
+                    })
+        });
+    });
+    $(document).ready(function() {
+        $('#listaEmpresa').on("click",function(e){
+            e.preventDefault();
+            var params = "busquedaEmpresa="+document.getElementById("labelBusquedaEmpresa").value;
+            $("#contentEmpresa").html("Cargando Contenido.......");
+            $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostEmpresa') ?>", 
+                    params, 
+                    function(data) {
+                        $("#contentEmpresa").html(data.res.codigo);
+                    }).fail(function() {
+                        $("#contentEmpresa").html("No hay Resultados");
+                    })
+        });
+    });
+
+    $(document).ready(function(){
+        $("#listaAgencia").click(function(e){
+            e.preventDefault();
+            var params = "busquedaAgencia="+document.getElementById("labelBusquedaAgencia").value;
+            $("#contentAgencia").html("Cargando Contenido.......");
+            $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostAgencia') ?>", 
+                    params, 
+                    function(data) {
+                        $("#contentAgencia").html(data.res.codigo);
+                    }).fail(function() {
+                        $("#contentAgencia").html("No hay Resultados");
+                    })
+        });
+    });
+    
+</script>

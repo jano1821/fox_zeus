@@ -165,7 +165,7 @@ class AgenciaController extends ControllerBase {
 
         $agencia = new Agencia();
         $agencia->Descripcion = $this->request->getPost("descripcion");
-        $agencia->Estadoregistro = $this->request->getPost("estadoRegistro");
+        $agencia->Estadoregistro = "S";
         $agencia->Usuarioinsercion = $username;
         $agencia->Fechainsercion = strftime("%Y-%m-%d",
                                             time());
