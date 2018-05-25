@@ -16,6 +16,8 @@ class MenuSistemaIndexForm extends Form {
         $codMenu = new Hidden('codMenu');
         $this->add($codMenu);
         
+        $codUsuario = new Hidden('codUsuario');
+        $this->add($codUsuario);
         
         $nombreSistema = new Text('nombreSistema',
                              array('placeholder' => 'Sistema', 'class' => 'form-control', 'disabled'=>'true'));
@@ -23,12 +25,6 @@ class MenuSistemaIndexForm extends Form {
         $codSistema = new Hidden('codSistema');
         $this->add($codSistema);
         
-        $nombreUsuario = new Text('nombreUsuario',
-                             array('placeholder' => 'Usuario', 'class' => 'form-control', 'disabled'=>'true'));
-        $this->add($nombreUsuario);
-        $codUsuario = new Hidden('codUsuario');
-        $this->add($codUsuario);
-
         $estadoRegistro = new Select('estadoRegistro',
                                  array(''=>'Seleccione Estado...','S' => 'Vigente', 'N' => 'No vigente'));
         $this->add($estadoRegistro);

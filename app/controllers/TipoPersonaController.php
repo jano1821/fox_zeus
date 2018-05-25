@@ -28,6 +28,9 @@ class TipoPersonaController extends ControllerBase {
             $this->response->redirect('index');
         }
         
+        $personaController = new PersonaController();
+        $persona = $personaController->findById($codPersona);
+        
         $resEmpleado = "";
         $resProveedor = "";
         $resCliente = "";
@@ -148,7 +151,7 @@ class TipoPersonaController extends ControllerBase {
                                $resCliente);
         $this->tag->setDefault("codPersona",
                                $codPersona);
-        
+        $this->view->setVar("nombrePersona",$persona->nombrePersona." ".$persona->apePat." ".$persona->apeMat);
         $this->view->form = new tipoPersonaForm();
     }
 
@@ -212,8 +215,8 @@ class TipoPersonaController extends ControllerBase {
                     return;
                 }
             }else{
-                $regEmpleado->fechaInsercion = $empleado->Fechainsercion;
-                $regEmpleado->usuarioInsercion = $empleado->Usuarioinsercion;
+                $regEmpleado->fechaInsercion = $empleado[0]->fechaInsercion;
+                $regEmpleado->usuarioInsercion = $empleado[0]->usuarioInsercion;
                 $regEmpleado->fechaModificacion = $username;
                 $regEmpleado->usuarioModificacion = strftime("%Y-%m-%d",
                                                        time());
@@ -273,6 +276,8 @@ class TipoPersonaController extends ControllerBase {
                     return;
                 }
             }else{
+                $regCliente->fechaInsercion = $cliente[0]->fechaInsercion;
+                $regCliente->usuarioInsercion = $cliente[0]->usuarioInsercion;
                 $regCliente->fechaModificacion = $username;
                 $regCliente->usuarioModificacion = strftime("%Y-%m-%d",
                                                        time());
@@ -333,6 +338,8 @@ class TipoPersonaController extends ControllerBase {
                     return;
                 }
             }else{
+                $regProveedor->fechaInsercion = $proveedor[0]->fechaInsercion;
+                $regProveedor->usuarioInsercion = $proveedor[0]->usuarioInsercion;
                 $regProveedor->fechaModificacion = $username;
                 $regProveedor->usuarioModificacion = strftime("%Y-%m-%d",
                                                        time());

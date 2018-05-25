@@ -25,6 +25,7 @@
             <th>Estado Registro</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         <tbody>
         <?php if (isset($page->items)) { ?>
@@ -35,7 +36,7 @@
             <td><?= $empresa->limiteUsuarios ?></td>
             <td><?= $empresa->identificadorEmpresa ?></td>
             <td><?= $empresa->estado ?></td>
-
+                <td><?= $this->tag->linkTo(['empresa_sistema/index/' . $empresa->codEmpresa, 'Vincular']) ?></td>
                 <td><?= $this->tag->linkTo(['empresa/edit/' . $empresa->codEmpresa, 'Editar']) ?></td>
                 <td><?= $this->tag->linkTo(['empresa/delete/' . $empresa->codEmpresa, 'Borrar']) ?></td>
             </tr>

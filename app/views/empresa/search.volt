@@ -25,6 +25,7 @@
             <th>Estado Registro</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
         <tbody>
         {% if page.items is defined %}
@@ -35,7 +36,7 @@
             <td>{{ empresa.limiteUsuarios }}</td>
             <td>{{ empresa.identificadorEmpresa }}</td>
             <td>{{ empresa.estado }}</td>
-
+                <td>{{ link_to("empresa_sistema/index/"~empresa.codEmpresa, "Vincular") }}</td>
                 <td>{{ link_to("empresa/edit/"~empresa.codEmpresa, "Editar") }}</td>
                 <td>{{ link_to("empresa/delete/"~empresa.codEmpresa, "Borrar") }}</td>
             </tr>

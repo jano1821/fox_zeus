@@ -412,4 +412,41 @@ class PersonaController extends ControllerBase {
 
         return;
     }
+
+    public function findById($codPersona) {
+        $persona = $this->modelsManager->createBuilder()
+                                ->columns("pe.codPersona," .
+                                                        "pe.nombrePersona," .
+                                                        "pe.apePat," .
+                                                        "pe.apeMat," .
+                                                        "if(pe.sexo='M','Masculino','Femenino') as sexo," .
+                                                        "pe.edad," .
+                                                        "pe.numeroDocumento," .
+                                                        "pe.razonSocial," .
+                                                        "td.descripcion as tipoDocumento," .
+                                                        "if(pe.tipoPersona='N','Natural','Jurídica') as tipoPersona," .
+                                                        "em.nombreEmpresa," .
+                                                        "if(pe.estadoRegistro='S','Vigente','No Vigente') as estado")
+                                ->addFrom('Persona',
+                                          'pe')
+                                ->innerJoin('TipoDocumento',
+                                            'td.codTipoDocumento = pe.codTipoDocumento',
+                                            'td')
+                                ->innerJoin('Empresa',
+                                            'em.codEmpresa = pe.codEmpresa',
+                                            'em')
+                                ->andWhere('pe.codPersona = :codePersona: AND ' .
+                                           'pe.estadoRegistro = :estado: ',
+                                           [
+                                                'codePersona' => $codPersona,
+                                                'estado' => "S",
+                                           ]
+                                )
+                                ->getQuery()
+                                ->execute();
+        if (count($persona) <= 0) {
+            $persona = array(array('', '', '', '', '', '', '', '', '', '', '', ''));
+        }
+        return $persona[0];
+    }
 }

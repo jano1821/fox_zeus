@@ -329,7 +329,7 @@ class EmpresaController extends ControllerBase {
                         'action' => "index"
         ]);
     }
-    
+
     public function resetAction() {
         parent::validarSession();
 
@@ -341,5 +341,34 @@ class EmpresaController extends ControllerBase {
         ]);
 
         return;
+    }
+
+    public function findById($codEmpresa) {
+        parent::validarSession();
+
+        $empresa = $this->modelsManager->createBuilder()
+                                ->columns("em.codEmpresa," .
+                                                        "em.nombreEmpresa," .
+                                                        "em.razonSocial," .
+                                                        "em.limiteUsuarios," .
+                                                        "em.identificadorEmpresa, " .
+                                                        "if(em.estadoRegistro='S','Vigente','No Vigente') as estado")
+                                ->addFrom('Empresa',
+                                          'em')
+                                ->andWhere('em.codEmpresa = :codEmpresa: AND ' .
+                                                        'em.estadoRegistro = :estado: ',
+                                           [
+                                                'codEmpresa' => $codEmpresa,
+                                                'estado' => "S",
+                                                        ]
+                                )
+                                ->orderBy('em.nombreEmpresa')
+                                ->getQuery()
+                                ->execute();
+
+        if (count($empresa) <= 0) {
+            $empresa = array(array("", "", "", "", "", "", ""));
+        }
+        return $empresa[0];
     }
 }
