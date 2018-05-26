@@ -27,6 +27,7 @@
             <th class='text-center'></th>
             <th class='text-center'></th>
             <th class='text-center'></th>
+            <th class='text-center'></th>
             </tr>
         <tbody>
         <?php if (isset($page->items)) { ?>
@@ -37,7 +38,8 @@
             <td><?= $usuario->cantidadIntentos ?></td>
             <td><?= $usuario->indicadorUsuarioAdministrador ?></td>
             <td><?= $usuario->estado ?></td>
-            <td><?= $this->tag->linkTo(['menu_sistema/index/' . $usuario->codUsuario, 'Vincular']) ?></td>
+            <td><?= $this->tag->linkTo(['menu_usuario/index/' . $usuario->codUsuario, 'Vincular Menu']) ?></td>
+            <td><?= $this->tag->linkTo(['menu_sistema/index/' . $usuario->codUsuario, 'Vincular Sistema']) ?></td>
             <td><?= $this->tag->linkTo(['usuario/edit/' . $usuario->codUsuario, 'Editar']) ?></td>
             <td><?= $this->tag->linkTo(['usuario/delete/' . $usuario->codUsuario, 'Borrar']) ?></td>
 

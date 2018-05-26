@@ -27,6 +27,7 @@
             <th class='text-center'></th>
             <th class='text-center'></th>
             <th class='text-center'></th>
+            <th class='text-center'></th>
             </tr>
         <tbody>
         {% if page.items is defined %}
@@ -37,7 +38,8 @@
             <td>{{ usuario.cantidadIntentos }}</td>
             <td>{{ usuario.indicadorUsuarioAdministrador }}</td>
             <td>{{ usuario.estado }}</td>
-            <td>{{ link_to("menu_sistema/index/"~usuario.codUsuario, "Vincular") }}</td>
+            <td>{{ link_to("menu_usuario/index/"~usuario.codUsuario, "Vincular Menu") }}</td>
+            <td>{{ link_to("menu_sistema/index/"~usuario.codUsuario, "Vincular Sistema") }}</td>
             <td>{{ link_to("usuario/edit/"~usuario.codUsuario, "Editar") }}</td>
             <td>{{ link_to("usuario/delete/"~usuario.codUsuario, "Borrar") }}</td>
 
