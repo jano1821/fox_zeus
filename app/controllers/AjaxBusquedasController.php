@@ -260,7 +260,6 @@ class AjaxBusquedasController extends ControllerBase {
             if ($this->request->isAjax() == true) {
                 if ($this->session->has("Usuario")) {
                     $usuarioSesion = $this->session->get("Usuario");
-                    $codUsuarioSession = $usuarioSesion['codUsuario'];
                     $codEmpresa = $usuarioSesion['codEmpresa'];
                 }else {
                     $this->session->destroy();
@@ -269,8 +268,20 @@ class AjaxBusquedasController extends ControllerBase {
 
                 $labelBusquedaSistema = $this->request->getPost("busquedaSistema");
                 $codUsuario = $this->request->getPost("codUsuario");
+                $codMenu = $this->request->getPost("codMenu");
 
-
+                $menu = $this->modelsManager->createBuilder()
+                                            ->columns("me.tipoMenu ")
+                                            ->addFrom('Menu',
+                                                      'me')
+                                            ->andWhere('me.codMenu = :codigo: ',
+                                                       [
+                                                            'codigo' => $codMenu,
+                                                                    ]
+                                            )
+                                            ->getQuery()
+                                            ->execute();
+                
                 $sistemas = $this->modelsManager->createBuilder()
                                         ->columns("ms.codSistema ")
                                         ->addFrom('MenuSistema',
@@ -282,7 +293,7 @@ class AjaxBusquedasController extends ControllerBase {
                                                                 'us.codEmpresa = :empresa: AND ' .
                                                                 'us.estadoRegistro = :estado: ',
                                                    [
-                                                        'usuario' => $codUsuarioSession,
+                                                        'usuario' => $codUsuario,
                                                         'empresa' => $codEmpresa,
                                                         'estado' => "S",
                                                                 ]
@@ -300,20 +311,26 @@ class AjaxBusquedasController extends ControllerBase {
                 $sistema = $this->modelsManager->createBuilder()
                                         ->columns("si.codSistema, " .
                                                                 "si.etiquetaSistema ")
-                                        ->addFrom('Sistema',
-                                                  'si')
-                                        ->inWhere('si.codSistema',
-                                                  $arraySistemas)
+                                        ->addFrom('EmpresaSistema',
+                                                  'es')
+                                        ->innerJoin('Sistema',
+                                                    'es.codSistema = si.codSistema ',
+                                                    'si')
+                                        ->notInWhere('si.codSistema',
+                                                     $arraySistemas)
                                         ->andWhere('si.etiquetaSistema like :etiquetaSistema: AND ' .
-                                                                'si.estadoRegistro like :estado: ',
+                                                                'si.estadoRegistro like :estado: AND ' .
+                                                                'si.indicadorAdministrador = :indicador: ' ,
                                                    [
                                                         'etiquetaSistema' => "%" . $labelBusquedaSistema . "%",
                                                         'estado' => "S",
+                                                        'indicador' => $menu[0]->tipoMenu,
                                                                 ]
                                         )
                                         ->orderBy('si.etiquetaSistema')
                                         ->getQuery()
                                         ->execute();
+
                 $tabla = '<table class="table"><tr  class="warning">
                                     <th>N°</th>
                                     <th>Sistema</th>
