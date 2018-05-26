@@ -19,6 +19,43 @@ class Proveedor extends \Phalcon\Mvc\Model
     protected $codEmpresa;
 
     /**
+     *
+     * @var string
+     * @Column(type="varchar", length=1, nullable=false)
+     */
+    public $estadoRegistro;
+    
+    /**
+     *
+     * @var datetime
+     * @Column(type="datetime", nullable=false)
+     */
+    public $fechaInsercion;
+
+    /**
+     *
+     * @var string
+     * @Primary
+     * @Column(type="varchar", length=30, nullable=false)
+     */
+    public $usuarioInsercion;
+
+    /**
+     *
+     * @var datetime
+     * @Column(type="datetime", nullable=false)
+     */
+    public $fechaModificacion;
+
+    /**
+     *
+     * @var string
+     * @Primary
+     * @Column(type="varchar", length=30, nullable=false)
+     */
+    public $usuarioModificacion;
+    
+    /**
      * Method to set the value of field codPersona
      *
      * @param integer $codPersona
@@ -59,11 +96,50 @@ class Proveedor extends \Phalcon\Mvc\Model
      *
      * @return integer
      */
-    public function getCodEmpresa()
-    {
+    public function getCodEmpresa() {
         return $this->codEmpresa;
     }
 
+    function getEstadoRegistro() {
+        return $this->estadoRegistro;
+    }
+
+    function getFechaInsercion() {
+        return $this->fechaInsercion;
+    }
+
+    function getUsuarioInsercion() {
+        return $this->usuarioInsercion;
+    }
+
+    function getFechaModificacion() {
+        return $this->fechaModificacion;
+    }
+
+    function getUsuarioModificacion() {
+        return $this->usuarioModificacion;
+    }
+
+    function setEstadoRegistro($estadoRegistro) {
+        $this->estadoRegistro = $estadoRegistro;
+    }
+
+    function setFechaInsercion(datetime $fechaInsercion) {
+        $this->fechaInsercion = $fechaInsercion;
+    }
+
+    function setUsuarioInsercion($usuarioInsercion) {
+        $this->usuarioInsercion = $usuarioInsercion;
+    }
+
+    function setFechaModificacion(datetime $fechaModificacion) {
+        $this->fechaModificacion = $fechaModificacion;
+    }
+
+    function setUsuarioModificacion($usuarioModificacion) {
+        $this->usuarioModificacion = $usuarioModificacion;
+    }
+    
     /**
      * Initialize method for model.
      */

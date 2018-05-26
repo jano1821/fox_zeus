@@ -3,7 +3,7 @@
 <div class="panel panel-info">
 <div class="panel-heading">
 <div class="btn-group pull-right">
-<?= $this->tag->linkTo(['menu_sistema', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
+<?= $this->tag->linkTo(['menu_sistema/index/' . $codigoUsuario, '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
 <?= $this->tag->linkTo(['menu_sistema/new', '<i class=\'glyphicon glyphicon-plus\'></i> Nuevo Vinculo Menu Sistema', 'class' => 'btn btn-info']) ?>
        </div>
 <h4><i class='glyphicon glyphicon-search'></i> Resultado de Busqueda</h4>
@@ -45,6 +45,7 @@
 
 <?= $this->tag->hiddenField(['pagina']) ?>
 <?= $this->tag->hiddenField(['avance']) ?>
+<?= $this->tag->hiddenField(['codUsuario']) ?>
 
 <div class="row">
 <div class="col-sm-2">

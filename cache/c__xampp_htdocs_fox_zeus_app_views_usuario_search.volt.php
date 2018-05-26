@@ -24,7 +24,8 @@
             <th>CantidadIntentos</th>
             <th>IndicadorUsuarioAdministrador</th>
             <th>EstadoRegistro</th>
-                <th class='text-center'></th>
+            <th class='text-center'></th>
+            <th class='text-center'></th>
             <th class='text-center'></th>
             </tr>
         <tbody>
@@ -36,9 +37,9 @@
             <td><?= $usuario->cantidadIntentos ?></td>
             <td><?= $usuario->indicadorUsuarioAdministrador ?></td>
             <td><?= $usuario->estado ?></td>
-
-<td><?= $this->tag->linkTo(['usuario/edit/' . $usuario->codUsuario, 'Editar']) ?></td>
-                <td><?= $this->tag->linkTo(['usuario/delete/' . $usuario->codUsuario, 'Borrar']) ?></td>
+            <td><?= $this->tag->linkTo(['menu_sistema/index/' . $usuario->codUsuario, 'Vincular']) ?></td>
+            <td><?= $this->tag->linkTo(['usuario/edit/' . $usuario->codUsuario, 'Editar']) ?></td>
+            <td><?= $this->tag->linkTo(['usuario/delete/' . $usuario->codUsuario, 'Borrar']) ?></td>
 
             </tr>
         <?php } ?>

@@ -196,15 +196,13 @@ class UsuarioController extends ControllerBase {
 
             return;
         }else {
-            /*$usuarioSesion = $this->session->get("Usuario");
+            $usuarioSesion = $this->session->get("Usuario");
             $username = $usuarioSesion['nombreUsuario'];
             $parametrosGenerales = parent::obtenerParametros('LLAVE_HASH');
             $password = password_hash($this->request->getPost("passwordUsuario"),
                                                               PASSWORD_BCRYPT,
                                                               array("cost" => 12, "salt" => $parametrosGenerales));
-*/
-            $username = "acnunez";
-            $password = "123456";
+
             $usuario = new Usuario();
             $usuario->Codusuario = $this->request->getPost("codUsuario");
             $usuario->Codempresa = $this->request->getPost("codEmpresa");
@@ -232,7 +230,7 @@ class UsuarioController extends ControllerBase {
                 return;
             }
 
-            $this->flash->success("usuario was created successfully");
+            $this->flash->success("Usuario Registrado Correctamente");
 
             $this->dispatcher->forward([
                             'controller' => "usuario",
@@ -386,5 +384,35 @@ class UsuarioController extends ControllerBase {
         ]);
 
         return;
+    }
+    
+    public function findById($codUsuario){
+        $usuario = $this->modelsManager->createBuilder()
+                                ->columns("em.nombreEmpresa," .
+                                                        "us.nombreUsuario," .
+                                                        "us.codUsuario," .
+                                                        "us.codEmpresa," .
+                                                        "us.cantidadIntentos," .
+                                                        "if(us.indicadorUsuarioAdministrador<>'S',if(us.indicadorUsuarioAdministrador='Z','Super Administrador', 'No Administrador'),'Administrador') as indicadorUsuarioAdministrador," .
+                                                        "if(us.estadoRegistro='S','Vigente','No Vigente') as estado")
+                                ->addFrom('Usuario',
+                                          'us')
+                                ->innerJoin('Empresa',
+                                            'us.codEmpresa = em.codEmpresa',
+                                            'em')
+                                ->andWhere('us.codUsuario = :codUsuario: AND ' .
+                                                        'us.estadoRegistro = :estado: ',
+                                           [
+                                                'codUsuario' => $codUsuario,
+                                                'estado' => "S",
+                                                        ]
+                                )
+                                ->getQuery()
+                                ->execute();
+        
+        if (count($usuario)<= 0){
+            $usuario = array(array("","","","","","",""));
+        }
+        return $usuario[0];
     }
 }
