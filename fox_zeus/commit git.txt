@@ -1,13 +1,18 @@
 Microsoft Windows [Versión 6.1.7601]
 Copyright (c) 2009 Microsoft Corporation. Reservados todos los derechos.
 
+
 C:\Users\acnunez>cd C:\alejandro\otros\base_datos
+
 
 C:\alejandro\otros\base_datos>git init
 
+
 C:\alejandro\otros\base_datos>git add .
 
+
 C:\alejandro\otros\base_datos>git commit -m "acnunez - fox_zeus 19.01.2018"
+
 
 C:\alejandro\otros\base_datos>git remote add origin https://github.com/jano1821/base_datos.git
 
