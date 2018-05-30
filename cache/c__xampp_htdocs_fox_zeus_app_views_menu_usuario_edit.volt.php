@@ -13,8 +13,7 @@
             </div>
 
             <?= $this->getContent() ?>
-            <?= $this->partial('ajax/findMenu') ?>
-            <?= $this->tag->form(['menu_usuario/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
+            <?= $this->tag->form(['menu_usuario/save', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
             <div class="table">
 
@@ -45,11 +44,6 @@
                                 <?= $form->render('nombreMenu') ?>
                                 <?= $form->render('codMenu') ?>
                             </div>
-                            <div class="col-md-2">
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalMenu" id="listaMenu">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -72,7 +66,7 @@
                     </div>
                     <div class="col-md-2">
                         <?= $this->tag->linkTo(['menu_sistema/reset', 'Limpiar', 'class' => 'btn btn-default']) ?>   
-                        <?= $form->render('buscar') ?>
+                        <?= $form->render('save') ?>
                         <?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
                     </div>
                 </div>

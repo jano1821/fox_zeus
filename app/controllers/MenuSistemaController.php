@@ -237,7 +237,8 @@ class MenuSistemaController extends ControllerBase {
 
             $this->dispatcher->forward([
                             'controller' => "menu_sistema",
-                            'action' => 'new'
+                            'action' => 'new',
+                            'params' => [$this->request->getPost("codUsuario")]
             ]);
 
             return;

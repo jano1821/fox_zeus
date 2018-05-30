@@ -11,9 +11,16 @@ class AgenciaNewForm extends Form {
 
     public function initialize() {
         
+        $nombreEmpresa = new Text('nombreEmpresa',
+                             array('placeholder' => ' Nombre de Empresa', 'class' => 'form-control'));
+        $nombreEmpresa->addValidator(new PresenceOf(array('message' => 'Se Requiere Nombre de Empresa')));
+        $this->add($nombreEmpresa);
+        $codEmpresa = new Hidden('codEmpresa');
+        $this->add($codEmpresa);
+        
         $nombreAgencia = new Text('descripcion',
                              array('placeholder' => ' Nombre de Agencia', 'class' => 'form-control'));
-        $nombreAgencia->addValidator(new PresenceOf(array('message' => 'Se Requiere Nombre de Empresa')));
+        $nombreAgencia->addValidator(new PresenceOf(array('message' => 'Se Requiere Nombre de Agencia')));
         $this->add($nombreAgencia);
         
         $estadoRegistro = new Select('estadoRegistro',

@@ -6,29 +6,28 @@ use Phalcon\Forms\Form,
     Phalcon\Forms\Element\Select,
     Phalcon\Validation\Validator\Identical;
 
-class SistemaIndexForm extends Form {
+class MenuUsuarioIndexForm extends Form {
 
     public function initialize() {
         
-        $etiquetaSistema = new Text('etiquetaSistema',
-                             array('placeholder' => 'Etiqueta de Sistema', 'class' => 'form-control'));
-        $this->add($etiquetaSistema);
+        $nombreMenu = new Text('nombreMenu',
+                             array('placeholder' => 'Menu', 'class' => 'form-control', 'disabled'=>'true'));
+        $this->add($nombreMenu);
+        $codMenu = new Hidden('codMenu');
+        $this->add($codMenu);
         
-        $urlSistema = new Text('urlSistema',
-                             array('placeholder' => 'URL de Sistema', 'class' => 'form-control'));
-        $this->add($urlSistema);
+        $codUsuario = new Hidden('codUsuario');
+        $this->add($codUsuario);
         
-        $urlIcono = new Text('urlIcono',
-                             array('placeholder' => 'Icono', 'class' => 'form-control'));
-        $this->add($urlIcono);
-
+        $nombreSistema = new Text('nombreSistema',
+                             array('placeholder' => 'Sistema', 'class' => 'form-control', 'disabled'=>'true'));
+        $this->add($nombreSistema);
+        $codSistema = new Hidden('codSistema');
+        $this->add($codSistema);
+        
         $estadoRegistro = new Select('estadoRegistro',
                                  array(''=>'Seleccione Estado...','S' => 'Vigente', 'N' => 'No vigente'));
         $this->add($estadoRegistro);
-        
-        $indicadorAdministrador = new Select('indicadorAdministrador',
-                                 array(''=>'Seleccione Indicador...','S' => 'Configuracion', 'N' => 'Sistema'));
-        $this->add($indicadorAdministrador);
 
         $csrf = new Hidden('csrf');
         $csrf->addValidator(new Identical(array('value' => $this->security->getSessionToken(), 'message' => '¡La validación CSRF ha fallado!')));

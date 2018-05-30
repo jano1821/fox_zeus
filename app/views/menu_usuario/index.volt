@@ -7,14 +7,13 @@
                     {{ link_to("usuario", "<i class='glyphicon glyphicon-chevron-left'></i> Volver Busqueda de Usuario","class":"btn btn-info") }}
                     {{ link_to("menu_usuario/new/"~codigoUsuario, "<i class='glyphicon glyphicon-plus'></i> Nuevo Vinculo","class":"btn btn-info") }}
                 </div>
-                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Vinculos Menu Sistemas</h4>
+                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Vinculos Menu Usuario</h4>
             </div>
             <div class="page-header">
             </div>
 
             {{ content() }}
             {{ partial("ajax/findMenu") }}
-            {{ partial("ajax/findSistema") }}
             {{ form("menu_usuario/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
 
             <div class="table">
@@ -48,27 +47,6 @@
                             </div>
                             <div class="col-md-2">
                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalMenu" id="listaMenu">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-2">
-                        <label for="fieldCodsistema">Sistema</label>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-5">
-                                {{ form.render('nombreSistema') }}
-                                {{ form.render('codSistema') }}
-                            </div>
-                            <div class="col-md-2">
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalSistema" id="listaSistemas">
                                     <span class="glyphicon glyphicon-search"></span>
                                 </button>
                             </div>
@@ -119,22 +97,5 @@
                 })
             });
         });
-
-        $(document).ready(function () {
-            $("#listaSistemas").click(function (e) {
-                e.preventDefault();
-                var params = "busquedaSistema=" + document.getElementById("labelBusquedaSistema").value;
-                params = "codUsuario=" + document.getElementById("codUsuario").value;
-                $("#contentSistema").html("Cargando Contenido.......");
-                $.post("{{ url('AjaxBusquedas/ajaxPostSistema') }}",
-                        params,
-                        function (data) {
-                            $("#contentSistema").html(data.res.codigo);
-                        }).fail(function () {
-                    $("#contentSistema").html("No hay Resultados");
-                })
-            });
-        });
-
 
     </script>

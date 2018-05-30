@@ -125,6 +125,7 @@
                 e.preventDefault();
                 var params = "busquedaSistema=" + document.getElementById("labelBusquedaSistema").value;
                 params = "codUsuario=" + document.getElementById("codUsuario").value;
+                params = "codMenu=" + document.getElementById("codMenu").value;
                 $("#contentSistema").html("Cargando Contenido.......");
                 $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostSistema') ?>",
                         params,

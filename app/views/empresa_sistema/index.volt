@@ -78,23 +78,22 @@
         </div>
     </div>
 </div>                  
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script type="text/javascript">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
 
-        $(document).ready(function () {
-            $("#listaSistemas").click(function (e) {
-                e.preventDefault();
-                var params = "busquedaSistema=" + document.getElementById("labelBusquedaSistema").value;
-                $("#contentSistema").html("Cargando Contenido.......");
-                $.post("{{ url('AjaxBusquedas/ajaxPostSistemaTotal') }}",
-                        params,
-                        function (data) {
-                            $("#contentSistema").html(data.res.codigo);
-                        }).fail(function () {
-                    $("#contentSistema").html("No hay Resultados");
-                })
-            });
+    $(document).ready(function () {
+        $("#listaSistemas").click(function (e) {
+            e.preventDefault();
+            var params = "busquedaSistema=" + document.getElementById("labelBusquedaSistema").value;
+            params += "&codEmpresa=" + document.getElementById("codEmpresa").value;
+            $("#contentSistema").html("Cargando Contenido.......");
+            $.post("{{ url('AjaxBusquedas/ajaxPostEmpresaSistema') }}",
+                    params,
+                    function (data) {
+                        $("#contentSistema").html(data.res.codigo);
+                    }).fail(function () {
+                $("#contentSistema").html("No hay Resultados");
+            })
         });
-
-
-    </script>
+    });
+</script>

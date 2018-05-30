@@ -1,69 +1,73 @@
 <div class="row">
-    <nav>
-        <ul class="pager">
-            <li class="previous">{{ link_to("menu_usuario/index", "Go Back") }}</li>
-            <li class="next">{{ link_to("menu_usuario/new", "Create ") }}</li>
-        </ul>
-    </nav>
-</div>
+    <div class="container">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="btn-group pull-right">
+                    {{ link_to("menu_usuario/index/"~codigoUsuario, "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
+                    {{ link_to("menu_usuario/new/"~codigoUsuario, "<i class='glyphicon glyphicon-plus'></i> Nuevo Vinculo Menu Usuario","class":"btn btn-info") }}
+                </div>
+                <h4><i class='glyphicon glyphicon-search'></i> Resultado de Busqueda Menu Usuario</h4>
+            </div>
 
-<div class="page-header">
-    <h1>Search result</h1>
-</div>
+            <div class="page-header">
+            </div>
 
-{{ content() }}
+            {{ content() }}
 
-<div class="row">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>CodMenu</th>
-            <th>CodUsuario</th>
-            <th>EstadoRegistro</th>
-            <th>UsuarioInsercion</th>
-            <th>FechaInsercion</th>
-            <th>UsuarioModificacion</th>
-            <th>FechaModificacion</th>
+            {{ form("menu_usuario/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+            <div class="table-responsive">
+                <table class="table">
+                    <tr  class="info">
+                        <th>Menu</th>
+                        <th>Usuario</th>
+                        <th>Estado</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tbody>
+                        {% if page.items is defined %}
+                            {% for menu_usuario in page.items %}
+                                <tr>
+                                    <td>{{ menu_usuario.descripcion }}</td>
+                                    <td>{{ menu_usuario.nombreUsuario }}</td>
+                                    <td>{{ menu_usuario.estado }}</td>
 
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% if page.items is defined %}
-        {% for menu_usuario in page.items %}
-            <tr>
-                <td>{{ menu_usuario.codMenu }}</td>
-            <td>{{ menu_usuario.codUsuario }}</td>
-            <td>{{ menu_usuario.estadoRegistro }}</td>
-            <td>{{ menu_usuario.usuarioInsercion }}</td>
-            <td>{{ menu_usuario.fechaInsercion }}</td>
-            <td>{{ menu_usuario.usuarioModificacion }}</td>
-            <td>{{ menu_usuario.fechaModificacion }}</td>
+                                    <td>{{ link_to("menu_usuario/edit/"~menu_usuario.codMenu~"/"~menu_usuario.codUsuario, "Editar") }}</td>
+                                    <td>{{ link_to("menu_usuario/delete/"~menu_usuario.codMenu~"/"~menu_usuario.codUsuario, "Borrar") }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
 
-                <td>{{ link_to("menu_usuario/edit/"~menu_usuario.codMenu, "Edit") }}</td>
-                <td>{{ link_to("menu_usuario/delete/"~menu_usuario.codMenu, "Delete") }}</td>
-            </tr>
-        {% endfor %}
-        {% endif %}
-        </tbody>
-    </table>
-</div>
+            {{ hidden_field("pagina") }}
+            {{ hidden_field("avance") }}
+            {{ hidden_field("codUsuario") }}
 
-<div class="row">
-    <div class="col-sm-1">
-        <p class="pagination" style="line-height: 1.42857;padding: 6px 12px;">
-            {{ page.current~"/"~page.total_pages }}
-        </p>
+            <div class="row">
+                <div class="col-sm-2">
+                    <p class="pagination" style="line-height: 1.42857;padding: 6px 12px;">
+                        {{ "Página "~page.current~" de "~page.total_pages }}
+                    </p>
+                </div>
+                <div class="col-sm-10">
+                    <nav>
+                        <ul class="pagination">
+                            {{ submit_button('Primero', 'class': 'btn btn-info','onclick':'paginacion(0);') }}
+                            {{ submit_button('Anterior', 'class': 'btn btn-info','onclick':'paginacion(-1);') }}
+                            {{ submit_button('Siguiente', 'class': 'btn btn-info','onclick':'paginacion(1);') }}
+                            {{ submit_button('Ultimo', 'class': 'btn btn-info','onclick':'paginacion(2);') }}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            </form>
+        </div>
     </div>
-    <div class="col-sm-11">
-        <nav>
-            <ul class="pagination">
-                <li>{{ link_to("menu_usuario/search", "First") }}</li>
-                <li>{{ link_to("menu_usuario/search?page="~page.before, "Previous") }}</li>
-                <li>{{ link_to("menu_usuario/search?page="~page.next, "Next") }}</li>
-                <li>{{ link_to("menu_usuario/search?page="~page.last, "Last") }}</li>
-            </ul>
-        </nav>
-    </div>
 </div>
+<script type="text/javascript">
+    function paginacion(valor) {
+        document.getElementById('avance').value = valor;
+    }
+</script>

@@ -124,7 +124,8 @@
             $("#listaSistemas").click(function (e) {
                 e.preventDefault();
                 var params = "busquedaSistema=" + document.getElementById("labelBusquedaSistema").value;
-                params = "codUsuario=" + document.getElementById("codUsuario").value;
+                params += "&codUsuario=" + document.getElementById("codUsuario").value;
+                params += "&codMenu=" + document.getElementById("codMenu").value;
                 $("#contentSistema").html("Cargando Contenido.......");
                 $.post("{{ url('AjaxBusquedas/ajaxPostSistema') }}",
                         params,

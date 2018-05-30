@@ -3,18 +3,17 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="btn-group pull-right">
-                    <?= $this->tag->linkTo(['menu', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver al Menu', 'class' => 'btn btn-info']) ?>
-                    <?= $this->tag->linkTo(['usuario', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver Busqueda de Usuario', 'class' => 'btn btn-info']) ?>
-                    <?= $this->tag->linkTo(['menu_usuario/new/' . $codigoUsuario, '<i class=\'glyphicon glyphicon-plus\'></i> Nuevo Vinculo', 'class' => 'btn btn-info']) ?>
+                    <?= $this->tag->linkTo(['menu_usuario/index/' . $codigoUsuario, '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver a Búsqueda', 'class' => 'btn btn-info']) ?>
                 </div>
-                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Vinculos Menu Usuario</h4>
+                <h4><i class='glyphicon glyphicon-record'></i>Nuevo Vinculo Menu Usuario</h4>
             </div>
+
             <div class="page-header">
             </div>
 
             <?= $this->getContent() ?>
             <?= $this->partial('ajax/findMenu') ?>
-            <?= $this->tag->form(['menu_usuario/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
+            <?= $this->tag->form(['menu_usuario/create', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
             <div class="table">
 
@@ -37,7 +36,7 @@
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-2">
-                        <label for="fieldCodmenu">Menu</label>
+                        <label for="fieldCodmenu" class="col-sm-2 control-label">Menu</label>
                     </div>
                     <div class="col-md-6">
                         <div class="row">
@@ -54,16 +53,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-2">
-                        <label for="fieldEstadoregistro">EstadoRegistro</label>
-                    </div>
-                    <div class="col-md-3">
-                        <?= $form->render('estadoRegistro', ['class' => 'form-control']) ?>
-                    </div>
-                </div>
+                <?= $form->render('codUsuario') ?>
 
                 <div class="form-group">
                     <div class="col-md-3">
@@ -71,8 +61,7 @@
                     <div class="col-md-2">
                     </div>
                     <div class="col-md-2">
-                        <?= $this->tag->linkTo(['menu_sistema/reset', 'Limpiar', 'class' => 'btn btn-default']) ?>   
-                        <?= $form->render('buscar') ?>
+                        <?= $form->render('save') ?>
                         <?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
                     </div>
                 </div>
@@ -80,6 +69,7 @@
             </form>
         </div>
     </div>
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -88,7 +78,7 @@
                 var params = "busquedaMenu=" + document.getElementById("labelBusquedaMenu").value;
                 params = "codUsuario=" + document.getElementById("codUsuario").value;
                 $("#contentMenu").html("Cargando Contenido.......");
-                $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostMenu') ?>",
+                $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostNoMenuUsuario') ?>",
                         params,
                         function (data) {
                             $("#contentMenu").html(data.res.codigo);

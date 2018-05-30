@@ -71,9 +71,9 @@
             $("#listaSistemas").click(function (e) {
                 e.preventDefault();
                 var params = "busquedaSistema=" + document.getElementById("labelBusquedaSistema").value;
-                    params = "codEmpresa=" + document.getElementById("codEmpresa").value;
+                    params += "&codEmpresa=" + document.getElementById("codEmpresa").value;
                 $("#contentSistema").html("Cargando Contenido.......");
-                $.post("{{ url('AjaxBusquedas/ajaxPostSistemaAgregar') }}",
+                $.post("{{ url('AjaxBusquedas/ajaxPostEmpresaSistemaNoVinculado') }}",
                         params,
                         function (data) {
                             $("#contentSistema").html(data.res.codigo);

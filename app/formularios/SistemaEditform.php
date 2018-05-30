@@ -31,7 +31,7 @@ class SistemaEditForm extends Form {
         $this->add($estadoRegistro);
 
         $indicadorAdministrador = new Select('indicadorAdministrador',
-                                 array(''=>'Seleccione Indicador...','S' => 'Administrador', 'N' => 'No Administrador'));
+                                 array(''=>'Seleccione Indicador...','S' => 'Configuracion', 'N' => 'Sistema'));
         $indicadorAdministrador->addValidator(new PresenceOf(array('message' => 'Se Requiere Indicador de Administrador')));
         $this->add($indicadorAdministrador);
         
