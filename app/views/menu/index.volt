@@ -22,19 +22,19 @@
             <div class="main clearfix">
                 {% if menu is defined %}
                     {% for items in menu %}
-                        <nav id={{items.id}} class="nav">
+                        <nav id={{items.id}} class = "nav">
                             <ul>
                                 {% if menuSistema is defined %}
                                     {% for sistema in menuSistema %}
                                         {% if sistema.codMenu == items.codMenu %}
-                                        <li>
-                                            <a href="{{sistema.url}}">
-                                                <span class="icon">
-                                                    <i aria-hidden="true" class="{{sistema.urlIcono}}"></i>
-                                                </span>
-                                                <span>{{sistema.etiquetaSistema}}</span>
-                                            </a>
-                                        </li>
+                                            <li>
+                                                <a href="{{sistema.url}}">
+                                                    <span class="icon">
+                                                        <i aria-hidden="true" class="{{sistema.urlIcono}}"></i>
+                                                    </span>
+                                                    <span>{{sistema.etiquetaSistema}}</span>
+                                                </a>
+                                            </li>
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
@@ -55,12 +55,14 @@
                 return r.className;
             };
             {% if menu is defined %}
-                    {% for items in menu %}
+                {% for items in menu %}
                         var menuElements{{items.orden}} = document.getElementById("{{items.id}}");
                         menuElements{{items.orden}}.insertAdjacentHTML('afterBegin', '<button type="button" id="{{items.idBoton}}" class="navtoogle" aria-hidden="true"><i aria-hidden="true" class="icon-menu"> </i> {{items.nombreBoton}}</button>');
-                        document.getElementById("{{items.idBoton}}").onclick = function () { changeClass(this, 'navtoogle active', 'navtoogle');};
-                    {% endfor %}
-                {% endif %}
+                        document.getElementById("{{items.idBoton}}").onclick = function () {
+                            changeClass(this, 'navtoogle active', 'navtoogle');
+                        };
+                {% endfor %}
+            {% endif %}
         </script>
     </body>
 </html>
