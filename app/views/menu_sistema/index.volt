@@ -127,7 +127,7 @@
                 params += "&codUsuario=" + document.getElementById("codUsuario").value;
                 params += "&codMenu=" + document.getElementById("codMenu").value;
                 $("#contentSistema").html("Cargando Contenido.......");
-                $.post("{{ url('AjaxBusquedas/ajaxPostSistema') }}",
+                $.post("{{ url('AjaxBusquedas/ajaxPostMenuSistemaIndex') }}",
                         params,
                         function (data) {
                             $("#contentSistema").html(data.res.codigo);

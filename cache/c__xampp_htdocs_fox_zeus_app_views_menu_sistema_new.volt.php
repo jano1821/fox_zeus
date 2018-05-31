@@ -98,7 +98,7 @@
             $('#listaMenu').on("click", function (e) {
                 e.preventDefault();
                 var params = "busquedaMenu=" + document.getElementById("labelBusquedaMenu").value;
-                params = "codUsuario=" + document.getElementById("codUsuario").value;
+                params += "&codUsuario=" + document.getElementById("codUsuario").value;
                 $("#contentMenu").html("Cargando Contenido.......");
                 $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostMenu') ?>",
                         params,
@@ -113,10 +113,9 @@
         $(document).ready(function () {
             $("#listaSistemas").click(function (e) {
                 e.preventDefault();
-                if (document.getElementById("codMenu").value != '') {
                     var params = "busquedaSistema=" + document.getElementById("labelBusquedaSistema").value;
-                    params = "codUsuario=" + document.getElementById("codUsuario").value;
-                    params = "codMenu=" + document.getElementById("codMenu").value;
+                    params += "&codUsuario=" + document.getElementById("codUsuario").value;
+                    params += "&codMenu=" + document.getElementById("codMenu").value;
                     $("#contentSistema").html("Cargando Contenido.......");
                     $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostMenuSistema') ?>",
                             params,
@@ -125,9 +124,6 @@
                             }).fail(function () {
                         $("#contentSistema").html("No hay Resultados");
                     })
-                }else{
-                    alert("Debe seleccionar Menu para seleccionar Sistema Vinculado");
-                }
             });
         });
 

@@ -3,121 +3,142 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="btn-group pull-right">
-<?= $this->tag->linkTo(['persona', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
+                    <?= $this->tag->linkTo(['persona', '<i class=\'glyphicon glyphicon-chevron-left\'></i> Volver', 'class' => 'btn btn-info']) ?>
                 </div>
                 <h4><i class='glyphicon glyphicon-search'></i> Nueva Personas</h4>
             </div>
             <div class="page-header">
-        </div>
+            </div>
 
-<?= $this->getContent() ?>
+            <?= $this->getContent() ?>
+            <?= $this->partial('ajax/findEmpresa') ?>
+            <?= $this->tag->form(['persona/create', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
-<?= $this->tag->form(['persona/create', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
+            <div class="table">
 
-<div class="table">
-
-<div class="form-group">
+                <div class="form-group">
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-2">
-    <label for="fieldNombrepersona">Nombre de Persona</label>
-</div>
+                        <label for="fieldNombrepersona">Nombre de Persona</label>
+                    </div>
                     <div class="col-md-3">
-<?= $form->render('nombrePersona') ?>
-    </div>
-</div>
+                        <?= $form->render('nombrePersona') ?>
+                    </div>
+                </div>
 
-<div class="form-group">
+                <div class="form-group">
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-2">
-    <label for="fieldApepat" >Apellido Paterno</label>
-</div>
+                        <label for="fieldApepat" >Apellido Paterno</label>
+                    </div>
                     <div class="col-md-3">
-        <?= $form->render('apePat') ?>
-    </div>
-</div>
+                        <?= $form->render('apePat') ?>
+                    </div>
+                </div>
 
-<div class="form-group">
+                <div class="form-group">
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-2">
-    <label for="fieldApemat">Apellido Materno</label>
-</div>
+                        <label for="fieldApemat">Apellido Materno</label>
+                    </div>
                     <div class="col-md-3">
-<?= $form->render('apeMat') ?>
-    </div>
-</div>
+                        <?= $form->render('apeMat') ?>
+                    </div>
+                </div>
 
-<div class="form-group">
+                <div class="form-group">
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-2">
-    <label for="fieldSexo" >Sexo</label>
-</div>
+                        <label for="fieldSexo" >Sexo</label>
+                    </div>
                     <div class="col-md-3">
-<?= $form->render('sexo', ['class' => 'form-control']) ?>
-    </div>
-</div>
+                        <?= $form->render('sexo', ['class' => 'form-control']) ?>
+                    </div>
+                </div>
 
-<div class="form-group">
+                <div class="form-group">
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-2">
-    <label for="fieldEdad">Edad</label>
-</div>
+                        <label for="fieldEdad">Edad</label>
+                    </div>
                     <div class="col-md-3">
-<?= $form->render('edad') ?>
-    </div>
-</div>
+                        <?= $form->render('edad') ?>
+                    </div>
+                </div>
 
-<div class="form-group">
+                <div class="form-group">
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-2">
-    <label for="fieldCodtipodocumento">Tipo de Documento</label>
-</div>
+                        <label for="fieldCodtipodocumento">Tipo de Documento</label>
+                    </div>
                     <div class="col-md-3">
-<?php if (isset($tipoDocumento)) { ?>
-<?= $this->tag->select(['codTipoDocumento', $tipoDocumento, 'useEmpty' => true, 'emptyText' => 'Seleccione Tipo Documento...', 'emptyValue' => '', 'using' => ['codTipoDocumento', 'descripcion'], 'class' => 'form-control']) ?>
-<?php } ?>
-    </div>
-</div>
+                        <?php if (isset($tipoDocumento)) { ?>
+                            <?= $this->tag->select(['codTipoDocumento', $tipoDocumento, 'useEmpty' => true, 'emptyText' => 'Seleccione Tipo Documento...', 'emptyValue' => '', 'using' => ['codTipoDocumento', 'descripcion'], 'class' => 'form-control']) ?>
+                        <?php } ?>
+                    </div>
+                </div>
 
-<div class="form-group">
+                <div class="form-group">
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-2">
-    <label for="fieldNumerodocumento" >Numero de Documento</label>
-</div>
+                        <label for="fieldNumerodocumento" >Numero de Documento</label>
+                    </div>
                     <div class="col-md-3">
-<?= $form->render('numeroDocumento') ?>
-    </div>
-</div>
+                        <?= $form->render('numeroDocumento') ?>
+                    </div>
+                </div>
 
-<div class="form-group">
+                <div class="form-group">
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-2">
-    <label for="fieldRazonsocial">Razon Social</label>
-</div>
+                        <label for="fieldRazonsocial">Razon Social</label>
+                    </div>
                     <div class="col-md-3">
-    <?= $form->render('razonSocial') ?>
-    </div>
-</div>
+                        <?= $form->render('razonSocial') ?>
+                    </div>
+                </div>
 
-<div class="form-group">
+                <div class="form-group">
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-2">
-    <label for="fieldTipopersona">Tipo de Persona</label>
-</div>
+                        <label for="fieldTipopersona">Tipo de Persona</label>
+                    </div>
                     <div class="col-md-3">
-<?= $form->render('tipoPersona', ['class' => 'form-control']) ?>
-    </div>
-</div>
-
-<div class="form-group">
+                        <?= $form->render('tipoPersona', ['class' => 'form-control']) ?>
+                    </div>
+                </div>
+                <?php if ($superAdmin == 'Z') { ?>    
+                    <div class="form-group">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="fieldCodmenu">Empresa</label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <?= $form->render('nombreEmpresa') ?>
+                                    <?= $form->render('codEmpresa') ?>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalEmpresas" id="listaEmpresa">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                <?php } ?>
+                <div class="form-group">
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-2">
@@ -128,6 +149,23 @@
                     </div>
                 </div>
             </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#listaEmpresa').on("click", function (e) {
+                e.preventDefault();
+                var params = "busquedaEmpresa=" + document.getElementById("labelBusquedaEmpresa").value;
+                $("#contentEmpresa").html("Cargando Contenido.......");
+                $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostEmpresa') ?>",
+                        params,
+                        function (data) {
+                            $("#contentEmpresa").html(data.res.codigo);
+                        }).fail(function () {
+                    $("#contentEmpresa").html("No hay Resultados");
+                })
+            });
+        });
+    </script>

@@ -27,14 +27,14 @@
                                 <?php if (isset($menuSistema)) { ?>
                                     <?php foreach ($menuSistema as $sistema) { ?>
                                         <?php if ($sistema->codMenu == $items->codMenu) { ?>
-                                        <li>
-                                            <a href="<?= $sistema->url ?>">
-                                                <span class="icon">
-                                                    <i aria-hidden="true" class="<?= $sistema->urlIcono ?>"></i>
-                                                </span>
-                                                <span><?= $sistema->etiquetaSistema ?></span>
-                                            </a>
-                                        </li>
+                                            <li>
+                                                <a href="<?= $sistema->url ?>">
+                                                    <span class="icon">
+                                                        <i aria-hidden="true" class="<?= $sistema->urlIcono ?>"></i>
+                                                    </span>
+                                                    <span><?= $sistema->etiquetaSistema ?></span>
+                                                </a>
+                                            </li>
                                         <?php } ?>
                                     <?php } ?>
                                 <?php } ?>
@@ -55,12 +55,14 @@
                 return r.className;
             };
             <?php if (isset($menu)) { ?>
-                    <?php foreach ($menu as $items) { ?>
+                <?php foreach ($menu as $items) { ?>
                         var menuElements<?= $items->orden ?> = document.getElementById("<?= $items->id ?>");
                         menuElements<?= $items->orden ?>.insertAdjacentHTML('afterBegin', '<button type="button" id="<?= $items->idBoton ?>" class="navtoogle" aria-hidden="true"><i aria-hidden="true" class="icon-menu"> </i> <?= $items->nombreBoton ?></button>');
-                        document.getElementById("<?= $items->idBoton ?>").onclick = function () { changeClass(this, 'navtoogle active', 'navtoogle');};
-                    <?php } ?>
+                        document.getElementById("<?= $items->idBoton ?>").onclick = function () {
+                            changeClass(this, 'navtoogle active', 'navtoogle');
+                        };
                 <?php } ?>
+            <?php } ?>
         </script>
     </body>
 </html>

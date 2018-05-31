@@ -1,6 +1,5 @@
 <?php
 
-use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use PersonaIndexForm as personaIndexForm;
 use PersonaEditForm as personaEditForm;
@@ -22,9 +21,6 @@ class PersonaController extends ControllerBase {
         $this->view->form = new personaIndexForm();
     }
 
-    /**
-     * Searches for persona
-     */
     public function searchAction() {
         parent::validarSession();
 
@@ -139,25 +135,26 @@ class PersonaController extends ControllerBase {
         $this->view->page = $paginator->getPaginate();
     }
 
-    /**
-     * Displays the creation form
-     */
     public function newAction() {
         parent::validarSession();
+
+        if ($this->session->has("Usuario")) {
+            $usuario = $this->session->get("Usuario");
+            $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
+        }else {
+            $this->session->destroy();
+            $this->response->redirect('index');
+        }
 
         $parameters['order'] = "descripcion ASC";
         $tipoDocumento = TipoDocumento::find($parameters);
 
         $this->view->tipoDocumento = $tipoDocumento;
+        $this->view->superAdmin = $indicadorUsuarioAdministrador;
 
         $this->view->form = new personaNewForm();
     }
 
-    /**
-     * Edits a persona
-     *
-     * @param string $codPersona
-     */
     public function editAction($codPersona) {
         parent::validarSession();
         if (!$this->request->isPost()) {
@@ -212,9 +209,6 @@ class PersonaController extends ControllerBase {
         }
     }
 
-    /**
-     * Creates a new persona
-     */
     public function createAction() {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
@@ -229,6 +223,7 @@ class PersonaController extends ControllerBase {
             $usuario = $this->session->get("Usuario");
             $username = $usuario['nombreUsuario'];
             $codEmpresa = $usuario['codEmpresa'];
+            $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
         }else {
             $this->session->destroy();
             $this->response->redirect('index');
@@ -244,7 +239,11 @@ class PersonaController extends ControllerBase {
         $persona->Razonsocial = $this->request->getPost("razonSocial");
         $persona->Codtipodocumento = $this->request->getPost("codTipoDocumento");
         $persona->Tipopersona = $this->request->getPost("tipoPersona");
-        $persona->Codempresa = $codEmpresa;
+        if ($indicadorUsuarioAdministrador == "Z") {
+            $persona->Codempresa = $this->request->getPost("codEmpresa");
+        }else {
+            $persona->Codempresa = $codEmpresa;
+        }
         $persona->Estadoregistro = "S";
         $persona->Usuarioinsercion = $username;
         $persona->Fechainsercion = strftime("%Y-%m-%d",
@@ -270,10 +269,6 @@ class PersonaController extends ControllerBase {
         ]);
     }
 
-    /**
-     * Saves a persona edited
-     *
-     */
     public function saveAction() {
 
         if (!$this->request->isPost()) {
@@ -360,11 +355,6 @@ class PersonaController extends ControllerBase {
         }
     }
 
-    /**
-     * Deletes a persona
-     *
-     * @param string $codPersona
-     */
     public function deleteAction($codPersona) {
         $persona = Persona::findFirstBycodPersona($codPersona);
         if (!$persona) {
@@ -436,11 +426,11 @@ class PersonaController extends ControllerBase {
                                             'em.codEmpresa = pe.codEmpresa',
                                             'em')
                                 ->andWhere('pe.codPersona = :codePersona: AND ' .
-                                           'pe.estadoRegistro = :estado: ',
+                                                        'pe.estadoRegistro = :estado: ',
                                            [
                                                 'codePersona' => $codPersona,
                                                 'estado' => "S",
-                                           ]
+                                                        ]
                                 )
                                 ->getQuery()
                                 ->execute();

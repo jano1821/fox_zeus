@@ -10,6 +10,12 @@ use Phalcon\Forms\Form,
 class PersonaNewForm extends Form {
 
     public function initialize() {
+        $nombreEmpresa = new Text('nombreEmpresa',
+                             array('placeholder' => ' Nombre de Empresa', 'class' => 'form-control'));
+        $nombreEmpresa->addValidator(new PresenceOf(array('message' => 'Se Requiere Nombre de Empresa')));
+        $this->add($nombreEmpresa);
+        $codEmpresa = new Hidden('codEmpresa');
+        $this->add($codEmpresa);
         
         $nombrePersona = new Text('nombrePersona',
                              array('placeholder' => 'Nombre de Persona', 'class' => 'form-control'));

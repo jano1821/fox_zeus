@@ -1,9 +1,5 @@
 <?php
-//use Phalcon\Mvc\Model\Criteria;
-//use Phalcon\Paginator\Adapter\Model as Paginator;
 use TipoPersonaForm as tipoPersonaForm;
-//use AgenciaNewForm as agenciaNewForm;
-//use AgenciaEditForm as agenciaEditForm;
 class TipoPersonaController extends ControllerBase {
 
     public function onConstruct() {
