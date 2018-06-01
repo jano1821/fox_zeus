@@ -13,9 +13,18 @@ class PersonaController extends ControllerBase {
     public function indexAction() {
         parent::validarSession();
 
+        if ($this->session->has("Usuario")) {
+            $usuario = $this->session->get("Usuario");
+            $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
+        }else {
+            $this->session->destroy();
+            $this->response->redirect('index');
+        }
+        
         $parameters['order'] = "descripcion ASC";
         $tipoDocumento = TipoDocumento::find($parameters);
 
+        $this->view->superAdmin = $indicadorUsuarioAdministrador;
         $this->view->tipoDocumento = $tipoDocumento;
 
         $this->view->form = new personaIndexForm();
@@ -23,7 +32,7 @@ class PersonaController extends ControllerBase {
 
     public function searchAction() {
         parent::validarSession();
-        $codEmpresa = "";
+        $codEmpresa = $this->request->getPost("codEmpresa");
 
         if ($this->session->has("Usuario")) {
             $usuario = $this->session->get("Usuario");
@@ -434,6 +443,9 @@ class PersonaController extends ControllerBase {
                                           $superAdmin,
                                           $codPersonaSession) {
         if ($superAdmin == "Z") {
+            if ($codEmpresa==""){
+                $codEmpresa = "%";
+            }
             $persona = $this->modelsManager->createBuilder()
                                     ->columns("pe.codPersona," .
                                                             "pe.nombrePersona," .
@@ -476,7 +488,7 @@ class PersonaController extends ControllerBase {
                                                     'razonSocial' => "%" . $razonSocial . "%",
                                                     'codTipoDocumento' => "%" . $codTipoDocumento . "%",
                                                     'tipoPersona' => "%" . $tipoPersona . "%",
-                                                    'empresa' => "%" . $codEmpresa . "%",
+                                                    'empresa' => $codEmpresa,
                                                     'estado' => "%" . $estado . "%",
                                                             ]
                                     )

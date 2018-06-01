@@ -273,6 +273,27 @@ class UsuarioController extends ControllerBase {
                 }
             }
 
+            if ($indicadorUsuarioAdministrador == "Z") {
+                $codEmpresa = $this->request->getPost("codEmpresa");
+            }else {
+                $codEmpresa = $codEmpresaSession;
+            }
+
+            $usuariosDuplicados = Usuario::find(["codEmpresa = '" . $codEmpresa . "'",
+                                                    "upper(nombreUsuario) = upper('" . $this->request->getPost("nombreUsuario") . "')",
+                                                            ]
+            );
+
+            if (count($usuariosDuplicados) > 0) {
+                $this->flash->error("Ya Existe un Usuario Registrado con ese Nombre");
+                $this->dispatcher->forward([
+                                'controller' => "usuario",
+                                'action' => 'new'
+                ]);
+
+                return;
+            }
+
             $parametrosGenerales = parent::obtenerParametros('LLAVE_HASH');
             $password = password_hash($this->request->getPost("passwordUsuario"),
                                                               PASSWORD_BCRYPT,
@@ -280,11 +301,7 @@ class UsuarioController extends ControllerBase {
 
             $usuario = new Usuario();
             $usuario->Codusuario = $this->request->getPost("codUsuario");
-            if ($indicadorUsuarioAdministrador == "Z") {
-                $usuario->Codempresa = $this->request->getPost("codEmpresa");
-            }else {
-                $usuario->Codempresa = $codEmpresaSession;
-            }
+            $usuario->Codempresa = $codEmpresa;
             $usuario->Codpersona = $this->request->getPost("codPersona");
             $usuario->Codagencia = $this->request->getPost("codAgencia");
             $usuario->Nombreusuario = $this->request->getPost("nombreUsuario");
@@ -454,8 +471,7 @@ class UsuarioController extends ControllerBase {
     public function resetAction() {
         parent::validarSession();
 
-        $form = new personaUsuarioIndexForm();
-        $this->view->form = $form;
+        $this->view->form = new usuarioIndexForm();
 
         $this->dispatcher->forward([
                         'controller' => "usuario",

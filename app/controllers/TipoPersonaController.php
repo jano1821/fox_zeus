@@ -166,12 +166,24 @@ class TipoPersonaController extends ControllerBase {
 
         if ($this->session->has("Usuario")) {
             $usuario = $this->session->get("Usuario");
-            $codEmpresa = $usuario['codEmpresa'];
+            $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
             $username = $usuario['nombreUsuario'];
         }else {
             $this->session->destroy();
             $this->response->redirect('index');
         }
+
+        $codPersona = $this->request->getPost("codPersona");
+        
+        if ($indicadorUsuarioAdministrador != "Z") {
+            $codEmpresa = $usuario['codEmpresa'];
+        }else{
+            $persona = Persona::findBycodPersona($codPersona);
+            foreach ($persona as $key) {
+                $codEmpresa = $key->codEmpresa;
+            }
+        }
+
         if (!empty($this->request->getPost("empleado")) && !is_null($this->request->getPost("empleado"))) {
             $empleado = $this->modelsManager->createBuilder()
                                     ->columns("em.codPersona, " .
@@ -179,10 +191,10 @@ class TipoPersonaController extends ControllerBase {
                                                             "em.usuarioInsercion ")
                                     ->addFrom('Empleado',
                                               'em')
-                                    ->andWhere('em.codPersona like :codPersona: AND ' .
-                                                            'em.codEmpresa like :codEmpresa: ',
+                                    ->andWhere('em.codPersona = :codPersona: AND ' .
+                                                            'em.codEmpresa = :codEmpresa: ',
                                                [
-                                                    'codPersona' => "%" . $this->request->getPost("codPersona") . "%",
+                                                    'codPersona' => $codPersona,
                                                     'codEmpresa' => $codEmpresa,
                                                             ]
                                     )
@@ -190,7 +202,7 @@ class TipoPersonaController extends ControllerBase {
                                     ->execute();
 
             $regEmpleado = new Empleado();
-            $regEmpleado->codPersona = $this->request->getPost("codPersona");
+            $regEmpleado->codPersona = $codPersona;
             $regEmpleado->codEmpresa = $codEmpresa;
             $regEmpleado->estadoRegistro = $this->request->getPost("empleado");
 
@@ -207,7 +219,7 @@ class TipoPersonaController extends ControllerBase {
                     $this->dispatcher->forward([
                                     'controller' => "tipo_persona",
                                     'action' => 'index',
-                                    'params' => [$this->request->getPost("codPersona")]
+                                    'params' => [$codPersona]
                     ]);
 
                     return;
@@ -240,10 +252,10 @@ class TipoPersonaController extends ControllerBase {
                                                             "em.usuarioInsercion ")
                                     ->addFrom('Cliente',
                                               'em')
-                                    ->andWhere('em.codPersona like :codPersona: AND ' .
-                                                            'em.codEmpresa like :codEmpresa: ',
+                                    ->andWhere('em.codPersona = :codPersona: AND ' .
+                                                            'em.codEmpresa = :codEmpresa: ',
                                                [
-                                                    'codPersona' => "%" . $this->request->getPost("codPersona") . "%",
+                                                    'codPersona' => $codPersona,
                                                     'codEmpresa' => $codEmpresa,
                                                             ]
                                     )
@@ -251,7 +263,7 @@ class TipoPersonaController extends ControllerBase {
                                     ->execute();
 
             $regCliente = new Cliente();
-            $regCliente->codPersona = $this->request->getPost("codPersona");
+            $regCliente->codPersona = $codPersona;
             $regCliente->codEmpresa = $codEmpresa;
             $regCliente->estadoRegistro = $this->request->getPost("cliente");
 
@@ -268,7 +280,7 @@ class TipoPersonaController extends ControllerBase {
                     $this->dispatcher->forward([
                                     'controller' => "tipo_persona",
                                     'action' => 'index',
-                                    'params' => [$this->request->getPost("codPersona")]
+                                    'params' => [$codPersona]
                     ]);
 
                     return;
@@ -288,7 +300,7 @@ class TipoPersonaController extends ControllerBase {
                     $this->dispatcher->forward([
                                     'controller' => "tipo_persona",
                                     'action' => 'index',
-                                    'params' => [$this->request->getPost("codPersona")]
+                                    'params' => [$codPersona]
                     ]);
 
                     return;
@@ -302,10 +314,10 @@ class TipoPersonaController extends ControllerBase {
                                                             "em.usuarioInsercion ")
                                     ->addFrom('Proveedor',
                                               'em')
-                                    ->andWhere('em.codPersona like :codPersona: AND ' .
-                                                            'em.codEmpresa like :codEmpresa: ',
+                                    ->andWhere('em.codPersona = :codPersona: AND ' .
+                                                            'em.codEmpresa = :codEmpresa: ',
                                                [
-                                                    'codPersona' => "%" . $this->request->getPost("codPersona") . "%",
+                                                    'codPersona' => $codPersona,
                                                     'codEmpresa' => $codEmpresa,
                                                             ]
                                     )
@@ -313,7 +325,7 @@ class TipoPersonaController extends ControllerBase {
                                     ->execute();
 
             $regProveedor = new Proveedor();
-            $regProveedor->codPersona = $this->request->getPost("codPersona");
+            $regProveedor->codPersona = $codPersona;
             $regProveedor->codEmpresa = $codEmpresa;
             $regProveedor->estadoRegistro = $this->request->getPost("proveedor");
 
@@ -330,7 +342,7 @@ class TipoPersonaController extends ControllerBase {
                     $this->dispatcher->forward([
                                     'controller' => "tipo_persona",
                                     'action' => 'index',
-                                    'params' => [$this->request->getPost("codPersona")]
+                                    'params' => [$codPersona]
                     ]);
 
                     return;
@@ -350,7 +362,7 @@ class TipoPersonaController extends ControllerBase {
                     $this->dispatcher->forward([
                                     'controller' => "tipo_persona",
                                     'action' => 'index',
-                                    'params' => [$this->request->getPost("codPersona")]
+                                    'params' => [$codPersona]
                     ]);
 
                     return;
@@ -362,7 +374,7 @@ class TipoPersonaController extends ControllerBase {
         $this->dispatcher->forward([
                         'controller' => "tipo_persona",
                         'action' => 'index',
-                        'params' => [$this->request->getPost("codPersona")]
+                        'params' => [$codPersona]
         ]);
     }
 }

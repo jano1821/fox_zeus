@@ -12,7 +12,7 @@
             </div>
 
             <?= $this->getContent() ?>
-            <?php require_once('files/datosSesion.php');?>
+            <?= $this->partial('ajax/findEmpresa') ?>
             <?= $this->tag->form(['usuario/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
             <div class="table">
                 <?php if ($superAdmin == 'Z') { ?>
@@ -20,12 +20,16 @@
                         <div class="col-md-3">
                         </div>
                         <div class="col-md-2">
-                            <label for="fieldCodempresa">Empresa</label>
+                            <label for="fieldCodempresa" control-label">Empresa</label>
                         </div>
-                        <div class="col-md-3">
-                            <?php if (isset($empresa)) { ?>
-                                <?= $this->tag->select(['codEmpresa', $empresa, 'useEmpty' => true, 'emptyText' => 'Seleccione Empresa...', 'emptyValue' => '', 'using' => ['codEmpresa', 'nombreEmpresa'], 'class' => 'form-control']) ?>
-                            <?php } ?>
+                        <div class="col-md-4">
+                            <?= $form->render('codEmpresa') ?>
+                            <?= $form->render('nombreEmpresa') ?>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalEmpresas" id="listaEmpresa">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
                         </div>
                     </div>
                 <?php } ?>
@@ -58,17 +62,11 @@
                         <label for="fieldIndicadorusuarioadministrador">Usuario Administrador</label>
                     </div>
                     <div class="col-md-3">
-                        <?php
-                        if ($indicadorUsuarioAdministrador=='Z'){
-                        ?>
-                        <?= $this->tag->selectStatic(['indicadorUsuarioAdministrador', ['' => 'Selecciona Privilegios...', 'Z' => 'Super Administrador', 'S' => 'Administrador', 'N' => 'No Administrador'], 'class' => 'form-control']) ?>
-                        <?php
-                        }else{
-                        ?>
-                        <?= $this->tag->selectStatic(['indicadorUsuarioAdministrador', ['' => 'Selecciona Privilegios...', 'S' => 'Administrador', 'N' => 'No Administrador'], 'class' => 'form-control']) ?>
-                        <?php
-                        }
-                        ?>
+                        <?php if ($superAdmin == 'Z') { ?>
+                            <?= $this->tag->selectStatic(['indicadorUsuarioAdministrador', ['' => 'Selecciona Privilegios...', 'Z' => 'Super Administrador', 'S' => 'Administrador', 'N' => 'No Administrador'], 'class' => 'form-control']) ?>
+                        <?php } else { ?>
+                            <?= $this->tag->selectStatic(['indicadorUsuarioAdministrador', ['' => 'Selecciona Privilegios...', 'S' => 'Administrador', 'N' => 'No Administrador'], 'class' => 'form-control']) ?>
+                        <?php } ?>
                     </div>
                 </div>
 
@@ -98,3 +96,20 @@
             </form>
         </div>
     </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#listaEmpresa').on("click", function (e) {
+                e.preventDefault();
+                var params = "busquedaEmpresa=" + document.getElementById("labelBusquedaEmpresa").value;
+                $("#contentEmpresa").html("Cargando Contenido.......");
+                $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostEmpresa') ?>",
+                        params,
+                        function (data) {
+                            $("#contentEmpresa").html(data.res.codigo);
+                        }).fail(function () {
+                    $("#contentEmpresa").html("No hay Resultados");
+                })
+            });
+        });
+    </script>

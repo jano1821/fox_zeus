@@ -20,7 +20,10 @@ class AjaxBusquedasController extends ControllerBase {
                     $codEmpresa = $usuarioSesion['codEmpresa'];
                     $codUsuario = $usuarioSesion['codUsuario'];
                 }else {
-                    $codEmpresa = "%";
+                    $codEmpresa = $this->request->getPost("codEmpresa");
+                    if ($codEmpresa == "") {
+                        $codEmpresa = "%";
+                    }
                     $codUsuario = "";
                 }
 
@@ -182,7 +185,7 @@ class AjaxBusquedasController extends ControllerBase {
                     $codEmpresa = $usuarioSesion['codEmpresa'];
                     $codUsuario = $usuarioSesion['codUsuario'];
                 }else {
-                    $codEmpresa = "%";
+                    $codEmpresa = $this->request->getPost("codEmpresa");
                     $codUsuario = "";
                 }
 

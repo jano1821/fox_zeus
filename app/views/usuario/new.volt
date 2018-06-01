@@ -16,29 +16,10 @@
             {{ partial("ajax/findPersona") }}
             {{ partial("ajax/findAgencia") }}
 
-            <?php require_once('files/datosSesion.php');?>
-
             {{ form("usuario/create", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
 
             <div class="table">
 
-                <div class="form-group">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-2">
-                        <label for="fieldCodPersonaUsuario" class="col-sm-2 control-label">Persona</label>
-                    </div>
-                    <div class="col-md-4">
-                        {{ form.render('codPersona') }}
-                        {{ form.render('nombrePersona') }}
-                    </div>
-                    <div class="col-md-2">
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalPersona" id="listaPersona">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </div>
-                </div>
-                    
                 {% if superAdmin == "Z" %}
                     <div class="form-group">
                         <div class="col-md-3">
@@ -57,7 +38,7 @@
                         </div>
                     </div>
                 {% endif %}
-                
+
                 <div class="form-group">
                     <div class="col-md-3">
                     </div>
@@ -70,6 +51,23 @@
                     </div>
                     <div class="col-md-2">
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalAgencia" id="listaAgencia">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="fieldCodPersonaUsuario" class="col-sm-2 control-label">Persona</label>
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.render('codPersona') }}
+                        {{ form.render('nombrePersona') }}
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalPersona" id="listaPersona">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </div>
@@ -104,17 +102,11 @@
                         <label for="fieldIndicadorusuarioadministrador" class="col-sm-2 control-label">Administrador</label>
                     </div>
                     <div class="col-md-3">
-                        <?php
-                        if ($indicadorUsuarioAdministrador=='Z'){
-                        ?>
-                        {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'Z' : 'Super Administrador', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
-                        <?php
-                        }else{
-                        ?>
-                        {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
-                        <?php
-                        }
-                        ?>
+                        {% if superAdmin == "Z" %}
+                            {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'Z' : 'Super Administrador', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
+                        {% else %}
+                            {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
+                        {% endif %}
                     </div>
                 </div>
 
@@ -138,6 +130,7 @@
             $('#listaPersona').on("click", function (e) {
                 e.preventDefault();
                 var params = "busquedaPersona=" + document.getElementById("labelBusquedaPersona").value;
+                params += "&codEmpresa=" + document.getElementById("codEmpresa").value;
                 $("#contentPersona").html("Cargando Contenido.......");
                 $.post("{{ url('AjaxBusquedas/ajaxPostPersona') }}",
                         params,
@@ -167,6 +160,7 @@
             $("#listaAgencia").click(function (e) {
                 e.preventDefault();
                 var params = "busquedaAgencia=" + document.getElementById("labelBusquedaAgencia").value;
+                params += "&codEmpresa=" + document.getElementById("codEmpresa").value;
                 $("#contentAgencia").html("Cargando Contenido.......");
                 $.post("{{ url('AjaxBusquedas/ajaxPostAgencia') }}",
                         params,
