@@ -23,6 +23,20 @@ class PersonaController extends ControllerBase {
 
     public function searchAction() {
         parent::validarSession();
+        $codEmpresa = "";
+
+        if ($this->session->has("Usuario")) {
+            $usuario = $this->session->get("Usuario");
+            $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
+            $codPersonaSession = $usuario['codPersona'];
+        }else {
+            $this->session->destroy();
+            $this->response->redirect('index');
+        }
+
+        if ($indicadorUsuarioAdministrador != "Z") {
+            $codEmpresa = $usuario['codEmpresa'];
+        }
 
         $nombrePersona = $this->request->getPost("nombrePersona");
         $apePat = $this->request->getPost("apePat");
@@ -44,53 +58,19 @@ class PersonaController extends ControllerBase {
             $pagina = 1;
         }
 
-        $persona = $this->modelsManager->createBuilder()
-                                ->columns("pe.codPersona," .
-                                                        "pe.nombrePersona," .
-                                                        "pe.apePat," .
-                                                        "pe.apeMat," .
-                                                        "if(pe.sexo='M','Masculino','Femenino') as sexo," .
-                                                        "pe.edad," .
-                                                        "pe.numeroDocumento," .
-                                                        "pe.razonSocial," .
-                                                        "td.descripcion as tipoDocumento," .
-                                                        "if(pe.tipoPersona='N','Natural','Jurídica') as tipoPersona," .
-                                                        "em.nombreEmpresa," .
-                                                        "if(pe.estadoRegistro='S','Vigente','No Vigente') as estado")
-                                ->addFrom('Persona',
-                                          'pe')
-                                ->innerJoin('TipoDocumento',
-                                            'td.codTipoDocumento = pe.codTipoDocumento',
-                                            'td')
-                                ->innerJoin('Empresa',
-                                            'em.codEmpresa = pe.codEmpresa',
-                                            'em')
-                                ->andWhere('pe.nombrePersona like :nombrePersona: AND ' .
-                                                        'pe.apePat like :apePat: AND ' .
-                                                        'pe.apeMat like :apeMat: AND ' .
-                                                        'pe.sexo like :sexo: AND ' .
-                                                        'pe.edad like :edad: AND ' .
-                                                        'pe.numeroDocumento like :numeroDocumento: AND ' .
-                                                        'pe.razonSocial like :razonSocial: AND ' .
-                                                        'pe.codTipoDocumento like :codTipoDocumento: AND ' .
-                                                        'pe.tipoPersona like :tipoPersona: AND ' .
-                                                        'pe.estadoRegistro like :estado: ',
-                                           [
-                                                'nombrePersona' => "%" . $nombrePersona . "%",
-                                                'apePat' => "%" . $apePat . "%",
-                                                'apeMat' => "%" . $apeMat . "%",
-                                                'sexo' => "%" . $sexo . "%",
-                                                'edad' => "%" . $edad . "%",
-                                                'numeroDocumento' => "%" . $numeroDocumento . "%",
-                                                'razonSocial' => "%" . $razonSocial . "%",
-                                                'codTipoDocumento' => "%" . $codTipoDocumento . "%",
-                                                'tipoPersona' => "%" . $tipoPersona . "%",
-                                                'estado' => "%" . $estado . "%",
-                                                        ]
-                                )
-                                ->orderBy('pe.apePat')
-                                ->getQuery()
-                                ->execute();
+        $persona = $this->queryBusquedaPersona($nombrePersona,
+                                               $apePat,
+                                               $apeMat,
+                                               $sexo,
+                                               $edad,
+                                               $numeroDocumento,
+                                               $razonSocial,
+                                               $codTipoDocumento,
+                                               $tipoPersona,
+                                               $codEmpresa,
+                                               $estado,
+                                               $indicadorUsuarioAdministrador,
+                                               $codPersonaSession);
 
         if ($pagina == "") {
             $pagina = 1;
@@ -117,7 +97,7 @@ class PersonaController extends ControllerBase {
             $this->flash->notice("La Búqueda no ha Obtenido Resultados");
 
             $this->dispatcher->forward([
-                            "controller" => "sistema",
+                            "controller" => "Persona",
                             "action" => "index"
             ]);
 
@@ -438,5 +418,122 @@ class PersonaController extends ControllerBase {
             $persona = array(array('', '', '', '', '', '', '', '', '', '', '', ''));
         }
         return $persona[0];
+    }
+
+    private function queryBusquedaPersona($nombrePersona,
+                                          $apePat,
+                                          $apeMat,
+                                          $sexo,
+                                          $edad,
+                                          $numeroDocumento,
+                                          $razonSocial,
+                                          $codTipoDocumento,
+                                          $tipoPersona,
+                                          $codEmpresa,
+                                          $estado,
+                                          $superAdmin,
+                                          $codPersonaSession) {
+        if ($superAdmin == "Z") {
+            $persona = $this->modelsManager->createBuilder()
+                                    ->columns("pe.codPersona," .
+                                                            "pe.nombrePersona," .
+                                                            "pe.apePat," .
+                                                            "pe.apeMat," .
+                                                            "if(pe.sexo='M','Masculino','Femenino') as sexo," .
+                                                            "pe.edad," .
+                                                            "pe.numeroDocumento," .
+                                                            "pe.razonSocial," .
+                                                            "td.descripcion as tipoDocumento," .
+                                                            "if(pe.tipoPersona='N','Natural','Jurídica') as tipoPersona," .
+                                                            "em.nombreEmpresa," .
+                                                            "if(pe.estadoRegistro='S','Vigente','No Vigente') as estado")
+                                    ->addFrom('Persona',
+                                              'pe')
+                                    ->innerJoin('TipoDocumento',
+                                                'td.codTipoDocumento = pe.codTipoDocumento',
+                                                'td')
+                                    ->innerJoin('Empresa',
+                                                'em.codEmpresa = pe.codEmpresa',
+                                                'em')
+                                    ->andWhere('pe.nombrePersona like :nombrePersona: AND ' .
+                                                            'pe.apePat like :apePat: AND ' .
+                                                            'pe.apeMat like :apeMat: AND ' .
+                                                            'pe.sexo like :sexo: AND ' .
+                                                            'pe.edad like :edad: AND ' .
+                                                            'pe.numeroDocumento like :numeroDocumento: AND ' .
+                                                            'pe.razonSocial like :razonSocial: AND ' .
+                                                            'pe.codTipoDocumento like :codTipoDocumento: AND ' .
+                                                            'pe.tipoPersona like :tipoPersona: AND ' .
+                                                            'pe.codEmpresa like :empresa: AND ' .
+                                                            'pe.estadoRegistro like :estado: ',
+                                               [
+                                                    'nombrePersona' => "%" . $nombrePersona . "%",
+                                                    'apePat' => "%" . $apePat . "%",
+                                                    'apeMat' => "%" . $apeMat . "%",
+                                                    'sexo' => "%" . $sexo . "%",
+                                                    'edad' => "%" . $edad . "%",
+                                                    'numeroDocumento' => "%" . $numeroDocumento . "%",
+                                                    'razonSocial' => "%" . $razonSocial . "%",
+                                                    'codTipoDocumento' => "%" . $codTipoDocumento . "%",
+                                                    'tipoPersona' => "%" . $tipoPersona . "%",
+                                                    'empresa' => "%" . $codEmpresa . "%",
+                                                    'estado' => "%" . $estado . "%",
+                                                            ]
+                                    )
+                                    ->orderBy('pe.apePat')
+                                    ->getQuery()
+                                    ->execute();
+        }else {
+            $persona = $this->modelsManager->createBuilder()
+                                    ->columns("pe.codPersona," .
+                                                            "pe.nombrePersona," .
+                                                            "pe.apePat," .
+                                                            "pe.apeMat," .
+                                                            "if(pe.sexo='M','Masculino','Femenino') as sexo," .
+                                                            "pe.edad," .
+                                                            "pe.numeroDocumento," .
+                                                            "pe.razonSocial," .
+                                                            "td.descripcion as tipoDocumento," .
+                                                            "if(pe.tipoPersona='N','Natural','Jurídica') as tipoPersona," .
+                                                            "em.nombreEmpresa," .
+                                                            "if(pe.estadoRegistro='S','Vigente','No Vigente') as estado")
+                                    ->addFrom('Persona',
+                                              'pe')
+                                    ->innerJoin('TipoDocumento',
+                                                'td.codTipoDocumento = pe.codTipoDocumento',
+                                                'td')
+                                    ->innerJoin('Empresa',
+                                                'em.codEmpresa = pe.codEmpresa',
+                                                'em')
+                                    ->andWhere('pe.nombrePersona like :nombrePersona: AND ' .
+                                                            'pe.apePat like :apePat: AND ' .
+                                                            'pe.apeMat like :apeMat: AND ' .
+                                                            'pe.sexo like :sexo: AND ' .
+                                                            'pe.edad like :edad: AND ' .
+                                                            'pe.numeroDocumento like :numeroDocumento: AND ' .
+                                                            'pe.razonSocial like :razonSocial: AND ' .
+                                                            'pe.codTipoDocumento like :codTipoDocumento: AND ' .
+                                                            'pe.tipoPersona like :tipoPersona: AND ' .
+                                                            'pe.codEmpresa = :empresa: AND ' .
+                                                            'pe.estadoRegistro like :estado: ',
+                                               [
+                                                    'nombrePersona' => "%" . $nombrePersona . "%",
+                                                    'apePat' => "%" . $apePat . "%",
+                                                    'apeMat' => "%" . $apeMat . "%",
+                                                    'sexo' => "%" . $sexo . "%",
+                                                    'edad' => "%" . $edad . "%",
+                                                    'numeroDocumento' => "%" . $numeroDocumento . "%",
+                                                    'razonSocial' => "%" . $razonSocial . "%",
+                                                    'codTipoDocumento' => "%" . $codTipoDocumento . "%",
+                                                    'tipoPersona' => "%" . $tipoPersona . "%",
+                                                    'empresa' => $codEmpresa,
+                                                    'estado' => "%" . $estado . "%",
+                                                            ]
+                                    )
+                                    ->orderBy('pe.apePat')
+                                    ->getQuery()
+                                    ->execute();
+        }
+        return $persona;
     }
 }

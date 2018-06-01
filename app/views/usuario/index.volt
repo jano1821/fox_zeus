@@ -9,25 +9,26 @@
                 <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Usuarios</h4>
             </div>
             <div class="page-header">
-        </div>
+            </div>
 
-        {{ content() }}
-        <?php require_once('files/datosSesion.php');?>
-        {{ form("usuario/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+            {{ content() }}
+            <?php require_once('files/datosSesion.php');?>
+            {{ form("usuario/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
             <div class="table">
-                <div class="form-group">
-                    <div class="col-md-3">
+                {% if superAdmin == "Z" %}
+                    <div class="form-group">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="fieldCodempresa">Empresa</label>
+                        </div>
+                        <div class="col-md-3">
+                            {% if empresa is defined %}
+                                {{ select("codEmpresa", empresa,'useEmpty': true, 'emptyText': 'Seleccione Empresa...', 'emptyValue': '', 'using': ['codEmpresa', 'nombreEmpresa'], "class" : "form-control") }}
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <label for="fieldCodempresa">Empresa</label>
-                    </div>
-                    <div class="col-md-3">
-                        {% if empresa is defined %}
-                            {{ select("codEmpresa", empresa,'useEmpty': true, 'emptyText': 'Seleccione Empresa...', 'emptyValue': '', 'using': ['codEmpresa', 'nombreEmpresa'], "class" : "form-control") }}
-                        {% endif %}
-                    </div>
-                </div>
-
+                {% endif %}
                 <div class="form-group">
                     <div class="col-md-3">
                     </div>
@@ -60,11 +61,11 @@
                         <?php
                         if ($indicadorUsuarioAdministrador=='Z'){
                         ?>
-                            {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'Z' : 'Super Administrador', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
+                        {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'Z' : 'Super Administrador', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
                         <?php
                         }else{
                         ?>
-                            {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
+                        {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
                         <?php
                         }
                         ?>
@@ -94,6 +95,6 @@
                     </div>
                 </div>
             </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>

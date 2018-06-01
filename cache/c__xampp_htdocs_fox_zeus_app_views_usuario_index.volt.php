@@ -9,25 +9,26 @@
                 <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Usuarios</h4>
             </div>
             <div class="page-header">
-        </div>
+            </div>
 
-        <?= $this->getContent() ?>
-        <?php require_once('files/datosSesion.php');?>
-        <?= $this->tag->form(['usuario/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
+            <?= $this->getContent() ?>
+            <?php require_once('files/datosSesion.php');?>
+            <?= $this->tag->form(['usuario/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
             <div class="table">
-                <div class="form-group">
-                    <div class="col-md-3">
+                <?php if ($superAdmin == 'Z') { ?>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="fieldCodempresa">Empresa</label>
+                        </div>
+                        <div class="col-md-3">
+                            <?php if (isset($empresa)) { ?>
+                                <?= $this->tag->select(['codEmpresa', $empresa, 'useEmpty' => true, 'emptyText' => 'Seleccione Empresa...', 'emptyValue' => '', 'using' => ['codEmpresa', 'nombreEmpresa'], 'class' => 'form-control']) ?>
+                            <?php } ?>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <label for="fieldCodempresa">Empresa</label>
-                    </div>
-                    <div class="col-md-3">
-                        <?php if (isset($empresa)) { ?>
-                            <?= $this->tag->select(['codEmpresa', $empresa, 'useEmpty' => true, 'emptyText' => 'Seleccione Empresa...', 'emptyValue' => '', 'using' => ['codEmpresa', 'nombreEmpresa'], 'class' => 'form-control']) ?>
-                        <?php } ?>
-                    </div>
-                </div>
-
+                <?php } ?>
                 <div class="form-group">
                     <div class="col-md-3">
                     </div>
@@ -60,11 +61,11 @@
                         <?php
                         if ($indicadorUsuarioAdministrador=='Z'){
                         ?>
-                            <?= $this->tag->selectStatic(['indicadorUsuarioAdministrador', ['' => 'Selecciona Privilegios...', 'Z' => 'Super Administrador', 'S' => 'Administrador', 'N' => 'No Administrador'], 'class' => 'form-control']) ?>
+                        <?= $this->tag->selectStatic(['indicadorUsuarioAdministrador', ['' => 'Selecciona Privilegios...', 'Z' => 'Super Administrador', 'S' => 'Administrador', 'N' => 'No Administrador'], 'class' => 'form-control']) ?>
                         <?php
                         }else{
                         ?>
-                            <?= $this->tag->selectStatic(['indicadorUsuarioAdministrador', ['' => 'Selecciona Privilegios...', 'S' => 'Administrador', 'N' => 'No Administrador'], 'class' => 'form-control']) ?>
+                        <?= $this->tag->selectStatic(['indicadorUsuarioAdministrador', ['' => 'Selecciona Privilegios...', 'S' => 'Administrador', 'N' => 'No Administrador'], 'class' => 'form-control']) ?>
                         <?php
                         }
                         ?>
@@ -94,6 +95,6 @@
                     </div>
                 </div>
             </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>

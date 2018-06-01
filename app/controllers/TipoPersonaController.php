@@ -1,4 +1,5 @@
 <?php
+
 use TipoPersonaForm as tipoPersonaForm;
 class TipoPersonaController extends ControllerBase {
 
@@ -15,7 +16,7 @@ class TipoPersonaController extends ControllerBase {
             if ($indicadorUsuarioAdministrador != 'Z') {
                 $codEmpresa = $usuarioSesion['codEmpresa'];
                 $codUsuario = $usuarioSesion['codUsuario'];
-            } else {
+            }else {
                 $codEmpresa = "%";
                 $codUsuario = "";
             }
@@ -23,20 +24,20 @@ class TipoPersonaController extends ControllerBase {
             $this->session->destroy();
             $this->response->redirect('index');
         }
-        
+
         $personaController = new PersonaController();
         $persona = $personaController->findById($codPersona);
-        
+
         $resEmpleado = "";
         $resProveedor = "";
         $resCliente = "";
-        
+
         $empleado = $this->modelsManager->createBuilder()
                                 ->columns("em.codPersona ")
                                 ->addFrom('Empleado',
                                           'em')
                                 ->andWhere('em.codPersona like :codPersona: AND ' .
-                                            'em.codEmpresa like :codEmpresa: ' ,
+                                                        'em.codEmpresa like :codEmpresa: ',
                                            [
                                                 'codPersona' => "%" . $codPersona . "%",
                                                 'codEmpresa' => $codEmpresa,
@@ -49,8 +50,8 @@ class TipoPersonaController extends ControllerBase {
                                     ->columns("em.codPersona ")
                                     ->addFrom('Empleado',
                                               'em')
-                                    ->andWhere( 'em.codPersona like :codPersona: AND ' .
-                                                'em.codEmpresa like :codEmpresa: AND ' .
+                                    ->andWhere('em.codPersona like :codPersona: AND ' .
+                                                            'em.codEmpresa like :codEmpresa: AND ' .
                                                             'em.estadoRegistro like :estado: ',
                                                [
                                                     'codPersona' => "%" . $codPersona . "%",
@@ -60,9 +61,9 @@ class TipoPersonaController extends ControllerBase {
                                     )
                                     ->getQuery()
                                     ->execute();
-            if (count($empleado)>0){
+            if (count($empleado) > 0) {
                 $resEmpleado = "S";
-            }else{
+            }else {
                 $resEmpleado = "N";
             }
         }
@@ -72,7 +73,7 @@ class TipoPersonaController extends ControllerBase {
                                 ->addFrom('Cliente',
                                           'em')
                                 ->andWhere('em.codPersona like :codPersona: AND ' .
-                                            'em.codEmpresa like :codEmpresa: ' ,
+                                                        'em.codEmpresa like :codEmpresa: ',
                                            [
                                                 'codPersona' => "%" . $codPersona . "%",
                                                 'codEmpresa' => $codEmpresa,
@@ -85,8 +86,8 @@ class TipoPersonaController extends ControllerBase {
                                     ->columns("em.codPersona ")
                                     ->addFrom('Cliente',
                                               'em')
-                                    ->andWhere( 'em.codPersona like :codPersona: AND ' .
-                                                'em.codEmpresa like :codEmpresa: AND ' .
+                                    ->andWhere('em.codPersona like :codPersona: AND ' .
+                                                            'em.codEmpresa like :codEmpresa: AND ' .
                                                             'em.estadoRegistro like :estado: ',
                                                [
                                                     'codPersona' => "%" . $codPersona . "%",
@@ -96,19 +97,19 @@ class TipoPersonaController extends ControllerBase {
                                     )
                                     ->getQuery()
                                     ->execute();
-            if (count($cliente)>0){
+            if (count($cliente) > 0) {
                 $resCliente = "S";
-            }else{
+            }else {
                 $resCliente = "N";
             }
         }
-        
+
         $proveedor = $this->modelsManager->createBuilder()
                                 ->columns("em.codPersona ")
                                 ->addFrom('Proveedor',
                                           'em')
                                 ->andWhere('em.codPersona like :codPersona: AND ' .
-                                            'em.codEmpresa like :codEmpresa: ' ,
+                                                        'em.codEmpresa like :codEmpresa: ',
                                            [
                                                 'codPersona' => "%" . $codPersona . "%",
                                                 'codEmpresa' => $codEmpresa,
@@ -121,8 +122,8 @@ class TipoPersonaController extends ControllerBase {
                                     ->columns("em.codPersona ")
                                     ->addFrom('Proveedor',
                                               'em')
-                                    ->andWhere( 'em.codPersona like :codPersona: AND ' .
-                                                'em.codEmpresa like :codEmpresa: AND ' .
+                                    ->andWhere('em.codPersona like :codPersona: AND ' .
+                                                            'em.codEmpresa like :codEmpresa: AND ' .
                                                             'em.estadoRegistro like :estado: ',
                                                [
                                                     'codPersona' => "%" . $codPersona . "%",
@@ -132,13 +133,13 @@ class TipoPersonaController extends ControllerBase {
                                     )
                                     ->getQuery()
                                     ->execute();
-            if (count($proveedor)>0){
+            if (count($proveedor) > 0) {
                 $resProveedor = "S";
-            }else{
+            }else {
                 $resProveedor = "N";
             }
         }
-        
+
         $this->tag->setDefault("empleado",
                                $resEmpleado);
         $this->tag->setDefault("proveedor",
@@ -147,7 +148,8 @@ class TipoPersonaController extends ControllerBase {
                                $resCliente);
         $this->tag->setDefault("codPersona",
                                $codPersona);
-        $this->view->setVar("nombrePersona",$persona->nombrePersona." ".$persona->apePat." ".$persona->apeMat);
+        $this->view->setVar("nombrePersona",
+                            $persona->nombrePersona . " " . $persona->apePat . " " . $persona->apeMat);
         $this->view->form = new tipoPersonaForm();
     }
 
@@ -170,15 +172,15 @@ class TipoPersonaController extends ControllerBase {
             $this->session->destroy();
             $this->response->redirect('index');
         }
-        if(!empty($this->request->getPost("empleado")) && !is_null($this->request->getPost("empleado"))){
+        if (!empty($this->request->getPost("empleado")) && !is_null($this->request->getPost("empleado"))) {
             $empleado = $this->modelsManager->createBuilder()
-                                    ->columns("em.codPersona, ".
-                                              "em.fechaInsercion, ".
-                                              "em.usuarioInsercion ")
+                                    ->columns("em.codPersona, " .
+                                                            "em.fechaInsercion, " .
+                                                            "em.usuarioInsercion ")
                                     ->addFrom('Empleado',
                                               'em')
                                     ->andWhere('em.codPersona like :codPersona: AND ' .
-                                                'em.codEmpresa like :codEmpresa: ' ,
+                                                            'em.codEmpresa like :codEmpresa: ',
                                                [
                                                     'codPersona' => "%" . $this->request->getPost("codPersona") . "%",
                                                     'codEmpresa' => $codEmpresa,
@@ -193,10 +195,10 @@ class TipoPersonaController extends ControllerBase {
             $regEmpleado->estadoRegistro = $this->request->getPost("empleado");
 
 
-            if (count($empleado) == 0){
+            if (count($empleado) == 0) {
                 $regEmpleado->usuarioInsercion = $username;
                 $regEmpleado->fechaInsercion = strftime("%Y-%m-%d",
-                                                       time());
+                                                        time());
                 if (!$regEmpleado->save()) {
                     foreach ($regEmpleado->getMessages() as $message) {
                         $this->flash->error($message);
@@ -210,12 +212,12 @@ class TipoPersonaController extends ControllerBase {
 
                     return;
                 }
-            }else{
+            }else {
                 $regEmpleado->fechaInsercion = $empleado[0]->fechaInsercion;
                 $regEmpleado->usuarioInsercion = $empleado[0]->usuarioInsercion;
                 $regEmpleado->fechaModificacion = $username;
                 $regEmpleado->usuarioModificacion = strftime("%Y-%m-%d",
-                                                       time());
+                                                             time());
                 if (!$regEmpleado->save()) {
                     foreach ($regEmpleado->getMessages() as $message) {
                         $this->flash->error($message);
@@ -231,15 +233,15 @@ class TipoPersonaController extends ControllerBase {
                 }
             }
         }
-        if(!empty($this->request->getPost("cliente")) && !is_null($this->request->getPost("cliente"))){
+        if (!empty($this->request->getPost("cliente")) && !is_null($this->request->getPost("cliente"))) {
             $cliente = $this->modelsManager->createBuilder()
-                                    ->columns("em.codPersona, ".
-                                              "em.fechaInsercion, ".
-                                              "em.usuarioInsercion ")
+                                    ->columns("em.codPersona, " .
+                                                            "em.fechaInsercion, " .
+                                                            "em.usuarioInsercion ")
                                     ->addFrom('Cliente',
                                               'em')
                                     ->andWhere('em.codPersona like :codPersona: AND ' .
-                                                'em.codEmpresa like :codEmpresa: ' ,
+                                                            'em.codEmpresa like :codEmpresa: ',
                                                [
                                                     'codPersona' => "%" . $this->request->getPost("codPersona") . "%",
                                                     'codEmpresa' => $codEmpresa,
@@ -254,7 +256,7 @@ class TipoPersonaController extends ControllerBase {
             $regCliente->estadoRegistro = $this->request->getPost("cliente");
 
 
-            if (count($cliente) == 0){
+            if (count($cliente) == 0) {
                 $regCliente->usuarioInsercion = $username;
                 $regCliente->fechaInsercion = strftime("%Y-%m-%d",
                                                        time());
@@ -271,12 +273,12 @@ class TipoPersonaController extends ControllerBase {
 
                     return;
                 }
-            }else{
+            }else {
                 $regCliente->fechaInsercion = $cliente[0]->fechaInsercion;
                 $regCliente->usuarioInsercion = $cliente[0]->usuarioInsercion;
                 $regCliente->fechaModificacion = $username;
                 $regCliente->usuarioModificacion = strftime("%Y-%m-%d",
-                                                       time());
+                                                            time());
                 if (!$regCliente->update()) {
 
                     foreach ($regCliente->getMessages() as $message) {
@@ -293,15 +295,15 @@ class TipoPersonaController extends ControllerBase {
                 }
             }
         }
-        if(!empty($this->request->getPost("proveedor")) && !is_null($this->request->getPost("proveedor"))){
+        if (!empty($this->request->getPost("proveedor")) && !is_null($this->request->getPost("proveedor"))) {
             $proveedor = $this->modelsManager->createBuilder()
-                                    ->columns("em.codPersona, ".
-                                              "em.fechaInsercion, ".
-                                              "em.usuarioInsercion ")
+                                    ->columns("em.codPersona, " .
+                                                            "em.fechaInsercion, " .
+                                                            "em.usuarioInsercion ")
                                     ->addFrom('Proveedor',
                                               'em')
                                     ->andWhere('em.codPersona like :codPersona: AND ' .
-                                                'em.codEmpresa like :codEmpresa: ' ,
+                                                            'em.codEmpresa like :codEmpresa: ',
                                                [
                                                     'codPersona' => "%" . $this->request->getPost("codPersona") . "%",
                                                     'codEmpresa' => $codEmpresa,
@@ -316,10 +318,10 @@ class TipoPersonaController extends ControllerBase {
             $regProveedor->estadoRegistro = $this->request->getPost("proveedor");
 
 
-            if (count($proveedor) == 0){
+            if (count($proveedor) == 0) {
                 $regProveedor->usuarioInsercion = $username;
                 $regProveedor->fechaInsercion = strftime("%Y-%m-%d",
-                                                       time());
+                                                         time());
                 if (!$regProveedor->save()) {
                     foreach ($regProveedor->getMessages() as $message) {
                         $this->flash->error($message);
@@ -333,12 +335,12 @@ class TipoPersonaController extends ControllerBase {
 
                     return;
                 }
-            }else{
+            }else {
                 $regProveedor->fechaInsercion = $proveedor[0]->fechaInsercion;
                 $regProveedor->usuarioInsercion = $proveedor[0]->usuarioInsercion;
                 $regProveedor->fechaModificacion = $username;
                 $regProveedor->usuarioModificacion = strftime("%Y-%m-%d",
-                                                       time());
+                                                              time());
                 if (!$regProveedor->update()) {
 
                     foreach ($regProveedor->getMessages() as $message) {
@@ -357,10 +359,10 @@ class TipoPersonaController extends ControllerBase {
         }
         $this->flash->success("Tipo de Persona Registrada Satisfactoriamente");
 
-            $this->dispatcher->forward([
-                            'controller' => "tipo_persona",
-                            'action' => 'index',
-                            'params' => [$this->request->getPost("codPersona")]
-            ]);
+        $this->dispatcher->forward([
+                        'controller' => "tipo_persona",
+                        'action' => 'index',
+                        'params' => [$this->request->getPost("codPersona")]
+        ]);
     }
 }

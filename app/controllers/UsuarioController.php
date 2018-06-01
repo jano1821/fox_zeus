@@ -10,8 +10,18 @@ class UsuarioController extends ControllerBase {
     public function indexAction() {
         parent::validarSession();
 
+        if ($this->session->has("Usuario")) {
+            $usuario = $this->session->get("Usuario");
+            $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
+        }else {
+            $this->session->destroy();
+            $this->response->redirect('index');
+        }
+
         $parameters['order'] = "nombreEmpresa ASC";
         $empresa = Empresa::find($parameters);
+
+        $this->view->superAdmin = $indicadorUsuarioAdministrador;
 
         $this->view->empresa = $empresa;
         $this->view->form = new usuarioIndexForm();
@@ -109,12 +119,19 @@ class UsuarioController extends ControllerBase {
         $this->view->page = $paginator->getPaginate();
     }
 
-    /**
-     * Displays the creation form
-     */
+    //Nuevo Usuario
     public function newAction() {
         parent::validarSession();
-        
+
+        if ($this->session->has("Usuario")) {
+            $usuario = $this->session->get("Usuario");
+            $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
+        }else {
+            $this->session->destroy();
+            $this->response->redirect('index');
+        }
+
+        $this->view->superAdmin = $indicadorUsuarioAdministrador;
         $this->view->form = new usuarioNewForm();
     }
 
@@ -122,6 +139,14 @@ class UsuarioController extends ControllerBase {
         parent::validarSession();
 
         if (!$this->request->isPost()) {
+
+            if ($this->session->has("Usuario")) {
+                $usuario = $this->session->get("Usuario");
+                $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
+            }else {
+                $this->session->destroy();
+                $this->response->redirect('index');
+            }
 
             $parameters['order'] = "nombreEmpresa ASC";
             $empresa = Empresa::find($parameters);
@@ -163,14 +188,13 @@ class UsuarioController extends ControllerBase {
             $this->tag->setDefault("usuarioModificacion",
                                    $usuario->usuarioModificacion);
 
+            $this->view->superAdmin = $indicadorUsuarioAdministrador;
             $this->view->empresa = $empresa;
             $this->view->form = new usuarioEditForm();
         }
     }
 
-    /**
-     * Creates a new usuario
-     */
+    //Nuevo Usuario
     public function createAction() {
         parent::validarSession();
 
@@ -197,6 +221,58 @@ class UsuarioController extends ControllerBase {
         }else {
             $usuarioSesion = $this->session->get("Usuario");
             $username = $usuarioSesion['nombreUsuario'];
+            $codEmpresaSession = $usuarioSesion['codEmpresa'];
+
+            $empleado = Empleado::findFirstBycodPersona($this->request->getPost("codPersona"));
+            if (!$empleado) {
+                $this->flash->error("Persona no Vinculada Como Empleado");
+                $this->dispatcher->forward([
+                                'controller' => "usuario",
+                                'action' => 'new'
+                ]);
+
+                return;
+            }
+
+            $empresa = Empresa::findBycodEmpresa($codEmpresaSession);
+            if (!$empresa) {
+                $this->flash->error("Empresa del Registrante No Definida");
+                $this->dispatcher->forward([
+                                'controller' => "usuario",
+                                'action' => 'new'
+                ]);
+
+                return;
+            }else {
+                if ($this->session->has("Usuario")) {
+                    $usuario = $this->session->get("Usuario");
+                    $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
+                }else {
+                    $this->session->destroy();
+                    $this->response->redirect('index');
+                }
+
+                if ($indicadorUsuarioAdministrador == "Z") {
+                    $usuarioConteo = Usuario::findBycodEmpresa($this->request->getPost("codEmpresa"));
+                    $empresa = Empresa::findBycodEmpresa($this->request->getPost("codEmpresa"));
+                }else {
+                    $usuarioConteo = Usuario::findBycodEmpresa($codEmpresaSession);
+                    $empresa = Empresa::findBycodEmpresa($codEmpresaSession);
+                }
+
+                foreach ($empresa as $item) {
+                    if ($item->limiteUsuarios <= count($usuarioConteo)) {
+                        $this->flash->error("Se excedió la cantidad de Usuarios Posibles a Registrar");
+                        $this->dispatcher->forward([
+                                        'controller' => "usuario",
+                                        'action' => 'new'
+                        ]);
+
+                        return;
+                    }
+                }
+            }
+
             $parametrosGenerales = parent::obtenerParametros('LLAVE_HASH');
             $password = password_hash($this->request->getPost("passwordUsuario"),
                                                               PASSWORD_BCRYPT,
@@ -204,7 +280,11 @@ class UsuarioController extends ControllerBase {
 
             $usuario = new Usuario();
             $usuario->Codusuario = $this->request->getPost("codUsuario");
-            $usuario->Codempresa = $this->request->getPost("codEmpresa");
+            if ($indicadorUsuarioAdministrador == "Z") {
+                $usuario->Codempresa = $this->request->getPost("codEmpresa");
+            }else {
+                $usuario->Codempresa = $codEmpresaSession;
+            }
             $usuario->Codpersona = $this->request->getPost("codPersona");
             $usuario->Codagencia = $this->request->getPost("codAgencia");
             $usuario->Nombreusuario = $this->request->getPost("nombreUsuario");
@@ -370,7 +450,7 @@ class UsuarioController extends ControllerBase {
                         'action' => "index"
         ]);
     }
-    
+
     public function resetAction() {
         parent::validarSession();
 
@@ -384,8 +464,8 @@ class UsuarioController extends ControllerBase {
 
         return;
     }
-    
-    public function findById($codUsuario){
+
+    public function findById($codUsuario) {
         $usuario = $this->modelsManager->createBuilder()
                                 ->columns("em.nombreEmpresa," .
                                                         "us.nombreUsuario," .
@@ -408,9 +488,9 @@ class UsuarioController extends ControllerBase {
                                 )
                                 ->getQuery()
                                 ->execute();
-        
-        if (count($usuario)<= 0){
-            $usuario = array(array("","","","","","",""));
+
+        if (count($usuario) <= 0) {
+            $usuario = array(array("", "", "", "", "", "", ""));
         }
         return $usuario[0];
     }
