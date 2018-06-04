@@ -34,8 +34,8 @@
                                     <td>{{ menu_sistema.nombreUsuario }}</td>
                                     <td>{{ menu_sistema.estado }}</td>
 
-                                    <td>{{ link_to("menu_sistema/edit/"~menu_sistema.codMenu~"/"~menu_sistema.codSistema~"/"~menu_sistema.codUsuario, "Editar") }}</td>
-                                    <td>{{ link_to("menu_sistema/delete/"~menu_sistema.codMenu~"/"~menu_sistema.codSistema~"/"~menu_sistema.codUsuario, "Borrar") }}</td>
+                                    <td>{{ link_to("menu_sistema/edit/"~menu_sistema.codMenu~"/"~menu_sistema.codSistema~"/"~menu_sistema.codUsuario, "class":"btn btn-default","<i class='glyphicon glyphicon-edit'></i>") }}</td>
+                                    <td>{{ link_to("menu_sistema/delete/"~menu_sistema.codMenu~"/"~menu_sistema.codSistema~"/"~menu_sistema.codUsuario, "class":"btn btn-default","<i class='glyphicon glyphicon-trash'></i>") }}</td>
                                 </tr>
                             {% endfor %}
                         {% endif %}

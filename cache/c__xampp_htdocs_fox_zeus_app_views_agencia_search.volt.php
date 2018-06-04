@@ -32,8 +32,8 @@
             <td><?= $agencia->estado ?></td>
             <td><?= $agencia->nombreEmpresa ?></td>
 
-                <td><?= $this->tag->linkTo(['agencia/edit/' . $agencia->codAgencia, 'Editar']) ?></td>
-                <td><?= $this->tag->linkTo(['agencia/delete/' . $agencia->codAgencia, 'Borrar']) ?></td>
+                <td><?= $this->tag->linkTo(['agencia/edit/' . $agencia->codAgencia, 'class' => 'btn btn-default', '<i class=\'glyphicon glyphicon-edit\'></i>']) ?></td>
+                <td><?= $this->tag->linkTo(['agencia/delete/' . $agencia->codAgencia, 'class' => 'btn btn-default', '<i class=\'glyphicon glyphicon-trash\'></i>']) ?></td>
             </tr>
         <?php } ?>
         <?php } ?>

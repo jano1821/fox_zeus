@@ -33,8 +33,8 @@
                                     <td>{{ empresa_sistema.etiquetaSistema }}</td>
                                     <td>{{ empresa_sistema.estado }}</td>
 
-                                    <td>{{ link_to("empresa_sistema/edit/"~empresa_sistema.codEmpresa~"/"~empresa_sistema.codSistema, "Editar") }}</td>
-                                    <td>{{ link_to("empresa_sistema/delete/"~empresa_sistema.codEmpresa~"/"~empresa_sistema.codSistema, "Borrar") }}</td>
+                                    <td>{{ link_to("empresa_sistema/edit/"~empresa_sistema.codEmpresa~"/"~empresa_sistema.codSistema, "class":"btn btn-default","<i class='glyphicon glyphicon-edit'></i>") }}</td>
+                                    <td>{{ link_to("empresa_sistema/delete/"~empresa_sistema.codEmpresa~"/"~empresa_sistema.codSistema, "class":"btn btn-default","<i class='glyphicon glyphicon-trash'></i>") }}</td>
                                 </tr>
                             {% endfor %}
                         {% endif %}

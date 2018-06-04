@@ -16,7 +16,7 @@ class IndexController extends ControllerBase {
                         'nombreUsuario' => $usuario->nombreUsuario,
                         'codEmpresa' => $usuario->codEmpresa,
                         'codPersona' => $usuario->codPersona,
-                        'nombresPersona' => $usuario->nombresPersona,
+                        'nombresPersona' => $usuario->nombrePersona,
                         'nombreEmpresa' => $usuario->nombreEmpresa,
                         'tiempoSesion' => $parametrosGenerales,
                         'ultimoAcceso' => date("Y-n-j H:i:s"),

@@ -56,11 +56,11 @@
             };
             <?php if (isset($menu)) { ?>
                 <?php foreach ($menu as $items) { ?>
-                        var menuElements<?= $items->orden ?> = document.getElementById("<?= $items->id ?>");
-                        menuElements<?= $items->orden ?>.insertAdjacentHTML('afterBegin', '<button type="button" id="<?= $items->idBoton ?>" class="navtoogle" aria-hidden="true"><i aria-hidden="true" class="icon-menu"> </i> <?= $items->nombreBoton ?></button>');
-                        document.getElementById("<?= $items->idBoton ?>").onclick = function () {
-                            changeClass(this, 'navtoogle active', 'navtoogle');
-                        };
+                    var menuElements<?= $items->orden ?> = document.getElementById("<?= $items->id ?>");
+                    menuElements<?= $items->orden ?>.insertAdjacentHTML('afterBegin', '<button type="button" id="<?= $items->idBoton ?>" class="navtoogle" aria-hidden="true"><i aria-hidden="true" class="icon-menu"> </i> <?= $items->nombreBoton ?></button>');
+                    document.getElementById("<?= $items->idBoton ?>").onclick = function () {
+                        changeClass(this, 'navtoogle active', 'navtoogle');
+                    };
                 <?php } ?>
             <?php } ?>
         </script>
