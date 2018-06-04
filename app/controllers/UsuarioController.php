@@ -1,6 +1,7 @@
 <?php
 
 use Phalcon\Paginator\Adapter\Model as Paginator;
+
 class UsuarioController extends ControllerBase {
 
     public function onConstruct() {
@@ -13,7 +14,7 @@ class UsuarioController extends ControllerBase {
         if ($this->session->has("Usuario")) {
             $usuario = $this->session->get("Usuario");
             $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
-        }else {
+        } else {
             $this->session->destroy();
             $this->response->redirect('index');
         }
@@ -46,34 +47,30 @@ class UsuarioController extends ControllerBase {
         }
 
         $usuario = $this->modelsManager->createBuilder()
-                                ->columns("em.nombreEmpresa," .
-                                                        "us.nombreUsuario," .
-                                                        "us.codUsuario," .
-                                                        "us.codEmpresa," .
-                                                        "us.cantidadIntentos," .
-                                                        "if(us.indicadorUsuarioAdministrador<>'S',if(us.indicadorUsuarioAdministrador='Z','Super Administrador', 'No Administrador'),'Administrador') as indicadorUsuarioAdministrador," .
-                                                        "if(us.estadoRegistro='S','Vigente','No Vigente') as estado")
-                                ->addFrom('Usuario',
-                                          'us')
-                                ->innerJoin('Empresa',
-                                            'us.codEmpresa = em.codEmpresa',
-                                            'em')
-                                ->andWhere('us.codEmpresa like :codEmpresa: AND ' .
-                                                        'us.nombreUsuario like :nombreUsuario: AND ' .
-                                                        'us.cantidadIntentos like :cantidadIntentos: AND ' .
-                                                        'us.indicadorUsuarioAdministrador like :indicadorUsuarioAdministrador: AND ' .
-                                                        'us.estadoRegistro like :estado: ',
-                                           [
-                                                'codEmpresa' => "%" . $codEmpresa . "%",
-                                                'nombreUsuario' => "%" . $nombreUsuario . "%",
-                                                'cantidadIntentos' => "%" . $cantidadIntentos . "%",
-                                                'indicadorUsuarioAdministrador' => "%" . $indicadorAdministrador . "%",
-                                                'estado' => "%" . $estado . "%",
-                                                        ]
-                                )
-                                ->orderBy('us.nombreUsuario')
-                                ->getQuery()
-                                ->execute();
+                ->columns("em.nombreEmpresa," .
+                        "us.nombreUsuario," .
+                        "us.codUsuario," .
+                        "us.codEmpresa," .
+                        "us.cantidadIntentos," .
+                        "if(us.indicadorUsuarioAdministrador<>'S',if(us.indicadorUsuarioAdministrador='Z','Super Administrador', 'No Administrador'),'Administrador') as indicadorUsuarioAdministrador," .
+                        "if(us.estadoRegistro='S','Vigente','No Vigente') as estado")
+                ->addFrom('Usuario', 'us')
+                ->innerJoin('Empresa', 'us.codEmpresa = em.codEmpresa', 'em')
+                ->andWhere('us.codEmpresa like :codEmpresa: AND ' .
+                        'us.nombreUsuario like :nombreUsuario: AND ' .
+                        'us.cantidadIntentos like :cantidadIntentos: AND ' .
+                        'us.indicadorUsuarioAdministrador like :indicadorUsuarioAdministrador: AND ' .
+                        'us.estadoRegistro like :estado: ', [
+                    'codEmpresa' => "%" . $codEmpresa . "%",
+                    'nombreUsuario' => "%" . $nombreUsuario . "%",
+                    'cantidadIntentos' => "%" . $cantidadIntentos . "%",
+                    'indicadorUsuarioAdministrador' => "%" . $indicadorAdministrador . "%",
+                    'estado' => "%" . $estado . "%",
+                        ]
+                )
+                ->orderBy('us.nombreUsuario')
+                ->getQuery()
+                ->execute();
 
 
         if ($pagina == "") {
@@ -81,19 +78,19 @@ class UsuarioController extends ControllerBase {
         }
         if ($avance == "" || $avance == "0") {
             $pagina = 1;
-        }else if ($avance == 1) {
+        } else if ($avance == 1) {
             if ($pagina < floor(count($usuario) / 10) + 1) {
                 $pagina = $pagina + 1;
-            }else {
+            } else {
                 $this->flash->notice("No hay Registros Posteriores");
             }
-        }else if ($avance == -1) {
+        } else if ($avance == -1) {
             if ($pagina > 1) {
                 $pagina = $pagina - 1;
-            }else {
+            } else {
                 $this->flash->notice("No hay Registros Anteriores");
             }
-        }else if ($avance == 2) {
+        } else if ($avance == 2) {
             $pagina = floor(count($usuario) / 10) + 1;
         }
 
@@ -101,21 +98,20 @@ class UsuarioController extends ControllerBase {
             $this->flash->notice("La Búqueda no ha Obtenido Resultados");
 
             $this->dispatcher->forward([
-                            "controller" => "usuario",
-                            "action" => "index"
+                "controller" => "usuario",
+                "action" => "index"
             ]);
 
             return;
         }
 
         $paginator = new Paginator([
-                        'data' => $usuario,
-                        'limit' => 10,
-                        'page' => $pagina
+            'data' => $usuario,
+            'limit' => 10,
+            'page' => $pagina
         ]);
 
-        $this->tag->setDefault("pagina",
-                               $pagina);
+        $this->tag->setDefault("pagina", $pagina);
         $this->view->page = $paginator->getPaginate();
     }
 
@@ -126,7 +122,7 @@ class UsuarioController extends ControllerBase {
         if ($this->session->has("Usuario")) {
             $usuario = $this->session->get("Usuario");
             $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
-        }else {
+        } else {
             $this->session->destroy();
             $this->response->redirect('index');
         }
@@ -143,21 +139,21 @@ class UsuarioController extends ControllerBase {
             if ($this->session->has("Usuario")) {
                 $usuario = $this->session->get("Usuario");
                 $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
-            }else {
+            } else {
                 $this->session->destroy();
                 $this->response->redirect('index');
             }
 
-            $parameters['order'] = "nombreEmpresa ASC";
-            $empresa = Empresa::find($parameters);
-
             $usuario = Usuario::findFirstBycodUsuario($codUsuario);
+
+            $empresa = Empresa::findByCodEmpresa($usuario->codEmpresa);
+
             if (!$usuario) {
                 $this->flash->error("Usuario no Encontrado");
 
                 $this->dispatcher->forward([
-                                'controller' => "usuario",
-                                'action' => 'index'
+                    'controller' => "usuario",
+                    'action' => 'index'
                 ]);
 
                 return;
@@ -165,31 +161,20 @@ class UsuarioController extends ControllerBase {
 
             $this->view->codUsuario = $usuario->codUsuario;
 
-            $this->tag->setDefault("codUsuario",
-                                   $usuario->codUsuario);
-            $this->tag->setDefault("codEmpresa",
-                                   $usuario->codEmpresa);
-            $this->tag->setDefault("nombreUsuario",
-                                   $usuario->nombreUsuario);
-            $this->tag->setDefault("passwordUsuario",
-                                   $usuario->passwordUsuario);
-            $this->tag->setDefault("cantidadIntentos",
-                                   $usuario->cantidadIntentos);
-            $this->tag->setDefault("indicadorUsuarioAdministrador",
-                                   $usuario->indicadorUsuarioAdministrador);
-            $this->tag->setDefault("estadoRegistro",
-                                   $usuario->estadoRegistro);
-            $this->tag->setDefault("fechaInsercion",
-                                   $usuario->fechaInsercion);
-            $this->tag->setDefault("usuarioInsercion",
-                                   $usuario->usuarioInsercion);
-            $this->tag->setDefault("fechaModificacion",
-                                   $usuario->fechaModificacion);
-            $this->tag->setDefault("usuarioModificacion",
-                                   $usuario->usuarioModificacion);
+            $this->tag->setDefault("codUsuario", $usuario->codUsuario);
+            $this->tag->setDefault("codEmpresa", $usuario->codEmpresa);
+            $this->tag->setDefault("nombreEmpresa", $empresa[0]->nombreEmpresa);
+            $this->tag->setDefault("nombreUsuario", $usuario->nombreUsuario);
+            $this->tag->setDefault("password", $usuario->passwordUsuario);
+            $this->tag->setDefault("cantidadIntentos", $usuario->cantidadIntentos);
+            $this->tag->setDefault("indicadorUsuarioAdministrador", $usuario->indicadorUsuarioAdministrador);
+            $this->tag->setDefault("estadoRegistro", $usuario->estadoRegistro);
+            $this->tag->setDefault("fechaInsercion", $usuario->fechaInsercion);
+            $this->tag->setDefault("usuarioInsercion", $usuario->usuarioInsercion);
+            $this->tag->setDefault("fechaModificacion", $usuario->fechaModificacion);
+            $this->tag->setDefault("usuarioModificacion", $usuario->usuarioModificacion);
 
             $this->view->superAdmin = $indicadorUsuarioAdministrador;
-            $this->view->empresa = $empresa;
             $this->view->form = new usuarioEditForm();
         }
     }
@@ -200,8 +185,8 @@ class UsuarioController extends ControllerBase {
 
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                            'controller' => "usuario",
-                            'action' => 'index'
+                'controller' => "usuario",
+                'action' => 'index'
             ]);
 
             return;
@@ -213,12 +198,12 @@ class UsuarioController extends ControllerBase {
                 $this->flash->error($message);
             }
             $this->dispatcher->forward([
-                            'controller' => "usuario",
-                            'action' => 'new'
+                'controller' => "usuario",
+                'action' => 'new'
             ]);
 
             return;
-        }else {
+        } else {
             $usuarioSesion = $this->session->get("Usuario");
             $username = $usuarioSesion['nombreUsuario'];
             $codEmpresaSession = $usuarioSesion['codEmpresa'];
@@ -227,8 +212,8 @@ class UsuarioController extends ControllerBase {
             if (!$empleado) {
                 $this->flash->error("Persona no Vinculada Como Empleado");
                 $this->dispatcher->forward([
-                                'controller' => "usuario",
-                                'action' => 'new'
+                    'controller' => "usuario",
+                    'action' => 'new'
                 ]);
 
                 return;
@@ -238,16 +223,16 @@ class UsuarioController extends ControllerBase {
             if (!$empresa) {
                 $this->flash->error("Empresa del Registrante No Definida");
                 $this->dispatcher->forward([
-                                'controller' => "usuario",
-                                'action' => 'new'
+                    'controller' => "usuario",
+                    'action' => 'new'
                 ]);
 
                 return;
-            }else {
+            } else {
                 if ($this->session->has("Usuario")) {
                     $usuario = $this->session->get("Usuario");
                     $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
-                }else {
+                } else {
                     $this->session->destroy();
                     $this->response->redirect('index');
                 }
@@ -255,7 +240,7 @@ class UsuarioController extends ControllerBase {
                 if ($indicadorUsuarioAdministrador == "Z") {
                     $usuarioConteo = Usuario::findBycodEmpresa($this->request->getPost("codEmpresa"));
                     $empresa = Empresa::findBycodEmpresa($this->request->getPost("codEmpresa"));
-                }else {
+                } else {
                     $usuarioConteo = Usuario::findBycodEmpresa($codEmpresaSession);
                     $empresa = Empresa::findBycodEmpresa($codEmpresaSession);
                 }
@@ -264,8 +249,8 @@ class UsuarioController extends ControllerBase {
                     if ($item->limiteUsuarios <= count($usuarioConteo)) {
                         $this->flash->error("Se excedió la cantidad de Usuarios Posibles a Registrar");
                         $this->dispatcher->forward([
-                                        'controller' => "usuario",
-                                        'action' => 'new'
+                            'controller' => "usuario",
+                            'action' => 'new'
                         ]);
 
                         return;
@@ -275,29 +260,27 @@ class UsuarioController extends ControllerBase {
 
             if ($indicadorUsuarioAdministrador == "Z") {
                 $codEmpresa = $this->request->getPost("codEmpresa");
-            }else {
+            } else {
                 $codEmpresa = $codEmpresaSession;
             }
 
             $usuariosDuplicados = Usuario::find(["codEmpresa = '" . $codEmpresa . "'",
-                                                    "upper(nombreUsuario) = upper('" . $this->request->getPost("nombreUsuario") . "')",
-                                                            ]
+                        "upper(nombreUsuario) = upper('" . $this->request->getPost("nombreUsuario") . "')",
+                            ]
             );
 
             if (count($usuariosDuplicados) > 0) {
                 $this->flash->error("Ya Existe un Usuario Registrado con ese Nombre");
                 $this->dispatcher->forward([
-                                'controller' => "usuario",
-                                'action' => 'new'
+                    'controller' => "usuario",
+                    'action' => 'new'
                 ]);
 
                 return;
             }
 
             $parametrosGenerales = parent::obtenerParametros('LLAVE_HASH');
-            $password = password_hash($this->request->getPost("passwordUsuario"),
-                                                              PASSWORD_BCRYPT,
-                                                              array("cost" => 12, "salt" => $parametrosGenerales));
+            $password = password_hash($this->request->getPost("password"), PASSWORD_BCRYPT, array("cost" => 12, "salt" => $parametrosGenerales));
 
             $usuario = new Usuario();
             $usuario->Codusuario = $this->request->getPost("codUsuario");
@@ -309,8 +292,7 @@ class UsuarioController extends ControllerBase {
             $usuario->Cantidadintentos = '0';
             $usuario->Indicadorusuarioadministrador = $this->request->getPost("indicadorUsuarioAdministrador");
             $usuario->Estadoregistro = 'S';
-            $usuario->Fechainsercion = strftime("%Y-%m-%d",
-                                                time());
+            $usuario->Fechainsercion = strftime("%Y-%m-%d", time());
             $usuario->Usuarioinsercion = $username;
 
             if (!$usuario->save()) {
@@ -319,8 +301,8 @@ class UsuarioController extends ControllerBase {
                 }
 
                 $this->dispatcher->forward([
-                                'controller' => "usuario",
-                                'action' => 'new'
+                    'controller' => "usuario",
+                    'action' => 'new'
                 ]);
 
                 return;
@@ -329,8 +311,8 @@ class UsuarioController extends ControllerBase {
             $this->flash->success("Usuario Registrado Correctamente");
 
             $this->dispatcher->forward([
-                            'controller' => "usuario",
-                            'action' => 'index'
+                'controller' => "usuario",
+                'action' => 'index'
             ]);
         }
     }
@@ -344,8 +326,8 @@ class UsuarioController extends ControllerBase {
 
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                            'controller' => "usuario",
-                            'action' => 'index'
+                'controller' => "usuario",
+                'action' => 'index'
             ]);
 
             return;
@@ -355,11 +337,11 @@ class UsuarioController extends ControllerBase {
         $usuario = Usuario::findFirstBycodUsuario($codUsuario);
 
         if (!$usuario) {
-            $this->flash->error("El Usuario no Existe" . $codUsuario);
+            $this->flash->error("El Usuario no Existe");
 
             $this->dispatcher->forward([
-                            'controller' => "usuario",
-                            'action' => 'index'
+                'controller' => "usuario",
+                'action' => 'index'
             ]);
 
             return;
@@ -371,22 +353,21 @@ class UsuarioController extends ControllerBase {
                 $this->flash->error($message);
             }
             $this->dispatcher->forward([
-                            'controller' => "usuario",
-                            'action' => 'Edit'
+                'controller' => "usuario",
+                'action' => 'Edit',
+                'params' => [$codUsuario]
             ]);
 
             return;
-        }else {
+        } else {
             if ($this->session->has("Usuario")) {
                 $usuarioSesion = $this->session->get("Usuario");
                 $username = $usuarioSesion['nombreUsuario'];
                 $password = "";
                 $parametrosGenerales = parent::obtenerParametros('LLAVE_HASH');
-                if (!$this->request->getPost("passwordUsuario") == $usuario->Passwordusuario) {
-                    $password = password_hash($this->request->getPost("passwordUsuario"),
-                                                                      PASSWORD_BCRYPT,
-                                                                      array("cost" => 12, "salt" => $parametrosGenerales));
-                }else {
+                if (!($this->request->getPost("password") == $usuario->Passwordusuario)) {
+                    $password = password_hash($this->request->getPost("password"), PASSWORD_BCRYPT, array("cost" => 12, "salt" => $parametrosGenerales));
+                } else {
                     $password = $usuario->Passwordusuario;
                 }
 
@@ -397,10 +378,9 @@ class UsuarioController extends ControllerBase {
                 $usuario->Cantidadintentos = $this->request->getPost("cantidadIntentos");
                 $usuario->Indicadorusuarioadministrador = $this->request->getPost("indicadorUsuarioAdministrador");
                 $usuario->Estadoregistro = $this->request->getPost("estadoRegistro");
-                $usuario->Fechamodificacion = strftime("%Y-%m-%d",
-                                                       time());
+                $usuario->Fechamodificacion = strftime("%Y-%m-%d", time());
                 $usuario->Usuariomodificacion = $this->request->getPost($username);
-            }else {
+            } else {
                 $this->session->destroy();
                 $this->response->redirect('index');
             }
@@ -411,19 +391,20 @@ class UsuarioController extends ControllerBase {
                 }
 
                 $this->dispatcher->forward([
-                                'controller' => "usuario",
-                                'action' => 'edit',
-                                'params' => [$usuario->codUsuario]
+                    'controller' => "usuario",
+                    'action' => 'edit',
+                    'params' => [$usuario->codUsuario]
                 ]);
 
                 return;
             }
 
+            $this->view->form = new UsuarioIndexForm();
             $this->flash->success("Usuario Actualizado Correctamente");
 
             $this->dispatcher->forward([
-                            'controller' => "usuario",
-                            'action' => 'index'
+                'controller' => "usuario",
+                'action' => 'index'
             ]);
         }
     }
@@ -439,8 +420,8 @@ class UsuarioController extends ControllerBase {
             $this->flash->error("usuario was not found");
 
             $this->dispatcher->forward([
-                            'controller' => "usuario",
-                            'action' => 'index'
+                'controller' => "usuario",
+                'action' => 'index'
             ]);
 
             return;
@@ -453,8 +434,8 @@ class UsuarioController extends ControllerBase {
             }
 
             $this->dispatcher->forward([
-                            'controller' => "usuario",
-                            'action' => 'search'
+                'controller' => "usuario",
+                'action' => 'search'
             ]);
 
             return;
@@ -463,8 +444,8 @@ class UsuarioController extends ControllerBase {
         $this->flash->success("usuario was deleted successfully");
 
         $this->dispatcher->forward([
-                        'controller' => "usuario",
-                        'action' => "index"
+            'controller' => "usuario",
+            'action' => "index"
         ]);
     }
 
@@ -474,8 +455,8 @@ class UsuarioController extends ControllerBase {
         $this->view->form = new usuarioIndexForm();
 
         $this->dispatcher->forward([
-                        'controller' => "usuario",
-                        'action' => 'index'
+            'controller' => "usuario",
+            'action' => 'index'
         ]);
 
         return;
@@ -483,31 +464,28 @@ class UsuarioController extends ControllerBase {
 
     public function findById($codUsuario) {
         $usuario = $this->modelsManager->createBuilder()
-                                ->columns("em.nombreEmpresa," .
-                                                        "us.nombreUsuario," .
-                                                        "us.codUsuario," .
-                                                        "us.codEmpresa," .
-                                                        "us.cantidadIntentos," .
-                                                        "if(us.indicadorUsuarioAdministrador<>'S',if(us.indicadorUsuarioAdministrador='Z','Super Administrador', 'No Administrador'),'Administrador') as indicadorUsuarioAdministrador," .
-                                                        "if(us.estadoRegistro='S','Vigente','No Vigente') as estado")
-                                ->addFrom('Usuario',
-                                          'us')
-                                ->innerJoin('Empresa',
-                                            'us.codEmpresa = em.codEmpresa',
-                                            'em')
-                                ->andWhere('us.codUsuario = :codUsuario: AND ' .
-                                                        'us.estadoRegistro = :estado: ',
-                                           [
-                                                'codUsuario' => $codUsuario,
-                                                'estado' => "S",
-                                                        ]
-                                )
-                                ->getQuery()
-                                ->execute();
+                ->columns("em.nombreEmpresa," .
+                        "us.nombreUsuario," .
+                        "us.codUsuario," .
+                        "us.codEmpresa," .
+                        "us.cantidadIntentos," .
+                        "if(us.indicadorUsuarioAdministrador<>'S',if(us.indicadorUsuarioAdministrador='Z','Super Administrador', 'No Administrador'),'Administrador') as indicadorUsuarioAdministrador," .
+                        "if(us.estadoRegistro='S','Vigente','No Vigente') as estado")
+                ->addFrom('Usuario', 'us')
+                ->innerJoin('Empresa', 'us.codEmpresa = em.codEmpresa', 'em')
+                ->andWhere('us.codUsuario = :codUsuario: AND ' .
+                        'us.estadoRegistro = :estado: ', [
+                    'codUsuario' => $codUsuario,
+                    'estado' => "S",
+                        ]
+                )
+                ->getQuery()
+                ->execute();
 
         if (count($usuario) <= 0) {
             $usuario = array(array("", "", "", "", "", "", ""));
         }
         return $usuario[0];
     }
+
 }

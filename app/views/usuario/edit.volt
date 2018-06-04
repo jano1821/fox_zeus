@@ -12,7 +12,8 @@
             </div>
 
             {{ content() }}
-            <?php require_once('files/datosSesion.php');?>
+            {{ partial("index/teclado") }}
+            {{ partial("ajax/findEmpresa") }}
             {{ form("usuario/save", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
 
             <div class="table">
@@ -21,12 +22,16 @@
                         <div class="col-md-3">
                         </div>
                         <div class="col-md-2">
-                            <label for="fieldCodempresa" >Empresa</label>
+                            <label for="fieldCodempresa" class="control-label">Empresa</label>
                         </div>
-                        <div class="col-md-3">
-                            {% if empresa is defined %}
-                                {{ select("codEmpresa", empresa,'useEmpty': true, 'emptyText': 'Seleccione Empresa...', 'emptyValue': '', 'using': ['codEmpresa', 'nombreEmpresa'], "class" : "form-control") }}
-                            {% endif %}
+                        <div class="col-md-4">
+                            {{ form.render('codEmpresa') }}
+                            {{ form.render('nombreEmpresa') }}
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalEmpresas" id="listaEmpresa">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
                         </div>
                     </div>
                 {% endif %}
@@ -48,7 +53,7 @@
                         <label for="fieldPasswordusuario" >Password</label>
                     </div>
                     <div class="col-md-3">
-                        {{ form.render('passwordUsuario') }}
+                        {{ form.render('password') }}
                     </div>
                 </div>
 
@@ -70,17 +75,11 @@
                         <label for="fieldIndicadorusuarioadministrador" >Administrador</label>
                     </div>
                     <div class="col-md-3">
-                        <?php
-                        if ($indicadorUsuarioAdministrador=='Z'){
-                        ?>
+                        {% if superAdmin == "Z" %}
                         {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'Z' : 'Super Administrador', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
-                        <?php
-                        }else{
-                        ?>
+                        {% else %}
                         {{ select_static('indicadorUsuarioAdministrador', [ '' : 'Selecciona Privilegios...', 'S' : 'Administrador', 'N' : 'No Administrador'],'class':'form-control') }}
-                        <?php
-                        }
-                        ?>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -111,3 +110,58 @@
             </form>
         </div>
     </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#listaPersona').on("click", function (e) {
+                e.preventDefault();
+                var params = "busquedaPersona=" + document.getElementById("labelBusquedaPersona").value;
+                params += "&codEmpresa=" + document.getElementById("codEmpresa").value;
+                $("#contentPersona").html("Cargando Contenido.......");
+                $.post("{{ url('AjaxBusquedas/ajaxPostPersona') }}",
+                        params,
+                        function (data) {
+                            $("#contentPersona").html(data.res.codigo);
+                        }).fail(function () {
+                    $("#contentPersona").html("No hay Resultados");
+                })
+            });
+        });
+        $(document).ready(function () {
+            $('#listaEmpresa').on("click", function (e) {
+                e.preventDefault();
+                var params = "busquedaEmpresa=" + document.getElementById("labelBusquedaEmpresa").value;
+                $("#contentEmpresa").html("Cargando Contenido.......");
+                $.post("{{ url('AjaxBusquedas/ajaxPostEmpresa') }}",
+                        params,
+                        function (data) {
+                            $("#contentEmpresa").html(data.res.codigo);
+                        }).fail(function () {
+                    $("#contentEmpresa").html("No hay Resultados");
+                })
+            });
+        });
+
+        $(document).ready(function () {
+            $("#listaAgencia").click(function (e) {
+                e.preventDefault();
+                var params = "busquedaAgencia=" + document.getElementById("labelBusquedaAgencia").value;
+                params += "&codEmpresa=" + document.getElementById("codEmpresa").value;
+                $("#contentAgencia").html("Cargando Contenido.......");
+                $.post("{{ url('AjaxBusquedas/ajaxPostAgencia') }}",
+                        params,
+                        function (data) {
+                            $("#contentAgencia").html(data.res.codigo);
+                        }).fail(function () {
+                    $("#contentAgencia").html("No hay Resultados");
+                })
+            });
+        });
+
+        $(document).ready(function () {
+            $('#teclado').on("click", function (e) {
+                e.preventDefault();
+
+            });
+        });
+    </script>

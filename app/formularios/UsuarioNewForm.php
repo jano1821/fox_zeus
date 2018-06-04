@@ -37,8 +37,13 @@ class UsuarioNewForm extends Form {
         $nombreUsuario->addValidator(new PresenceOf(array('message' => 'Se Requiere Usuario')));
         $this->add($nombreUsuario);
         
-        $password = new Password('passwordUsuario',
-                                 array('placeholder' => 'Password', 'class' => 'form-control'));
+        $password = new Password('password',
+                                 array('placeholder' => 'Password', 
+                                       'class' => 'form-control', 
+                                       'data-toggle'=>'modal',
+                                       'data-target'=>'#myModalTeclado',
+                                       'id'=>'teclado',
+                                       'readonly'=>'true'));
         $password->addValidator(new PresenceOf(array('message' => 'El password es requerido')));
         $this->add($password);
 

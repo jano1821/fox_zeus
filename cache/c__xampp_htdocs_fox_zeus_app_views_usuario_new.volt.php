@@ -15,7 +15,7 @@
             <?= $this->partial('ajax/findEmpresa') ?>
             <?= $this->partial('ajax/findPersona') ?>
             <?= $this->partial('ajax/findAgencia') ?>
-
+            <?= $this->partial('index/teclado') ?>
             <?= $this->tag->form(['usuario/create', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
             <div class="table">
@@ -91,7 +91,7 @@
                         <label for="fieldPasswordusuario" class="col-sm-2 control-label">Password</label>
                     </div>
                     <div class="col-md-3">
-                        <?= $form->render('passwordUsuario') ?>
+                        <?= $form->render('password') ?>
                     </div>
                 </div>
 
@@ -171,5 +171,11 @@
                 })
             });
         });
+        
+        $(document).ready(function () {
+            $('#teclado').on("click", function (e) {
+                e.preventDefault();
 
+            });
+        });
     </script>

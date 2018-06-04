@@ -12,6 +12,13 @@ class UsuarioEditForm extends Form {
 
     public function initialize() {
         
+        $nombreEmpresa = new Text('nombreEmpresa',
+                             array('placeholder' => 'Empresa', 'class' => 'form-control'));
+        $nombreEmpresa->addValidator(new PresenceOf(array('message' => 'Se Requiere Empresa')));
+        $this->add($nombreEmpresa);
+        $codEmpresa = new Hidden('codEmpresa');
+        $this->add($codEmpresa);
+        
         $nombreUsuario = new Text('nombreUsuario',
                              array('placeholder' => 'Usuario', 'class' => 'form-control'));
         $nombreUsuario->addValidator(new PresenceOf(array('message' => 'Se Requiere Usuario')));
@@ -22,11 +29,14 @@ class UsuarioEditForm extends Form {
         $cantidadIntentos->addValidator(new PresenceOf(array('message' => 'Se Requiere Cantidad de Intentos')));
         $this->add($cantidadIntentos);
 
-        $password = new Password('passwordUsuario',
-                                 array('placeholder' => 'Password', 'class' => 'form-control'));
-        //añadimos la validación como campo requerido al password
+        $password = new Password('password',
+                                 array('placeholder' => 'Password', 
+                                       'class' => 'form-control', 
+                                       'data-toggle'=>'modal',
+                                       'data-target'=>'#myModalTeclado',
+                                       'id'=>'teclado',
+                                       'readonly'=>'true'));
         $password->addValidator(new PresenceOf(array('message' => 'El password es requerido')));
-        //hacemos que se pueda llamar a nuestro campo password
         $this->add($password);
 
         $estadoRegistro = new Select('estadoRegistro',
