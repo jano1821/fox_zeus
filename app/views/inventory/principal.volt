@@ -1,1 +1,0 @@
-</span> {{ nombreUsuario }}</a>

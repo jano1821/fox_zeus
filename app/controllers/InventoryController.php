@@ -35,5 +35,6 @@ class InventoryController extends ControllerBase {
         }
         
         $this->view->nombreUsuario = "Hola";
+        
     }
 }

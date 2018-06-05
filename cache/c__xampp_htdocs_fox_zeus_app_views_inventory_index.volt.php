@@ -10,6 +10,7 @@
                 position: relative;
                 padding-bottom: 60.25%;
                 height: 0;
+                width:  0;
                 overflow: hidden;
             }
             .embed-container iframe {
@@ -167,7 +168,7 @@
                     </div>
                 </div>
                 <div class="embed-container">
-                    <iframe width="660" height="315" src="<?= $principal ?>" name="iframe_inventory" frameborder="0" allowfullscreen></iframe>
+                    <iframe width="660" height="335" name="iframe_inventory" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
         </div>

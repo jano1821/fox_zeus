@@ -1,30 +1,32 @@
 <?php
- 
+
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
+class ProductoController extends ControllerBase {
 
+    public function onConstruct() {
+        parent::validarAdministradores();
+    }
 
-class ProductoController extends ControllerBase
-{
-    /**
-     * Index action
-     */
-    public function indexAction()
-    {
-        $this->persistent->parameters = null;
+    public function indexAction() {
+        parent::validarSession();
+
+        $this->view->form = new ProductoIndexForm();
     }
 
     /**
      * Searches for producto
      */
-    public function searchAction()
-    {
+    public function searchAction() {
         $numberPage = 1;
         if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, 'Producto', $_POST);
+            $query = Criteria::fromInput($this->di,
+                                         'Producto',
+                                         $_POST);
             $this->persistent->parameters = $query->getParams();
-        } else {
-            $numberPage = $this->request->getQuery("page", "int");
+        }else {
+            $numberPage = $this->request->getQuery("page",
+                                                   "int");
         }
 
         $parameters = $this->persistent->parameters;
@@ -38,17 +40,17 @@ class ProductoController extends ControllerBase
             $this->flash->notice("The search did not find any producto");
 
             $this->dispatcher->forward([
-                "controller" => "producto",
-                "action" => "index"
+                            "controller" => "producto",
+                            "action" => "index"
             ]);
 
             return;
         }
 
         $paginator = new Paginator([
-            'data' => $producto,
-            'limit'=> 10,
-            'page' => $numberPage
+                        'data' => $producto,
+                        'limit' => 10,
+                        'page' => $numberPage
         ]);
 
         $this->view->page = $paginator->getPaginate();
@@ -57,9 +59,8 @@ class ProductoController extends ControllerBase
     /**
      * Displays the creation form
      */
-    public function newAction()
-    {
-
+    public function newAction() {
+        
     }
 
     /**
@@ -67,8 +68,7 @@ class ProductoController extends ControllerBase
      *
      * @param string $codProducto
      */
-    public function editAction($codProducto)
-    {
+    public function editAction($codProducto) {
         if (!$this->request->isPost()) {
 
             $producto = Producto::findFirstBycodProducto($codProducto);
@@ -76,8 +76,8 @@ class ProductoController extends ControllerBase
                 $this->flash->error("producto was not found");
 
                 $this->dispatcher->forward([
-                    'controller' => "producto",
-                    'action' => 'index'
+                                'controller' => "producto",
+                                'action' => 'index'
                 ]);
 
                 return;
@@ -85,37 +85,53 @@ class ProductoController extends ControllerBase
 
             $this->view->codProducto = $producto->codProducto;
 
-            $this->tag->setDefault("codProducto", $producto->codProducto);
-            $this->tag->setDefault("descripcion", $producto->descripcion);
-            $this->tag->setDefault("imagen", $producto->imagen);
-            $this->tag->setDefault("fechaBaja", $producto->fechaBaja);
-            $this->tag->setDefault("motivoBaja", $producto->motivoBaja);
-            $this->tag->setDefault("estadoRegistro", $producto->estadoRegistro);
-            $this->tag->setDefault("usuarioInsercion", $producto->usuarioInsercion);
-            $this->tag->setDefault("fechaInsercion", $producto->fechaInsercion);
-            $this->tag->setDefault("usuarioModificacion", $producto->usuarioModificacion);
-            $this->tag->setDefault("fechaModificacion", $producto->fechaModificacion);
-            $this->tag->setDefault("codCategoria", $producto->codCategoria);
-            $this->tag->setDefault("codMarca", $producto->codMarca);
-            $this->tag->setDefault("codModelo", $producto->codModelo);
-            $this->tag->setDefault("codEmpresa", $producto->codEmpresa);
-            $this->tag->setDefault("descripcionCorta", $producto->descripcionCorta);
-            $this->tag->setDefault("fechaVencimiento", $producto->fechaVencimiento);
-            $this->tag->setDefault("fechaAlta", $producto->fechaAlta);
-            $this->tag->setDefault("codAgencia", $producto->codAgencia);
-            
+            $this->tag->setDefault("codProducto",
+                                   $producto->codProducto);
+            $this->tag->setDefault("descripcion",
+                                   $producto->descripcion);
+            $this->tag->setDefault("imagen",
+                                   $producto->imagen);
+            $this->tag->setDefault("fechaBaja",
+                                   $producto->fechaBaja);
+            $this->tag->setDefault("motivoBaja",
+                                   $producto->motivoBaja);
+            $this->tag->setDefault("estadoRegistro",
+                                   $producto->estadoRegistro);
+            $this->tag->setDefault("usuarioInsercion",
+                                   $producto->usuarioInsercion);
+            $this->tag->setDefault("fechaInsercion",
+                                   $producto->fechaInsercion);
+            $this->tag->setDefault("usuarioModificacion",
+                                   $producto->usuarioModificacion);
+            $this->tag->setDefault("fechaModificacion",
+                                   $producto->fechaModificacion);
+            $this->tag->setDefault("codCategoria",
+                                   $producto->codCategoria);
+            $this->tag->setDefault("codMarca",
+                                   $producto->codMarca);
+            $this->tag->setDefault("codModelo",
+                                   $producto->codModelo);
+            $this->tag->setDefault("codEmpresa",
+                                   $producto->codEmpresa);
+            $this->tag->setDefault("descripcionCorta",
+                                   $producto->descripcionCorta);
+            $this->tag->setDefault("fechaVencimiento",
+                                   $producto->fechaVencimiento);
+            $this->tag->setDefault("fechaAlta",
+                                   $producto->fechaAlta);
+            $this->tag->setDefault("codAgencia",
+                                   $producto->codAgencia);
         }
     }
 
     /**
      * Creates a new producto
      */
-    public function createAction()
-    {
+    public function createAction() {
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                'controller' => "producto",
-                'action' => 'index'
+                            'controller' => "producto",
+                            'action' => 'index'
             ]);
 
             return;
@@ -139,7 +155,7 @@ class ProductoController extends ControllerBase
         $producto->Fechavencimiento = $this->request->getPost("fechaVencimiento");
         $producto->Fechaalta = $this->request->getPost("fechaAlta");
         $producto->Codagencia = $this->request->getPost("codAgencia");
-        
+
 
         if (!$producto->save()) {
             foreach ($producto->getMessages() as $message) {
@@ -147,8 +163,8 @@ class ProductoController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "producto",
-                'action' => 'new'
+                            'controller' => "producto",
+                            'action' => 'new'
             ]);
 
             return;
@@ -157,8 +173,8 @@ class ProductoController extends ControllerBase
         $this->flash->success("producto was created successfully");
 
         $this->dispatcher->forward([
-            'controller' => "producto",
-            'action' => 'index'
+                        'controller' => "producto",
+                        'action' => 'index'
         ]);
     }
 
@@ -166,13 +182,12 @@ class ProductoController extends ControllerBase
      * Saves a producto edited
      *
      */
-    public function saveAction()
-    {
+    public function saveAction() {
 
         if (!$this->request->isPost()) {
             $this->dispatcher->forward([
-                'controller' => "producto",
-                'action' => 'index'
+                            'controller' => "producto",
+                            'action' => 'index'
             ]);
 
             return;
@@ -185,8 +200,8 @@ class ProductoController extends ControllerBase
             $this->flash->error("producto does not exist " . $codProducto);
 
             $this->dispatcher->forward([
-                'controller' => "producto",
-                'action' => 'index'
+                            'controller' => "producto",
+                            'action' => 'index'
             ]);
 
             return;
@@ -209,7 +224,7 @@ class ProductoController extends ControllerBase
         $producto->Fechavencimiento = $this->request->getPost("fechaVencimiento");
         $producto->Fechaalta = $this->request->getPost("fechaAlta");
         $producto->Codagencia = $this->request->getPost("codAgencia");
-        
+
 
         if (!$producto->save()) {
 
@@ -218,9 +233,9 @@ class ProductoController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "producto",
-                'action' => 'edit',
-                'params' => [$producto->codProducto]
+                            'controller' => "producto",
+                            'action' => 'edit',
+                            'params' => [$producto->codProducto]
             ]);
 
             return;
@@ -229,8 +244,8 @@ class ProductoController extends ControllerBase
         $this->flash->success("producto was updated successfully");
 
         $this->dispatcher->forward([
-            'controller' => "producto",
-            'action' => 'index'
+                        'controller' => "producto",
+                        'action' => 'index'
         ]);
     }
 
@@ -239,15 +254,14 @@ class ProductoController extends ControllerBase
      *
      * @param string $codProducto
      */
-    public function deleteAction($codProducto)
-    {
+    public function deleteAction($codProducto) {
         $producto = Producto::findFirstBycodProducto($codProducto);
         if (!$producto) {
             $this->flash->error("producto was not found");
 
             $this->dispatcher->forward([
-                'controller' => "producto",
-                'action' => 'index'
+                            'controller' => "producto",
+                            'action' => 'index'
             ]);
 
             return;
@@ -260,8 +274,8 @@ class ProductoController extends ControllerBase
             }
 
             $this->dispatcher->forward([
-                'controller' => "producto",
-                'action' => 'search'
+                            'controller' => "producto",
+                            'action' => 'search'
             ]);
 
             return;
@@ -270,9 +284,8 @@ class ProductoController extends ControllerBase
         $this->flash->success("producto was deleted successfully");
 
         $this->dispatcher->forward([
-            'controller' => "producto",
-            'action' => "index"
+                        'controller' => "producto",
+                        'action' => "index"
         ]);
     }
-
 }
