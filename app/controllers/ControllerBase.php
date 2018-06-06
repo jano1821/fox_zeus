@@ -2,29 +2,72 @@
 
 use Phalcon\Mvc\Controller;
 class ControllerBase extends Controller {
+
     public function validarSession() {
         if (!$this->session->has("Usuario")) {
             $this->response->redirect('index');
-        }else{
+        }else {
             $usuario = $this->session->get("Usuario");
-            
+
             $ultimoAcceso = $usuario['ultimoAcceso'];
             $tiempoSesion = $usuario['tiempoSesion'];
-            
+
             $ahora = date("Y-n-j H:i:s");
             $tiempo_transcurrido = (strtotime($ahora) - strtotime($ultimoAcceso));
-            
-            if ($tiempo_transcurrido >= ($tiempoSesion*60)) {
+
+            if ($tiempo_transcurrido >= ($tiempoSesion * 60)) {
                 $this->session->destroy();
                 $this->response->redirect('index');
             }else {
                 $usuario['ultimoAcceso'] = $ahora;
                 $this->session->set('Usuario',
-                            $usuario);
+                                    $usuario);
             }
         }
     }
-    
+
+    public function validaAccesoSistema($codSistema,
+                                        $codUsuario) {
+        if ($this->buscarVinculoUsuarioSistema($codSistema,
+                                               $codUsuario)) {
+            $this->response->redirect('menu');
+        }
+    }
+
+    private function buscarVinculoUsuarioSistema($codSistema,
+                                                 $codUsuario) {
+        $menu_sistema = $this->modelsManager->createBuilder()
+                                ->columns("ms.codMenu ")
+                                ->addFrom('MenuSistema',
+                                          'ms')
+                                ->innerJoin('Menu',
+                                            'me.codMenu = ms.codMenu',
+                                            'me')
+                                ->innerJoin('Sistema',
+                                            'si.codSistema = ms.codSistema',
+                                            'si')
+                                ->innerJoin('Usuario',
+                                            'us.codUsuario = ms.codUsuario',
+                                            'us')
+                                ->andWhere('ms.codSistema = :codSistema: AND ' .
+                                                        'ms.codUsuario = :codUsuario: AND ' .
+                                                        'ms.estadoRegistro = :estado: ',
+                                           [
+                                                'codSistema' => $codSistema,
+                                                'codUsuario' => $codUsuario,
+                                                'estado' => "S",
+                                                        ]
+                                )
+                                ->getQuery()
+                                ->execute();
+
+        if (count($menu_sistema) > 0) {
+            return false;
+        }else {
+            return true;
+        }
+    }
+
     public static function fromInput($dependencyInjector,
                                      $modelName,
                                      $data) {
@@ -79,31 +122,35 @@ class ControllerBase extends Controller {
         }
         return $criteria;
     }
-    
-    public function obtenerParametros($codigoParametro){
+
+    public function obtenerParametros($codigoParametro) {
         $parametrosGenerales = $this->modelsManager->createBuilder()
-                                        ->columns("pg.valorParametro ")
-                                        ->addFrom('ParametrosGenerales',
-                                                  'pg')
-                                        ->andWhere('pg.identificadorParametro = :identificadorParametro: AND ' .
-                                                   'pg.estadoRegistro = :estadoRegistro: ',
-                                                    [
-                                                        'identificadorParametro' => $codigoParametro,
-                                                        'estadoRegistro' => 'S',
-                                                    ]
-                                        )
-                                        ->getQuery()
-                                        ->execute();
-        
-        return $parametrosGenerales[0]->valorParametro;
+                                ->columns("pg.valorParametro ")
+                                ->addFrom('ParametrosGenerales',
+                                          'pg')
+                                ->andWhere('pg.identificadorParametro = :identificadorParametro: AND ' .
+                                                        'pg.estadoRegistro = :estadoRegistro: ',
+                                           [
+                                                'identificadorParametro' => $codigoParametro,
+                                                'estadoRegistro' => 'S',
+                                                        ]
+                                )
+                                ->getQuery()
+                                ->execute();
+
+        if (count($parametrosGenerales) > 0) {
+            return $parametrosGenerales[0]->valorParametro;
+        }else {
+            return "";
+        }
     }
-    
-    public function validarAdministradores(){
+
+    public function validarAdministradores() {
         $usuario = $this->session->get("Usuario");
-        
+
         $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
-        
-        if ($indicadorUsuarioAdministrador == 'N'){
+
+        if ($indicadorUsuarioAdministrador == 'N') {
             $this->session->destroy();
             $this->response->redirect('index');
         }

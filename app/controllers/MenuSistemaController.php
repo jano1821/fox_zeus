@@ -7,12 +7,14 @@ use MenuSistemaEditForm as menuSistemaEditForm;
 class MenuSistemaController extends ControllerBase {
 
     public function onConstruct() {
+        parent::validarSession();
         parent::validarAdministradores();
+        $usuario = $this->session->get("Usuario");
+        parent::validaAccesoSistema(parent::obtenerParametros("SISTEMA_ASISTENCIA"),
+                                                              $usuario['codUsuario']);
     }
 
     public function indexAction($codUsuario) {
-        parent::validarSession();
-        
         $usuarioController = new UsuarioController();
         $usuario=$usuarioController->findById($codUsuario);
         
@@ -24,8 +26,6 @@ class MenuSistemaController extends ControllerBase {
     }
 
     public function searchAction() {
-        parent::validarSession();
-
         $codMenu = $this->request->getPost("codMenu");
         $codSistema = $this->request->getPost("codSistema");
         $codUsuario = $this->request->getPost("codUsuario");
@@ -123,8 +123,6 @@ class MenuSistemaController extends ControllerBase {
     }
 
     public function newAction($codUsuario) {
-        parent::validarSession();
-
         $usuarioController = new UsuarioController();
         $usuario=$usuarioController->findById($codUsuario);
         
@@ -137,7 +135,6 @@ class MenuSistemaController extends ControllerBase {
     }
 
     public function editAction($codMenu,$codSistema,$codUsuario) {
-        parent::validarSession();
         if (!$this->request->isPost()) {
 
             $menu_sistema = $this->modelsManager->createBuilder()

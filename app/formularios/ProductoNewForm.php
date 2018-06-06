@@ -4,10 +4,9 @@ use Phalcon\Forms\Form,
     Phalcon\Forms\Element\Text,
     Phalcon\Forms\Element\Submit,
     Phalcon\Forms\Element\Hidden,
-    Phalcon\Forms\Element\Select,
     Phalcon\Validation\Validator\Identical,
     Phalcon\Validation\Validator\PresenceOf;
-class ProductoIndexForm extends Form {
+class ProductoNewForm extends Form {
 
     public function initialize() {
 
@@ -18,6 +17,14 @@ class ProductoIndexForm extends Form {
         $codProducto = new Hidden('codProducto');
         $this->add($codProducto);
 
+        $descCorta = new Text('descCorta',
+                                array('placeholder' => ' Descripcion Corta', 'class' => 'form-control'));
+        $this->add($descCorta);
+        
+        $fechaVencimiento = new Text('fechaVencimiento',
+                                array('placeholder' => ' Fecha de Vencimiento', 'class' => 'form-control'));
+        $this->add($fechaVencimiento);
+        
         $categoria = new Text('categoria',
                               array('placeholder' => 'Categoria', 'class' => 'form-control', 'readonly' => 'true'));
         $categoria->addValidator(new PresenceOf(array('message' => 'Se Requiere Categoria')));
@@ -39,16 +46,16 @@ class ProductoIndexForm extends Form {
         $codMarca = new Hidden('codMarca');
         $this->add($codMarca);
 
-        $estadoRegistro = new Select('estadoRegistro',
-                                     array('' => 'Seleccione Estado...', 'S' => 'Vigente', 'N' => 'No vigente'));
-        $this->add($estadoRegistro);
-
+        $imagen = new Text('imagen',
+                                array('placeholder' => ' Imagen', 'class' => 'form-control'));
+        $this->add($imagen);
+        
         $csrf = new Hidden('csrf');
         $csrf->addValidator(new Identical(array('value' => $this->security->getSessionToken(), 'message' => '¡La validación CSRF ha fallado!')));
         $this->add($csrf);
 
-        $submit = new Submit('buscar',
-                             array('value' => 'Buscar', 'class' => 'col-sm-5 btn btn-primary'));
+        $submit = new Submit('save',
+                             array('value' => 'Grabar', 'class' => 'col-sm-5 btn btn-primary'));
         $this->add($submit);
     }
 }

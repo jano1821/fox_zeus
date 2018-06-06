@@ -7,12 +7,14 @@ use PersonaNewForm as personaNewForm;
 class PersonaController extends ControllerBase {
 
     public function onConstruct() {
+        parent::validarSession();
         parent::validarAdministradores();
+        $usuario = $this->session->get("Usuario");
+        parent::validaAccesoSistema(parent::obtenerParametros("SISTEMA_PERSONA"),
+                                                              $usuario['codUsuario']);
     }
 
     public function indexAction() {
-        parent::validarSession();
-
         if ($this->session->has("Usuario")) {
             $usuario = $this->session->get("Usuario");
             $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
@@ -31,7 +33,6 @@ class PersonaController extends ControllerBase {
     }
 
     public function searchAction() {
-        parent::validarSession();
         $codEmpresa = $this->request->getPost("codEmpresa");
 
         if ($this->session->has("Usuario")) {
@@ -125,8 +126,6 @@ class PersonaController extends ControllerBase {
     }
 
     public function newAction() {
-        parent::validarSession();
-
         if ($this->session->has("Usuario")) {
             $usuario = $this->session->get("Usuario");
             $indicadorUsuarioAdministrador = $usuario['indicadorUsuarioAdministrador'];
@@ -145,7 +144,6 @@ class PersonaController extends ControllerBase {
     }
 
     public function editAction($codPersona) {
-        parent::validarSession();
         if (!$this->request->isPost()) {
 
             $persona = Persona::findFirstBycodPersona($codPersona);

@@ -10,6 +10,9 @@
             <div class="page-header">
             </div>
             <?= $this->getContent() ?>
+            <?= $this->partial('ajax/findCategoria') ?>
+            <?= $this->partial('ajax/findMarca') ?>
+            <?= $this->partial('ajax/findModelo') ?>
             <?= $this->tag->form(['producto/search', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
             <div class="table">
                 <div class="form-group">
@@ -121,3 +124,49 @@
         </div>
     </div>
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#listaCategoria').on("click", function (e) {
+            e.preventDefault();
+            var params = "busquedaCategoria=" + document.getElementById("labelBusquedaCategoria").value;
+            $("#contentCategoria").html("Cargando Contenido.......");
+            $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostCategoria') ?>",
+                    params,
+                    function (data) {
+                        $("#contentCategoria").html(data.res.codigo);
+                    }).fail(function () {
+                $("#contentCategoria").html("No hay Resultados");
+            })
+        });
+    });
+    $(document).ready(function () {
+        $('#listaMarca').on("click", function (e) {
+            e.preventDefault();
+            var params = "busquedaMarca=" + document.getElementById("labelBusquedaMarca").value;
+            $("#contentMarca").html("Cargando Contenido.......");
+            $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostMarca') ?>",
+                    params,
+                    function (data) {
+                        $("#contentMarca").html(data.res.codigo);
+                    }).fail(function () {
+                $("#contentMarca").html("No hay Resultados");
+            })
+        });
+    });
+
+    $(document).ready(function () {
+        $("#listaModelo").click(function (e) {
+            e.preventDefault();
+            var params = "busquedaModelo=" + document.getElementById("labelBusquedaModelo").value;
+            $("#contentModelo").html("Cargando Contenido.......");
+            $.post("<?= $this->url->get('AjaxBusquedas/ajaxPostModelo') ?>",
+                    params,
+                    function (data) {
+                        $("#contentModelo").html(data.res.codigo);
+                    }).fail(function () {
+                $("#contentModelo").html("No hay Resultados");
+            })
+        });
+    });
+</script>

@@ -5,18 +5,17 @@ use Phalcon\Paginator\Adapter\Model as Paginator;
 class ProductoController extends ControllerBase {
 
     public function onConstruct() {
+        parent::validarSession();
         parent::validarAdministradores();
+        $usuario = $this->session->get("Usuario");
+        parent::validaAccesoSistema(parent::obtenerParametros("SISTEMA_INVENTARIO"),
+                                                              $usuario['codUsuario']);
     }
 
     public function indexAction() {
-        parent::validarSession();
-
         $this->view->form = new ProductoIndexForm();
     }
 
-    /**
-     * Searches for producto
-     */
     public function searchAction() {
         $numberPage = 1;
         if ($this->request->isPost()) {
@@ -37,7 +36,7 @@ class ProductoController extends ControllerBase {
 
         $producto = Producto::find($parameters);
         if (count($producto) == 0) {
-            $this->flash->notice("The search did not find any producto");
+            $this->flash->notice("Producto No Encontardo");
 
             $this->dispatcher->forward([
                             "controller" => "producto",
@@ -56,11 +55,11 @@ class ProductoController extends ControllerBase {
         $this->view->page = $paginator->getPaginate();
     }
 
-    /**
-     * Displays the creation form
-     */
+    //Nuevo Producto
     public function newAction() {
-        
+        parent::validarSession();
+
+        $this->view->form = new ProductoNewForm();
     }
 
     /**

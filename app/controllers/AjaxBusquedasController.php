@@ -1327,4 +1327,214 @@ class AjaxBusquedasController extends ControllerBase {
                                            "Not Found");
         }
     }
+
+    public function ajaxPostCategoriaAction() {
+        $this->view->disable();
+        $tabla = '';
+        $contador = 0;
+
+        if ($this->request->isPost() == true) {
+            if ($this->request->isAjax() == true) {
+                $labelBusquedaCategoria = $this->request->getPost("busquedaCategoria");
+                $usuarioSesion = $this->session->get("Usuario");
+                $codEmpresa = $usuarioSesion['codEmpresa'];
+
+                $categorias = $this->modelsManager->createBuilder()
+                                        ->columns("ca.codCategoria," .
+                                                                "ca.descripcion ")
+                                        ->addFrom('Categoria',
+                                                  'ca')
+                                        ->andWhere('ca.descripcion like :descripcion: AND ' .
+                                                                'ca.codEmpresa = :empresa: AND ' .
+                                                                'ca.estadoRegistro = :estado: ',
+                                                   [
+                                                        'descripcion' => "%" . $labelBusquedaCategoria . "%",
+                                                        'empresa' => $codEmpresa,
+                                                        'estado' => "S",
+                                                                ]
+                                        )
+                                        ->orderBy('ca.descripcion')
+                                        ->getQuery()
+                                        ->execute();
+
+                $tabla = '<table class="table"><tr  class="warning">
+                                    <th>N°</th>
+                                    <th>Categoria</th>
+                                    <th class="text-center" style="width: 36px;">Agregar</th>
+				</tr>';
+
+                foreach ($categorias as $categoria) {
+                    $contador++;
+                    $tabla = $tabla . '<tr><td>' . $contador;
+                    $tabla = $tabla . '</td><td>';
+                    $tabla = $tabla . $categoria->descripcion;
+                    $tabla = $tabla . '</td><td class="text-center"> '
+                                            . '<button type="button" class="btn btn-info" '
+                                            . 'id="listaCategoria" '
+                                            . 'data-dismiss="modal" '
+                                            . 'onclick="agregarCategoria(\'' . $categoria->codCategoria . '\', \'' . $categoria->descripcion . '\');"> '
+                                            . '<span class="glyphicon glyphicon-plus"></span>'
+                                            . '</button></td></tr>';
+                }
+
+                $tabla = $tabla . '<tr>
+                            <td colspan=5><span class="pull-right">
+                                </span>
+                            </td>
+                        </tr>
+                    </table>';
+
+                $this->response->setJsonContent(array('res' => array("codigo" => $tabla)));
+                $this->response->setStatusCode(200,
+                                               "OK");
+                $this->response->send();
+            }else {
+                $this->response->setStatusCode(406,
+                                               "Not Acceptable");
+            }
+        }else {
+            $this->response->setStatusCode(404,
+                                           "Not Found");
+        }
+    }
+
+    public function ajaxPostMarcaAction() {
+        $this->view->disable();
+        $tabla = '';
+        $contador = 0;
+
+        if ($this->request->isPost() == true) {
+            if ($this->request->isAjax() == true) {
+                $labelBusquedaMarca = $this->request->getPost("busquedaMarca");
+                $usuarioSesion = $this->session->get("Usuario");
+                $codEmpresa = $usuarioSesion['codEmpresa'];
+
+                $marcas = $this->modelsManager->createBuilder()
+                                        ->columns("ca.codMarca," .
+                                                                "ca.descripcion ")
+                                        ->addFrom('Marca',
+                                                  'ca')
+                                        ->andWhere('ca.descripcion like :descripcion: AND ' .
+                                                                'ca.codEmpresa = :empresa: AND ' .
+                                                                'ca.estadoRegistro = :estado: ',
+                                                   [
+                                                        'descripcion' => "%" . $labelBusquedaMarca . "%",
+                                                        'empresa' => $codEmpresa,
+                                                        'estado' => "S",
+                                                                ]
+                                        )
+                                        ->orderBy('ca.descripcion')
+                                        ->getQuery()
+                                        ->execute();
+
+                $tabla = '<table class="table"><tr  class="warning">
+                                    <th>N°</th>
+                                    <th>Marca</th>
+                                    <th class="text-center" style="width: 36px;">Agregar</th>
+				</tr>';
+
+                foreach ($marcas as $marca) {
+                    $contador++;
+                    $tabla = $tabla . '<tr><td>' . $contador;
+                    $tabla = $tabla . '</td><td>';
+                    $tabla = $tabla . $marca->descripcion;
+                    $tabla = $tabla . '</td><td class="text-center"> '
+                                            . '<button type="button" class="btn btn-info" '
+                                            . 'id="listaMarca" '
+                                            . 'data-dismiss="modal" '
+                                            . 'onclick="agregarMarca(\'' . $marca->codMarca . '\', \'' . $marca->descripcion . '\');"> '
+                                            . '<span class="glyphicon glyphicon-plus"></span>'
+                                            . '</button></td></tr>';
+                }
+
+                $tabla = $tabla . '<tr>
+                            <td colspan=5><span class="pull-right">
+                                </span>
+                            </td>
+                        </tr>
+                    </table>';
+
+                $this->response->setJsonContent(array('res' => array("codigo" => $tabla)));
+                $this->response->setStatusCode(200,
+                                               "OK");
+                $this->response->send();
+            }else {
+                $this->response->setStatusCode(406,
+                                               "Not Acceptable");
+            }
+        }else {
+            $this->response->setStatusCode(404,
+                                           "Not Found");
+        }
+    }
+
+    public function ajaxPostModeloAction() {
+        $this->view->disable();
+        $tabla = '';
+        $contador = 0;
+
+        if ($this->request->isPost() == true) {
+            if ($this->request->isAjax() == true) {
+                $labelBusquedaModelo = $this->request->getPost("busquedaModelo");
+                $usuarioSesion = $this->session->get("Usuario");
+                $codEmpresa = $usuarioSesion['codEmpresa'];
+
+                $modelos = $this->modelsManager->createBuilder()
+                                        ->columns("ca.codModelo," .
+                                                                "ca.descripcion ")
+                                        ->addFrom('Modelo',
+                                                  'ca')
+                                        ->andWhere('ca.descripcion like :descripcion: AND ' .
+                                                                'ca.codEmpresa = :empresa: AND ' .
+                                                                'ca.estadoRegistro = :estado: ',
+                                                   [
+                                                        'descripcion' => "%" . $labelBusquedaModelo . "%",
+                                                        'empresa' => $codEmpresa,
+                                                        'estado' => "S",
+                                                                ]
+                                        )
+                                        ->orderBy('ca.descripcion')
+                                        ->getQuery()
+                                        ->execute();
+
+                $tabla = '<table class="table"><tr  class="warning">
+                                    <th>N°</th>
+                                    <th>Modelo</th>
+                                    <th class="text-center" style="width: 36px;">Agregar</th>
+				</tr>';
+
+                foreach ($modelos as $modelo) {
+                    $contador++;
+                    $tabla = $tabla . '<tr><td>' . $contador;
+                    $tabla = $tabla . '</td><td>';
+                    $tabla = $tabla . $modelo->descripcion;
+                    $tabla = $tabla . '</td><td class="text-center"> '
+                                            . '<button type="button" class="btn btn-info" '
+                                            . 'id="listaModelo" '
+                                            . 'data-dismiss="modal" '
+                                            . 'onclick="agregarModelo(\'' . $modelo->codModelo . '\', \'' . $modelo->descripcion . '\');"> '
+                                            . '<span class="glyphicon glyphicon-plus"></span>'
+                                            . '</button></td></tr>';
+                }
+
+                $tabla = $tabla . '<tr>
+                            <td colspan=5><span class="pull-right">
+                                </span>
+                            </td>
+                        </tr>
+                    </table>';
+
+                $this->response->setJsonContent(array('res' => array("codigo" => $tabla)));
+                $this->response->setStatusCode(200,
+                                               "OK");
+                $this->response->send();
+            }else {
+                $this->response->setStatusCode(406,
+                                               "Not Acceptable");
+            }
+        }else {
+            $this->response->setStatusCode(404,
+                                           "Not Found");
+        }
+    }
 }

@@ -3,14 +3,14 @@
         <title>Inventario</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="js/bootstrap.min.js"></script>
-        <style>      
+        <script src="https://code.jquery.com/jquery-1.11.1.js" integrity="sha256-MCmDSoIMecFUw3f1LicZ/D/yonYAoHrgiep/3pCH9rw=" crossorigin="anonymous"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
             .embed-container {
                 position: relative;
-                padding-bottom: 60.25%;
+                padding-bottom: 56.25%;
                 height: 0;
-                width:  0;
                 overflow: hidden;
             }
             .embed-container iframe {
@@ -21,8 +21,6 @@
                 height: 100%;
             }
         </style>
-
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     </head>
     <body>
         <div class="container">
@@ -75,7 +73,7 @@
                                     <table class="table">
                                         <tr>
                                             <td>
-                                                <span class="glyphicon glyphicon-barcode"></span><?= $this->tag->linkTo(['producto/index', ' Registrar Productos', 'target' => 'iframe_inventory']) ?>
+                                                <span class="glyphicon glyphicon-barcode"></span><?= $this->tag->linkTo(['producto/index', ' Administrar Productos', 'target' => 'iframe_inventory']) ?>
                                             </td>
                                         </tr>
                                         <tr>
@@ -168,7 +166,7 @@
                     </div>
                 </div>
                 <div class="embed-container">
-                    <iframe width="660" height="335" name="iframe_inventory" frameborder="0" allowfullscreen></iframe>
+                    <iframe width="700" height="500" frameborder="0" allowfullscreen name="iframe_inventory" ></iframe>
                 </div>
             </div>
         </div>
