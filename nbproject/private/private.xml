@@ -3,10 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/xampp/htdocs/fox_zeus/app/views/producto/new.volt</file>
             <file>file:/C:/xampp/htdocs/fox_zeus/app/views/inventory/index.volt</file>
             <file>file:/C:/xampp/htdocs/fox_zeus/app/controllers/ProductoController.php</file>
+            <file>file:/C:/xampp/htdocs/fox_zeus/app/views/sistema/search.volt</file>
+            <file>file:/C:/xampp/htdocs/fox_zeus/app/views/producto/search.volt</file>
+            <file>file:/C:/xampp/htdocs/fox_zeus/app/views/ajax/findModelo.volt</file>
             <file>file:/C:/xampp/htdocs/fox_zeus/app/views/producto/index.volt</file>
-            <file>file:/C:/xampp/htdocs/fox_zeus/app/formularios/ProductoIndexForm.php</file>
+            <file>file:/C:/xampp/htdocs/fox_zeus/app/controllers/AjaxBusquedasController.php</file>
         </group>
     </open-files>
 </project-private>

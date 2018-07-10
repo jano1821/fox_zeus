@@ -1,15 +1,15 @@
-{{ content() }}
-{{ partial("inventory/title") }}
-{{ partial("inventory/head") }}
+<?= $this->getContent() ?>
+<?= $this->partial('inventory/title') ?>
+<?= $this->partial('inventory/head') ?>
 <div class="row">
     <div class="container">
         <div class="panel panel-info">
             <div class="panel-heading">
-                {{ link_to("categoria/index", "<i class='glyphicon glyphicon-search'></i> Buscar Categoria","class":"btn btn-info") }}
+                <?= $this->tag->linkTo(['categoria/index', '<i class=\'glyphicon glyphicon-search\'></i> Buscar Categoria', 'class' => 'btn btn-info']) ?>
             </div>
             <div class="page-header">
             </div>
-            {{ form("categoria/create", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+            <?= $this->tag->form(['categoria/create', 'method' => 'post', 'autocomplete' => 'off', 'class' => 'form-horizontal']) ?>
 
             <div class="table">
                 <div class="form-group">
@@ -20,7 +20,7 @@
                             <label for="fieldDescripcion">Descripcion</label>
                         </div>
                         <div class="col-xs-5">
-                            {{ form.render('descripcion') }}
+                            <?= $form->render('descripcion') ?>
                         </div>
                     </div>
                 </div>
@@ -33,8 +33,8 @@
                         <div class="col-xs-4">
                         </div>
                         <div class="col-xs-4">
-                            {{ form.render('save') }}
-                            {{ form.render('csrf', ['value': security.getToken()]) }}
+                            <?= $form->render('save') ?>
+                            <?= $form->render('csrf', ['value' => $this->security->getToken()]) ?>
                         </div>
                         <div class="col-xs-3">
 

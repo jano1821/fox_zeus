@@ -1,15 +1,12 @@
+<?= $this->getContent() ?>
+<?= $this->partial('inventory/title') ?>
+<?= $this->partial('inventory/head') ?>
 <div class="row">
     <div class="container">
         <div class="panel panel-info">
-            <div class="panel-heading">
-                <div class="btn-group pull-right">
-                    <?= $this->tag->linkTo(['producto/new', '<i class=\'glyphicon glyphicon-plus\'></i> Nuevo Producto', 'class' => 'btn btn-info']) ?>
-                </div>
-                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Productos</h4>
-            </div>
             <div class="page-header">
             </div>
-            <?= $this->getContent() ?>
+
             <?= $this->partial('ajax/findCategoria') ?>
             <?= $this->partial('ajax/findMarca') ?>
             <?= $this->partial('ajax/findModelo') ?>
@@ -124,6 +121,7 @@
         </div>
     </div>
 </div>
+<?= $this->partial('inventory/footer') ?>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {

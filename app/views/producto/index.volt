@@ -1,15 +1,12 @@
+{{ content() }}
+{{ partial("inventory/title") }}
+{{ partial("inventory/head") }}
 <div class="row">
     <div class="container">
         <div class="panel panel-info">
-            <div class="panel-heading">
-                <div class="btn-group pull-right">
-                    {{ link_to("producto/new", "<i class='glyphicon glyphicon-plus'></i> Nuevo Producto","class":"btn btn-info") }}
-                </div>
-                <h4><i class='glyphicon glyphicon-search'></i> Búsqueda de Productos</h4>
-            </div>
             <div class="page-header">
             </div>
-            {{ content() }}
+
             {{ partial("ajax/findCategoria") }}
             {{ partial("ajax/findMarca") }}
             {{ partial("ajax/findModelo") }}
@@ -124,6 +121,7 @@
         </div>
     </div>
 </div>
+{{ partial("inventory/footer") }}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {

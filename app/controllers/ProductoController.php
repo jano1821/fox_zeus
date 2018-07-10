@@ -13,6 +13,15 @@ class ProductoController extends ControllerBase {
     }
 
     public function indexAction() {
+        if ($this->session->has("Usuario")) {
+            $usuario = $this->session->get("Usuario");
+            $nombresPersona = $usuario['nombresPersona'];
+        } else {
+            $this->session->destroy();
+            $this->response->redirect('index');
+        }
+
+        $this->view->nombreUsuario = $nombresPersona;
         $this->view->form = new ProductoIndexForm();
     }
 
@@ -36,7 +45,7 @@ class ProductoController extends ControllerBase {
 
         $producto = Producto::find($parameters);
         if (count($producto) == 0) {
-            $this->flash->notice("Producto No Encontardo");
+            $this->flash->notice("Producto No Encontrado");
 
             $this->dispatcher->forward([
                             "controller" => "producto",

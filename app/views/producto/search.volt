@@ -1,18 +1,15 @@
+            {{ content() }}
 <div class="row">
     <div class="container">
         <div class="panel panel-info">
             <div class="panel-heading">
-                <div class="btn-group pull-right">
-                    {{ link_to("producto", "<i class='glyphicon glyphicon-chevron-left'></i> Volver","class":"btn btn-info") }}
-                    {{ link_to("producto/new", "<i class='glyphicon glyphicon-plus'></i> Nuevo Sistema","class":"btn btn-info") }}
-                </div>
                 <h4><i class='glyphicon glyphicon-search'></i> Resultado de Busqueda</h4>
             </div>
 
             <div class="page-header">
             </div>
 
-            {{ content() }}
+
             {{ form("sistema/search", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
             <div class="table-responsive">
                 <table class="table">
