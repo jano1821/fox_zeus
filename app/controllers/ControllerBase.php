@@ -155,4 +155,60 @@ class ControllerBase extends Controller {
             $this->response->redirect('index');
         }
     }
+
+    public function generarSubMenu($codSistema,
+                                   $codUsuario,
+                                   $codEmpresa,
+                                   $menuPrincipal) {
+        $menuInventario = $this->modelsManager->createBuilder()
+                                ->columns("su.descripcion," .
+                                                        "su.indicadorSeparador," .
+                                                        "su.indicadorAdministrador," .
+                                                        "su.indicadorMenuPrincipal," .
+                                                        "su.ordenMenu," .
+                                                        "su.codMenuPadre," .
+                                                        "su.codSistema," .
+                                                        "su.codSubMenu," .
+                                                        "su.urlSubmenu ")
+                                ->addFrom('PermisoSubmenu',
+                                          'ps')
+                                ->innerJoin('Submenu',
+                                            'ps.codSubmenu = su.codSubmenu',
+                                            'su')
+                                ->andWhere('ps.codUsuario like :usuario: AND ' .
+                                                        'ps.codEmpresa = :codEmpresa: AND ' .
+                                                        'ps.estadoRegistro = "S" AND ' .
+                                                        'su.estadoRegistro = "S" AND ' .
+                                                        'su.indicadorMenuPrincipal = :menuPrincipal: AND ' .
+                                                        'su.codSistema like :sistema: ',
+                                           [
+                                                'usuario' => $codUsuario,
+                                                'codEmpresa' => $codEmpresa,
+                                                'sistema' => $codSistema,
+                                                'menuPrincipal' => $menuPrincipal,
+                                                        ]
+                                )
+                                ->orderBy('su.ordenMenu')
+                                ->getQuery()
+                                ->execute();
+
+        return $menuInventario;
+    }
+    
+    public function obtenerSubmenuSession($tipoSubMenu){
+        $subMenu = '';
+        if ($this->session->has("subMenuSistemas")) {
+            $subMenuSistemas = $this->session->get("subMenuSistemas");
+            if ($tipoSubMenu == 'P'){
+            $subMenu = $subMenuSistemas['menuPrincipal'];
+            } 
+            if ($tipoSubMenu == 'S'){
+            $subMenu = $subMenuSistemas['menuSecundario'];
+            }
+        }else {
+            $this->session->destroy();
+            $this->response->redirect('index');
+        }
+        return $subMenu;
+    }
 }

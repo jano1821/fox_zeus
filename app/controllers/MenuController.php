@@ -10,12 +10,12 @@ class MenuController extends ControllerBase {
         $codEmpresa = $usuarioSesion['codEmpresa'];
 
         $menuUsuario = $this->modelsManager->createBuilder()
-                                ->columns("me.descripcion, ".
-                                          "me.id, ".
-                                          "me.idBoton,".
-                                          "me.nombreBoton,".
-                                          "me.orden,".
-                                          "mu.codMenu ")
+                                ->columns("me.descripcion, " .
+                                                        "me.id, " .
+                                                        "me.idBoton," .
+                                                        "me.nombreBoton," .
+                                                        "me.orden," .
+                                                        "mu.codMenu ")
                                 ->addFrom("MenuUsuario",
                                           "mu")
                                 ->innerJoin("Menu",
@@ -24,24 +24,25 @@ class MenuController extends ControllerBase {
                                 ->innerJoin("Usuario",
                                             "mu.codUsuario = us.codUsuario",
                                             "us")
-                                ->andWhere("mu.codUsuario = :usuario: AND ".
-                                           "us.codEmpresa = :empresa: AND ".
-                                           "mu.estadoRegistro = :estado: ",
+                                ->andWhere("mu.codUsuario = :usuario: AND " .
+                                                        "us.codEmpresa = :empresa: AND " .
+                                                        "mu.estadoRegistro = :estado: ",
                                            [
                                                 "usuario" => $codUsuario,
                                                 "empresa" => $codEmpresa,
                                                 "estado" => "S",
-                                           ]
+                                                        ]
                                 )
                                 ->orderBy('me.orden')
                                 ->getQuery()
                                 ->execute();
-        
+
         $menuSistema = $this->modelsManager->createBuilder()
-                                ->columns("ms.codMenu, ".
-                                          "si.etiquetaSistema, ".
-                                          "si.url,".
-                                          "si.urlIcono ")
+                                ->columns("ms.codMenu, " .
+                                                        "si.etiquetaSistema, " .
+                                                        "si.url," .
+                                                        "si.codSistema," .
+                                                        "si.urlIcono ")
                                 ->addFrom("MenuSistema",
                                           "ms")
                                 ->innerJoin("Sistema",
@@ -50,21 +51,24 @@ class MenuController extends ControllerBase {
                                 ->innerJoin("Usuario",
                                             "ms.codUsuario = us.codUsuario",
                                             "us")
-                                ->andWhere("ms.codUsuario = :usuario: AND ".
-                                           "us.codEmpresa = :empresa: AND ".
-                                           "ms.estadoRegistro = :estado: ",
+                                ->andWhere("ms.codUsuario = :usuario: AND " .
+                                                        "us.codEmpresa = :empresa: AND " .
+                                                        "ms.estadoRegistro = :estado: ",
                                            [
                                                 "usuario" => $codUsuario,
                                                 "empresa" => $codEmpresa,
                                                 "estado" => "S",
-                                           ]
+                                                        ]
                                 )
                                 ->getQuery()
                                 ->execute();
 
-        
-          $this->view->menu = $menuUsuario;
-          $this->view->menuSistema = $menuSistema;
+
+        $this->session->set('subMenuSistemas',
+                            array('menuPrincipal' => array(), 'menuSecundario' => array()));
+
+        $this->view->menu = $menuUsuario;
+        $this->view->menuSistema = $menuSistema;
     }
 
     public function menuPrincipalAction() {

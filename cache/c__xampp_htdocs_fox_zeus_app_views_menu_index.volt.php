@@ -28,7 +28,7 @@
                                     <?php foreach ($menuSistema as $sistema) { ?>
                                         <?php if ($sistema->codMenu == $items->codMenu) { ?>
                                             <li>
-                                                <a href="<?= $sistema->url ?>">
+                                                <a href="<?= $sistema->url . '/' . $sistema->codSistema ?>">
                                                     <span class="icon">
                                                         <i aria-hidden="true" class="<?= $sistema->urlIcono ?>"></i>
                                                     </span>

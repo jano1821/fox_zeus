@@ -21,6 +21,9 @@ class IndexController extends ControllerBase {
                         'tiempoSesion' => $parametrosGenerales,
                         'ultimoAcceso' => date("Y-n-j H:i:s"),
                         'indicadorUsuarioAdministrador' => $usuario->indicadorUsuarioAdministrador));
+
+        $this->session->set('subMenuSistemas',
+                            array('menuPrincipal' => array(), 'menuSecundario' => array()));
     }
 
     public function indexAction() {

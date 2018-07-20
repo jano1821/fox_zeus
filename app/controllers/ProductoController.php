@@ -12,16 +12,23 @@ class ProductoController extends ControllerBase {
                                                               $usuario['codUsuario']);
     }
 
-    public function indexAction() {
+    public function indexAction($codSistema) {
+        $codUsuario = '';
+        $codEmpresa = '';
+        $nombresPersona = '';
         if ($this->session->has("Usuario")) {
             $usuario = $this->session->get("Usuario");
             $nombresPersona = $usuario['nombresPersona'];
-        } else {
+            $codUsuario = $usuario['codUsuario'];
+            $codEmpresa = $usuario['codEmpresa'];
+        }else {
             $this->session->destroy();
             $this->response->redirect('index');
         }
 
         $this->view->nombreUsuario = $nombresPersona;
+        $this->view->menuPrincipal = parent::obtenerSubmenuSession('P');
+        $this->view->menuSecundario = parent::obtenerSubmenuSession('S');
         $this->view->form = new ProductoIndexForm();
     }
 
