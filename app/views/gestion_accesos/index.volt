@@ -3,62 +3,90 @@
         <title>Inventario</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     </head>
     <body>
         {{ content() }}
         {{ partial("front/title") }}
         {{ partial("front/head") }}
         {{ partial("ajax/findUsuario") }}
-        <div class="form-group">
-            <div class="col-md-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-1 col-md-offset-4">
+                    <label for="fieldCodmenu">Usuario</label>
+                </div>        
+                <div class="col-xs-12 col-sm-6 col-md-2">
+                    {{ text_field("nombreUsuario", "class" : "form-control", "id" : "nombreUsuario", "disabled" : "true") }}
+
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-2">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalUsuario" id="listaUsuarios">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    <button type="button" class="btn btn-warning" id="mostrarMenuPrincipal" title="Mostrar Opciones de Menú"">
+                        <span class="glyphicon glyphicon-option-horizontal"></span>
+                    </button>
+                </div>
             </div>
-            <div class="col-md-2">
-                <label for="fieldCodmenu">Usuario</label>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-1 col-md-offset-4">
+                    <label></label>
+                </div>
             </div>
-            <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-5">
-                        {{ text_field("nombreUsuario", "class" : "form-control", "id" : "nombreUsuario", "disabled" : "true") }}
-                        {{ hidden_field("codUsuario") }}
-                        {{ hidden_field("codSistema") }}
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalUsuario" id="listaUsuarios">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn btn-warning" id="mostrarMenuPrincipal">
-                            <span class="glyphicon glyphicon-option-horizontal"></span>
-                        </button>
-                    </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-2 col-md-offset-1">
+                    <label id="etiquetaPrincipal"></label>
+                </div>
+                <div  class="col-xs-12 col-sm-6 col-md-2" id="divMenuPrincipal">
+
+                </div>
+
+                <div id="divBotonQuitarMenuPrincipal" class="col-md-1">
+
+                </div>
+                <div id="divBotonAgregarMenuPrincipal" class="col-md-1">
+
+                </div>
+                
+                <div class="col-xs-12 col-sm-6 col-md-2">
+                    <label id="etiquetaAsignado"></label>
+                </div>
+                <div  class="col-xs-12 col-sm-6 col-md-2" id="divMenuAsignado">
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-1 col-md-offset-4">
+                    <label></label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-2 col-md-offset-1">
+                    <label id="etiquetaSecundaria"></label>
+                </div>
+                <div  class="col-xs-12 col-sm-6 col-md-2" id="divMenuSecundario">
+
+                </div>
+
+                <div id="divBotonAgregarMenuSecundario" class="col-md-1">
+
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-2">
+                    <label id="etiquetaAsignarMenu"></label>
+                </div>
+                <div  class="col-xs-12 col-sm-6 col-md-2" id="divMenuSecundarioAsignado">
+
                 </div>
             </div>
         </div>
-        <div class="page-header">
-        </div>
-        <div class="form-group">
-            <div class="col-md-1">
-            </div>
-            <div class="col-md-2">
-                <label id="etiquetaPrincipal"></label>
-            </div>
-            <div  class="col-md-3" id="divMenuPrincipal">
-
-            </div>
-            <div class="col-md-1">
-            </div>
-            <div class="col-md-2">
-                <label id="etiquetaAsignado"></label>
-            </div>
-            <div  class="col-md-3" id="divMenuAsignado">
-
-            </div>
-        </div>
-
+        {{ hidden_field("codUsuario") }}
+        {{ hidden_field("codSistema") }}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
         <script type="text/javascript">
@@ -95,7 +123,27 @@
                         function (data) {
                             $("#etiquetaPrincipal").html("Menu Principal");
                             $("#divMenuPrincipal").html(data.res.codigo);
+                            $("#divBotonAgregarMenuPrincipal").html("<button type='button' class='btn btn-warning' id='btnAgregarMenuPrincipal' title='Agregar Menu Principal' onclick='agregarMenuPrincipal();'><span class='glyphicon glyphicon-forward'></span></button>");
+                            $("#divBotonQuitarMenuPrincipal").html("<button type='button' class='btn btn-warning' id='btnQuitarMenuPrincipal' title='Quitar Menu Principal' onclick='quitarMenuPrincipal();'><span class='glyphicon glyphicon-backward'></span></button>");
                             $("#etiquetaAsignado").html("Menu Asignado");
+                            $("#divMenuAsignado").html(data.res.seleccionado);
+                        }).fail(function () {
+                    $("#etiquetaPrincipal").html("No hay Resultados");
+                })
+            }
+
+            function agregarMenuPrincipal() {
+                if (document.getElementById("menuPrincipal").value == "0") {
+                    alert("Debe seleccionar un Menú Válido");
+                    return false;
+                }
+                
+                var params = "codSistema=" + document.getElementById("codSistema").value;
+                params += "&codUsuario=" + document.getElementById("codUsuario").value;
+                $.post("{{ url('GestionAccesos/ajaxMenuPrincipal') }}",
+                        params,
+                        function (data) {
+                            $("#divMenuPrincipal").html(data.res.codigo);
                             $("#divMenuAsignado").html(data.res.seleccionado);
                         }).fail(function () {
                     $("#etiquetaPrincipal").html("No hay Resultados");
