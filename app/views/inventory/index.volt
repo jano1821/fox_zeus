@@ -10,8 +10,7 @@
     </head>
     <body>
         {{ content() }}
-        {{ partial("inventory/title") }}
-        {{ partial("inventory/head") }}
-        {{ partial("inventory/footer") }}
+        {{ partial("front/title") }}
+        {{ partial("front/head") }}
     </body>
 </html>

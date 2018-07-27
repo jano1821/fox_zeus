@@ -9,9 +9,9 @@ class MenuSistemaController extends ControllerBase {
     public function onConstruct() {
         parent::validarSession();
         parent::validarAdministradores();
-        $usuario = $this->session->get("Usuario");
-        parent::validaAccesoSistema(parent::obtenerParametros("SISTEMA_ASISTENCIA"),
-                                                              $usuario['codUsuario']);
+        //$usuario = $this->session->get("Usuario");
+        /*parent::validaAccesoSistema(parent::obtenerParametros("SISTEMA_ASISTENCIA"),
+                                                              $usuario['codUsuario']);*/
     }
 
     public function indexAction($codUsuario) {

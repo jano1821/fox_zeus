@@ -14,7 +14,7 @@
                                         {% if secundario.urlSubmenu != '#' and items.codSubMenu == secundario.codMenuPadre %} 
                                             <li><a href="{{ secundario.urlSubmenu~"/"~secundario.codSistema }}">{{ secundario.descripcion }}</a></li>
                                             {% endif %}
-                                            {% if secundario.urlSubmenu == '#' and items.codSubMenu == secundario.codMenuPadre %} 
+                                            {% if secundario.indicadorSeparador == 'S' and items.codSubMenu == secundario.codMenuPadre %} 
                                                 {{ secundario.descripcion }}
                                             {% endif %}
                                         {% endfor %}

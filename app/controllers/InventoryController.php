@@ -43,6 +43,7 @@ class InventoryController extends ControllerBase {
         $this->view->nombreUsuario = $nombresPersona;
         $this->view->menuPrincipal = $menuInventarioPrincipal;
         $this->view->menuSecundario = $menuInventarioSecundario;
-        $this->$indicadorUsuarioAdministrador = $indicadorUsuarioAdministrador;
+        $this->view->titulo = "Sistema de Inventario";
+        $this->view->indicadorUsuarioAdministrador = $indicadorUsuarioAdministrador;
     }
 }

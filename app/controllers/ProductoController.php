@@ -27,6 +27,7 @@ class ProductoController extends ControllerBase {
         }
 
         $this->view->nombreUsuario = $nombresPersona;
+        $this->view->titulo = "Sistema de Inventario";
         $this->view->menuPrincipal = parent::obtenerSubmenuSession('P');
         $this->view->menuSecundario = parent::obtenerSubmenuSession('S');
         $this->view->form = new ProductoIndexForm();

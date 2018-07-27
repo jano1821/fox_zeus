@@ -10,8 +10,7 @@
     </head>
     <body>
         <?= $this->getContent() ?>
-        <?= $this->partial('inventory/title') ?>
-        <?= $this->partial('inventory/head') ?>
-        <?= $this->partial('inventory/footer') ?>
+        <?= $this->partial('front/title') ?>
+        <?= $this->partial('front/head') ?>
     </body>
 </html>

@@ -1,6 +1,6 @@
 <?= $this->getContent() ?>
-<?= $this->partial('inventory/title') ?>
-<?= $this->partial('inventory/head') ?>
+<?= $this->partial('front/title') ?>
+<?= $this->partial('front/head') ?>
 <div class="row">
     <div class="container">
         <div class="panel panel-info">
@@ -121,7 +121,6 @@
         </div>
     </div>
 </div>
-<?= $this->partial('inventory/footer') ?>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {

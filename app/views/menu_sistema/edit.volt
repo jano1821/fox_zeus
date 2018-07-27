@@ -71,7 +71,7 @@
                 {{ form.render('codUsuario') }}
             </div>
             <div class="col-md-2">
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" id="listaUsuarios">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalUsuario" id="listaUsuarios">
                     <span class="glyphicon glyphicon-search"></span>
                 </button>
             </div>
